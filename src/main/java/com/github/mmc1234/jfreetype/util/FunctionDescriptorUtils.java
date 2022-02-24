@@ -32,7 +32,7 @@ public class FunctionDescriptorUtils {
         return FunctionDescriptor.ofVoid(parameters);
     }
 
-    private static MemoryLayout pick(int name) {
+    static MemoryLayout pick(int name) {
         return switch (name) {
             case 'A' -> ValueLayout.ADDRESS;
             case 'I' -> ValueLayout.JAVA_INT;
