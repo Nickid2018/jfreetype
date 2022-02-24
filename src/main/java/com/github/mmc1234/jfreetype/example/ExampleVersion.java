@@ -28,7 +28,7 @@ public class ExampleVersion {
             MemorySegment versionB = MemorySegment.allocateNative(ValueLayout.JAVA_INT.byteSize(), scope);
             MemorySegment versionC = MemorySegment.allocateNative(ValueLayout.JAVA_INT.byteSize(), scope);
 
-            FreeType.FTLibraryVersion(FreeType.dereference(lib), versionA, versionB, versionC);
+            FreeType.FTLibraryVersion(FreeType.deRef(lib), versionA, versionB, versionC);
             var v1 = versionA.getAtIndex(ValueLayout.JAVA_INT, 0);
             var v2 = versionB.getAtIndex(ValueLayout.JAVA_INT, 0);
             var v3 = versionC.getAtIndex(ValueLayout.JAVA_INT, 0);
@@ -41,7 +41,7 @@ public class ExampleVersion {
         var error = FreeType.FTInitFreeType(alib);
         if(error != 0) throw new IllegalStateException("Fail init FreeType");
         var version = getVersion(alib);
-        System.out.println(String.format("Free Type Version=%d,%d,%d", version[0],version[1],version[2]));
-        FreeType.FTDoneFreeType(FreeType.dereference(alib));
+        System.out.printf("Free Type Version=%d,%d,%d\n", version[0],version[1],version[2]);
+        FreeType.FTDoneFreeType(FreeType.deRef(alib));
     }
 }

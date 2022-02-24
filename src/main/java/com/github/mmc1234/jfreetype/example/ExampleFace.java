@@ -21,7 +21,7 @@ import jdk.incubator.foreign.*;
 
 public class ExampleFace {
     public static void main(String[] args) {
-        String str = "E:/simhei.ttf";
+        String str = "C:\\Windows\\Fonts\\Arial.ttf";
         MemorySegment alib = MemorySegment.allocateNative(ValueLayout.ADDRESS, ResourceScope.globalScope());
         MemorySegment aface = MemorySegment.allocateNative(ValueLayout.ADDRESS, ResourceScope.globalScope());
         MemorySegment path = MemorySegment.allocateNative(ValueLayout.ADDRESS.byteSize()*1024, ResourceScope.globalScope());
@@ -29,12 +29,12 @@ public class ExampleFace {
         var error = FreeType.FTInitFreeType(alib);
         if(error != 0) throw new IllegalStateException("Fail init FreeType");
 
-        error = FreeType.FTNewFace(FreeType.dereference(alib), path.address(), 0, aface);
+        error = FreeType.FTNewFace(FreeType.deRef(alib), path.address(), 0, aface);
         if(0 == error) {
             System.out.println("Success new face");
         } else {
             System.out.println("Fail new face(Error "+error+")");
         }
-        FreeType.FTDoneFreeType(FreeType.dereference(alib));
+        FreeType.FTDoneFreeType(FreeType.deRef(alib));
     }
 }
