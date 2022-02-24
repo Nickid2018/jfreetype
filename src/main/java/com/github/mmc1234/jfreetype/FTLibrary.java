@@ -1,0 +1,23 @@
+package com.github.mmc1234.jfreetype;
+
+/**
+ * A handle to a FreeType library instance.
+ * Each ‘library’ is completely independent from the others;
+ * it is the ‘root’ of a set of objects like fonts, faces, sizes, etc.
+ * <p>
+ * It also embeds a memory manager (see {@link FTMemory}),
+ * as well as a scan-line converter object (see {@link FTRaster}).
+ * <p>
+ * [Since 2.5.6] In multi-threaded applications it is easiest to use one {@link FTLibrary} object per thread.
+ * In case this is too cumbersome, a single {@link FTLibrary} object across threads is possible also
+ * as long as a mutex lock is used around {@link FreeType#FTNewFace} and {@link FreeType#FTDoneFace}.
+ * <p>
+ * Note:
+ * <p>
+ * Library objects are normally created by {@link FreeType#FTInitFreeType},
+ * and destroyed with {@link FreeType#FTDoneFreeType}.
+ * If you need reference-counting (cf. FT_Reference_Library),
+ * use FT_New_Library and FT_Done_Library.
+ */
+public interface FTLibrary {
+}
