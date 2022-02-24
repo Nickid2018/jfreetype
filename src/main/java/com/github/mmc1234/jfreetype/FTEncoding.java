@@ -3,30 +3,31 @@ package com.github.mmc1234.jfreetype;
 /**
  * An enumeration to specify character sets supported by charmaps.
  * Used in the {@link FreeType#FTSelectCharmap} API function.
- * <p>
- * Note:
- * <p>
- * Despite the name, this enumeration lists specific character repertories (i.e., charsets), and not text encoding methods (e.g., UTF-8, UTF-16, etc.).
- * <p>
- * Other encodings might be defined in the future.
- * <p>
- * Note:
- * <p>
- * When loading a font, FreeType makes a Unicode charmap active if possible (either if the font provides such a charmap, or if FreeType can synthesize one from PostScript glyph name dictionaries; in either case, the charmap is tagged with {@link #UNICODE}). If such a charmap is synthesized, it is placed at the first position of the charmap array.
- * <p>
- * All other encodings are considered legacy and tagged only if explicitly defined in the font file. Otherwise, {@link #NONE} is used.
- * <p>
- * {@link #NONE} is set by the BDF and PCF drivers if the charmap is neither Unicode nor ISO-8859-1 (otherwise it is set to {@link #UNICODE}). Use FT_Get_BDF_Charset_ID to find out which encoding is really present. If, for example, the cs_registry field is ‘KOI8’ and the cs_encoding field is ‘R’, the font is encoded in KOI8-R.
- * <p>
- * {@link #NONE} is always set (with a single exception) by the winfonts driver. Use FT_Get_WinFNT_Header and examine the charset field of the FT_WinFNT_HeaderRec structure to find out which encoding is really present. For example, FT_WinFNT_ID_CP1251 (204) means Windows code page 1251 (for Russian).
- * <p>
- * {@link #NONE} is set if platform_id is TT_PLATFORM_MACINTOSH and encoding_id is not TT_MAC_ID_ROMAN (otherwise it is set to {@link #APPLE_ROMAN}).
- * <p>
- * If platform_id is TT_PLATFORM_MACINTOSH, use the function FT_Get_CMap_Language_ID to query the Mac language ID that may be needed to be able to distinguish Apple encoding variants. See
- * <p>
- * https://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/Readme.txt
- * <p>
- * to get an idea how to do that. Basically, if the language ID is 0, don't use it, otherwise subtract 1 from the language ID. Then examine encoding_id. If, for example, encoding_id is TT_MAC_ID_ROMAN and the language ID (minus 1) is TT_MAC_LANGID_GREEK, it is the Greek encoding, not Roman. TT_MAC_ID_ARABIC with TT_MAC_LANGID_FARSI means the Farsi variant the Arabic encoding.
+ *
+ * @apiNote Despite the name, this enumeration lists specific character repertories (i.e., charsets),
+ *          and not text encoding methods (e.g., UTF-8, UTF-16, etc.).<br/>
+ *          Other encodings might be defined in the future.
+ *
+ * @apiNote When loading a font, FreeType makes a Unicode charmap active if possible (either if the font provides such a charmap,
+ *          or if FreeType can synthesize one from PostScript glyph name dictionaries; in either case, the charmap is tagged with
+ *          {@link #UNICODE}). If such a charmap is synthesized, it is placed at the first position of the charmap array.<br/>
+ *          All other encodings are considered legacy and tagged only if explicitly defined in the font file.
+ *          Otherwise, {@link #NONE} is used.<br/>
+ *          {@link #NONE} is set by the BDF and PCF drivers if the charmap is neither Unicode nor ISO-8859-1
+ *          (otherwise it is set to {@link #UNICODE}). Use FT_Get_BDF_Charset_ID to find out which encoding is really present.
+ *          If, for example, the cs_registry field is ‘KOI8’ and the cs_encoding field is ‘R’, the font is encoded in KOI8-R.
+ *          {@link #NONE} is always set (with a single exception) by the winfonts driver. Use {@code FT_Get_WinFNT_Header}
+ *          and examine the charset field of the {@code FT_WinFNT_HeaderRec} structure to find out which encoding is really present.
+ *          For example, {@code FT_WinFNT_ID_CP1251} (204) means Windows code page 1251 (for Russian).<br/>
+ *          {@link #NONE} is set if platform_id is {@code TT_PLATFORM_MACINTOSH} and encoding_id is not
+ *          {@code TT_MAC_ID_ROMAN} (otherwise it is set to {@link #APPLE_ROMAN}).<br/>
+ *          If platform_id is {@code TT_PLATFORM_MACINTOSH}, use the function {@code FT_Get_CMap_Language_ID} to
+ *          query the Mac language ID that may be needed to be able to distinguish Apple encoding variants. See
+ *          <a href="https://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/Readme.txt">this</a>
+ *          to get an idea how to do that. Basically, if the language ID is 0, don't use it, otherwise subtract 1
+ *          from the language ID. Then examine encoding_id. If, for example, encoding_id is {@code TT_MAC_ID_ROMAN} and
+ *          the language ID (minus 1) is {@code TT_MAC_LANGID_GREEK}, it is the Greek encoding, not Roman.
+ *          TT_MAC_ID_ARABIC with {@code TT_MAC_LANGID_FARSI} means the Farsi variant the Arabic encoding.
  */
 public enum FTEncoding {
     /**
