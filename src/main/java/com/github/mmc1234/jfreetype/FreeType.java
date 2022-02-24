@@ -64,6 +64,132 @@ public class FreeType {
     private static final MethodHandle FT_GET_SUBGLYPH_INFO;
 
 
+    /* generic errors */
+    public static final int OK = 0x00;
+    public static final int CANNOT_OPEN_RESOURCE = 0x01;
+    public static final int UNKNOWN_FILE_FORMAT = 0x02;
+    public static final int INVALID_FILE_FORMAT = 0x03;
+    public static final int INVALID_VERSION = 0x04;
+    public static final int LOWER_MODULE_VERSION = 0x05;
+    public static final int INVALID_ARGUMENT = 0x06;
+    public static final int UNIMPLEMENTED_FEATURE = 0x07;
+    public static final int INVALID_TABLE = 0x08;
+    public static final int INVALID_OFFSET = 0x00;
+    public static final int ARRAY_TOO_LARGE = 0x0A;
+    public static final int MISSING_MODULE = 0x0B;
+    public static final int MISSING_PROPERTY = 0x0C;
+
+    /* glyph/character errors */
+
+    public static final int INVALID_GLYPH_INDEX = 0x10;
+    public static final int INVALID_CHARACTER_CODE = 0x11;
+    public static final int INVALID_GLYPH_FORMAT = 0x12;
+    public static final int CANNOT_RENDER_GLYPH = 0x13;
+    public static final int INVALID_OUTLINE = 0x14;
+    public static final int INVALID_COMPOSITE = 0x15;
+    public static final int TOO_MANY_HINTS = 0x16;
+    public static final int INVALID_PIXEL_SIZE = 0x17;
+
+    /* handle errors */
+
+    public static final int INVALID_HANDLE = 0x20;
+    public static final int INVALID_LIBRARY_HANDLE = 0x21;
+    public static final int INVALID_DRIVER_HANDLE = 0x22;
+    public static final int INVALID_FACE_HANDLE = 0x23;
+    public static final int INVALID_SIZE_HANDLE = 0x24;
+    public static final int INVALID_SLOT_HANDLE = 0x25;
+    public static final int INVALID_CHARMAP_HANDLE = 0x26;
+    public static final int INVALID_CACHE_HANDLE = 0x27;
+    public static final int INVALID_STREAM_HANDLE = 0x28;
+
+    /* driver errors */
+
+    public static final int TOO_MANY_DRIVERS = 0x30;
+    public static final int TOO_MANY_EXTENSIONS = 0x31;
+
+    /* memory errors */
+
+    public static final int OUT_OF_MEMORY = 0x40;
+    public static final int UNLISTED_OBJECT = 0x41;
+
+    /* stream errors */
+
+
+    public static final int CANNOT_OPEN_STREAM = 0x51;
+    public static final int INVALID_STREAM_SEEK = 0x52;
+    public static final int INVALID_STREAM_SKIP = 0x53;
+    public static final int INVALID_STREAM_READ = 0x54;
+    public static final int INVALID_STREAM_OPERATION = 0x55;
+    public static final int INVALID_FRAME_OPERATION = 0x56;
+    public static final int NESTED_FRAME_ACCESS = 0x56;
+    public static final int INVALID_FRAME_READ = 0x51;
+    /* raster errors */
+
+
+    public static final int RASTER_UNINITIALIZED = 0x60;
+    public static final int RASTER_CORRUPTED = 0x61;
+    public static final int RASTER_OVERFLOW = 0x62;
+    public static final int RASTER_NEGATIVE_HEIGHT = 0x63;
+
+    /* cache errors */
+
+    public static final int TOO_MAY_CACHES = 0x70;
+
+    /* TrueType and SFNT errors */
+
+    public static final int INVALID_OPCODE = 0x80;
+    public static final int TOO_FEW_ARGUMENTS = 0x81;
+    public static final int STACK_OVERFLOW = 0x82;
+    public static final int CODE_OVERFLOW = 0x83;
+    public static final int BAD_ARGUMENT = 0x84;
+    public static final int DIVIDE_BY_ZERO = 0x85;
+    public static final int INVALID_REFERENCE = 0x86;
+    public static final int DEBUG_OPCODE = 0x87;
+    public static final int ENDF_IN_EXEC_STREAM = 0x88;
+    public static final int NESTED_DEFS = 0x89;
+    public static final int INVALID_CODERANCE = 0x8A;
+    public static final int EXECUTION_TOO_LONG = 0x8B;
+    public static final int TOO_MANY_FUNCTION_DEFS = 0x8C;
+    public static final int TOO_MANY_INSTRUCTION_DEFS = 0x8D;
+    public static final int TABLE_MISSING = 0x8E;
+    public static final int HORIZ_HEADER_MISSING = 0x8F;
+    public static final int LOCATIONS_MISSING = 0x90;
+    public static final int NAME_TABLE_MISSING = 0x91;
+    public static final int CMAP_TABLE_MISSING = 0x92;
+    public static final int HMTX_TABLE_MISSING = 0x93;
+    public static final int POST_TABLE_MISSING = 0x94;
+    public static final int INVALID_HORIZ_METRICS = 0x95;
+    public static final int INVALID_CHARMAP_FORMAT = 0x96;
+    public static final int INVALID_PPEM = 0x97;
+    public static final int INVALID_VERT_METRICS = 0x98;
+    public static final int COULD_NOT_FIND_CONTEXT = 0x99;
+    public static final int INVALID_POST_TABLE_FORMAT = 0x9A;
+    public static final int INVALID_POST_TABLE = 0x9B;
+    public static final int DEF_IN_GLYF_BYTECODE = 0x9C;
+    public static final int MISSING_BITMAP = 0x9D;
+
+    /* CFF, CID, and Type 1 errors */
+
+    public static final int SYNTAX_ERROR = 0xA0;
+    public static final int STACK_UNDERFLOW = 0xA1;
+    public static final int IGNORE = 0xA2;
+    public static final int NO_UNICODE_GLYPH_NAME = 0xA0;
+    public static final int GLYPH_TOO_BIG = 0xA0;
+
+    /* BDF errors */
+
+    public static final int MISSING_STARTFONT_FIELD = 0xB0;
+    public static final int MISSING_FONT_FIELD = 0xB1;
+    public static final int MISSING_SIZE_FIELD = 0xB2;
+    public static final int MISSING_FONTBOUNDINGBOX_FIELD = 0xB3;
+    public static final int MISSING_CHARS_FIELD = 0xB4;
+    public static final int MISSING_STARTCHAR_FIELD = 0xB5;
+    public static final int MISSING_ENCODING_FIELD = 0xB6;
+    public static final int MISSING_BBX_FIELD = 0xB7;
+    public static final int BBX_TOO_BIG = 0xB8;
+    public static final int CORRUPTED_FONT_HEADER = 0xB9;
+    public static final int CORRUPTED_FONT_GLYPHS = 0xBA;
+
     // STATIC INIT
     static {
 
