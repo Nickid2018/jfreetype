@@ -10,10 +10,14 @@ public class StructLayoutBuilder {
     private final MemoryLayout sequenceLayout;
 
     public StructLayoutBuilder(String recipe, String[] names, MemoryLayout... layouts) {
+        this(recipe, names, false, layouts);
+    }
+
+    public StructLayoutBuilder(String recipe, String[] names, boolean isUnion, MemoryLayout... layouts) {
         MemoryLayout[] struct = new MemoryLayout[recipe.length()];
         for (int i = 0; i < recipe.length(); i++)
             struct[i] = pick(recipe.charAt(i), names[i], layouts);
-        structLayout = MemoryLayout.structLayout(struct);
+        structLayout = isUnion ? MemoryLayout.unionLayout(struct) : MemoryLayout.structLayout(struct);
         sequenceLayout = MemoryLayout.sequenceLayout(structLayout);
     }
 
