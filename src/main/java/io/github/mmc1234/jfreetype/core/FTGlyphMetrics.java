@@ -16,7 +16,6 @@ import java.lang.invoke.VarHandle;
  * FreeType doesn't use the ‘VORG’ table data for CFF fonts because it doesn't have an interface to
  * quickly retrieve the glyph height. The y coordinate of the vertical origin can be simply computed as
  * vertBearingY + height after loading a glyph.
- *
  * @implNote In freetype/freetype.h
  * <pre>{@code
  *   typedef struct  FT_Glyph_Metrics_
@@ -81,7 +80,7 @@ public final class FTGlyphMetrics {
     public static final VarHandle VERT_ADVANCE;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("LLLLLLLL", new String[] {
+        StructLayoutBuilder builder = new StructLayoutBuilder("LLLLLLLL", new String[]{
                 "width", "height", "horiBearingX", "horiBearingY", "horiAdvance", "vertBearingX", "vertBearingY", "vertAdvance"
         });
         STRUCT_LAYOUT = builder.getStructLayout();

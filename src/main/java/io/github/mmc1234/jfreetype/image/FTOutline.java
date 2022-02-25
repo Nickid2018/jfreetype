@@ -1,7 +1,9 @@
-package io.github.mmc1234.jfreetype.core;
+package io.github.mmc1234.jfreetype.image;
 
 import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
+
+import java.lang.invoke.VarHandle;
 
 /**
  * This structure is used to describe an outline to the scan-line converter.
@@ -9,7 +11,6 @@ import jdk.incubator.foreign.MemoryLayout;
  * @apiNote The B/W rasterizer only checks bit 2 in the tags array for the first point of each contour.
  * The drop-out mode as given with {@link #FT_OUTLINE_IGNORE_DROPOUTS}, {@link #FT_OUTLINE_SMART_DROPOUTS},
  * and {@link #FT_OUTLINE_INCLUDE_STUBS} in flags is then overridden.
- *
  * @implNote In freetype/ftimage.h
  * <pre>{@code
  *   typedef struct FT_Outline_
@@ -102,12 +103,56 @@ public final class FTOutline {
     public static final MemoryLayout STRUCT_LAYOUT;
     public static final MemoryLayout SEQUENCE_LAYOUT;
 
+    /**
+     * The number of contours in the outline.
+     */
+    public static final VarHandle N_CONTOURS;
+
+    /**
+     * The number of points in the outline.
+     */
+    public static final VarHandle N_POINTS;
+
+    /**
+     * A pointer to an array of n_points {@link FTVector} elements, giving the outline's point coordinates.
+     */
+    public static final VarHandle POINTS;
+
+    /**
+     * A pointer to an array of n_points chars, giving each outline point's type.<br/>
+     * If bit 0 is unset, the point is ‘off’ the curve, i.e., a Bezier control point, while it is ‘on’ if set.<br/>
+     * Bit 1 is meaningful for ‘off’ points only. If set, it indicates a third-order Bezier arc control point;
+     * and a second-order control point if unset.<br/>
+     * If bit 2 is set, bits 5-7 contain the drop-out mode (as defined in the OpenType specification;
+     * the value is the same as the argument to the ‘SCANMODE’ instruction).<br/>
+     * Bits 3 and 4 are reserved for internal purposes.
+     */
+    public static final VarHandle TAGS;
+
+    /**
+     * An array of n_contours shorts, giving the end point of each contour within the outline. For example,
+     * the first contour is defined by the points ‘0’ to contours[0], the second one is defined
+     * by the points contours[0]+1 to contours[1], etc.
+     */
+    public static final VarHandle CONTOURS;
+
+    /**
+     * A set of bit flags used to characterize the outline and give hints to the scan-converter and hinter
+     * on how to convert/grid-fit it. See FT_OUTLINE_XXX.
+     */
+    public static final VarHandle FLAGS;
+
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("SSAAAI", new String[] {
+        StructLayoutBuilder builder = new StructLayoutBuilder("SSAAAI", new String[]{
                 "n_contours", "n_points", "points", "tags", "contours", "flags"
         });
         STRUCT_LAYOUT = builder.getStructLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-
+        N_CONTOURS = builder.varHandle("n_contours");
+        N_POINTS = builder.varHandle("n_points");
+        POINTS = builder.varHandle("points");
+        TAGS = builder.varHandle("tags");
+        CONTOURS = builder.varHandle("contours");
+        FLAGS = builder.varHandle("flags");
     }
 }

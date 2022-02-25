@@ -1,4 +1,4 @@
-package io.github.mmc1234.jfreetype.core;
+package io.github.mmc1234.jfreetype.image;
 
 import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
@@ -33,7 +33,7 @@ public final class FTVector {
     public static final VarHandle Y;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("LL", new String[] { "x", "y" });
+        StructLayoutBuilder builder = new StructLayoutBuilder("LL", new String[]{"x", "y"});
         STRUCT_LAYOUT = builder.getStructLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         X = builder.varHandle("x");

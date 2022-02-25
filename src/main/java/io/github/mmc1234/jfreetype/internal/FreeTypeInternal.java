@@ -2,9 +2,10 @@ package io.github.mmc1234.jfreetype.internal;
 
 import java.lang.invoke.MethodHandle;
 
+import static io.github.mmc1234.jfreetype.internal.LibraryUtil.load;
+import static io.github.mmc1234.jfreetype.internal.LibraryUtil.loadNative;
 import static io.github.mmc1234.jfreetype.util.FunctionDescriptorUtils.of;
 import static io.github.mmc1234.jfreetype.util.FunctionDescriptorUtils.ofVoid;
-import static io.github.mmc1234.jfreetype.internal.Util.*;
 
 public class FreeTypeInternal {
     public static MethodHandle FT_LIBRARY_VERSION;

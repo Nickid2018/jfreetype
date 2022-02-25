@@ -2,8 +2,6 @@ package io.github.mmc1234.jfreetype.core;
 
 import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
 
 import java.lang.invoke.VarHandle;
 

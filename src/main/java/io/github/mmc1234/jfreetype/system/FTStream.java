@@ -82,6 +82,7 @@ public final class FTStream {
 
     /**
      * The stream's close function.
+     *
      * @implSpec Function: (FT_Stream stream)<br/>
      * Input:
      * <ul>
@@ -108,8 +109,8 @@ public final class FTStream {
     public static final VarHandle LIMIT;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("ALL00AAAAA", new String[] {
-            "base", "size", "pos", "descriptor", "pathname", "read", "close", "memory", "cursor", "limit"
+        StructLayoutBuilder builder = new StructLayoutBuilder("ALL00AAAAA", new String[]{
+                "base", "size", "pos", "descriptor", "pathname", "read", "close", "memory", "cursor", "limit"
         }, FTStreamDesc.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getStructLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();

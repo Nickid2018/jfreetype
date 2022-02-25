@@ -28,7 +28,7 @@ public final class FTStreamDesc {
     public static final VarHandle POINTER;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("LA", new String[] {
+        StructLayoutBuilder builder = new StructLayoutBuilder("LA", new String[]{
                 "value", "pointer"
         }, true);
         STRUCT_LAYOUT = builder.getStructLayout();

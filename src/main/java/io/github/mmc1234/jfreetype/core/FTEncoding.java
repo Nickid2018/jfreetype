@@ -1,5 +1,7 @@
 package io.github.mmc1234.jfreetype.core;
 
+import io.github.mmc1234.jfreetype.CEnum;
+
 /**
  * An enumeration to specify character sets supported by charmaps.
  * Used in the {@link FreeType#FTSelectCharmap} API function.
@@ -30,6 +32,11 @@ package io.github.mmc1234.jfreetype.core;
  * TT_MAC_ID_ARABIC with {@code TT_MAC_LANGID_FARSI} means the Farsi variant the Arabic encoding.
  * @implNote In freetype/freetype.h
  * <pre>{@code
+ *   #define FT_ENC_TAG( value, a, b, c, d )                           \
+ *           value = ( ( FT_STATIC_BYTE_CAST( FT_UInt32, a ) << 24 ) | \
+ *                     ( FT_STATIC_BYTE_CAST( FT_UInt32, b ) << 16 ) | \
+ *                     ( FT_STATIC_BYTE_CAST( FT_UInt32, c ) <<  8 ) | \
+ *                       FT_STATIC_BYTE_CAST( FT_UInt32, d )         )
  *   typedef enum  FT_Encoding_
  *   {
  *     FT_ENC_TAG( FT_ENCODING_NONE, 0, 0, 0, 0 ),
@@ -63,7 +70,7 @@ package io.github.mmc1234.jfreetype.core;
  *   }FT_Encoding;
  * }</pre>
  */
-public enum FTEncoding {
+public enum FTEncoding implements CEnum<FTEncoding> {
     /**
      * The encoding value 0 is reserved for all formats except BDF, PCF, and Windows FNT; see below for more information.
      */
@@ -146,10 +153,11 @@ public enum FTEncoding {
     public static final FTEncoding MS_WANSUNG = WANSUNG;
     @Deprecated
     public static final FTEncoding MS_JOHAB = JOHAB;
-    private int value;
+
+    private final int value;
 
     FTEncoding(int a, int b, int c, int d) {
-        // TODO FT_ENC_TAG
+        value = (a << 24) | (b << 16) | (c << 8) | d;
     }
 
     public int value() {

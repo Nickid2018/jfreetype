@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.core;
 
-import io.github.mmc1234.jfreetype.scanlineconverter.FTRaster;
+import io.github.mmc1234.jfreetype.image.FTRaster;
 import io.github.mmc1234.jfreetype.system.FTMemory;
 
 /**

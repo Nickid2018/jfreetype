@@ -1,5 +1,7 @@
 package io.github.mmc1234.jfreetype.core;
 
+import io.github.mmc1234.jfreetype.CEnum;
+
 /**
  * Render modes supported by FreeType 2. Each mode corresponds to a specific type of scanline conversion
  * performed on the outline.<br/>
@@ -38,7 +40,6 @@ package io.github.mmc1234.jfreetype.core;
  *          // Store `sd` in a buffer or use as required.
  *      }
  * }</pre>
- *
  * @implNote In freetype/freetype.h
  * <pre>{@code
  *   typedef enum  FT_Render_Mode_
@@ -55,7 +56,7 @@ package io.github.mmc1234.jfreetype.core;
  *   } FT_Render_Mode;
  * }</pre>
  */
-public enum FTRenderMode {
+public enum FTRenderMode implements CEnum<FTRenderMode> {
 
     /**
      * Default render mode; it corresponds to 8-bit anti-aliased bitmaps.
@@ -97,5 +98,10 @@ public enum FTRenderMode {
      */
     FT_RENDER_MODE_SDF,
 
-    FT_RENDER_MODE_MAX
+    FT_RENDER_MODE_MAX;
+
+    @Override
+    public int value() {
+        return ordinal();
+    }
 }

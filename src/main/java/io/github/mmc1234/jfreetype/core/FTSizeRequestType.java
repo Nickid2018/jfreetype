@@ -1,5 +1,7 @@
 package io.github.mmc1234.jfreetype.core;
 
+import io.github.mmc1234.jfreetype.CEnum;
+
 /**
  * An enumeration type that lists the supported size request types, i.e.,
  * what input size (in font units) maps to the requested output size
@@ -24,7 +26,7 @@ package io.github.mmc1234.jfreetype.core;
  *   } FT_Size_Request_Type;
  * }</pre>
  */
-public enum FTSizeRequestType {
+public enum FTSizeRequestType implements CEnum<FTSizeRequestType> {
 
     /**
      * The nominal size. {@link FTFace#UNITS_PER_EM} is used to determine both scaling values.<br/>
@@ -60,5 +62,10 @@ public enum FTSizeRequestType {
      */
     FT_SIZE_REQUEST_TYPE_SCALES,
 
-    FT_SIZE_REQUEST_TYPE_MAX
+    FT_SIZE_REQUEST_TYPE_MAX;
+
+    @Override
+    public int value() {
+        return ordinal();
+    }
 }

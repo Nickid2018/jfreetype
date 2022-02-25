@@ -37,7 +37,7 @@ public final class FTGeneric {
      * A pointer to a ‘generic finalizer’ function, which will be called when the object is destroyed.
      * If this field is set to NULL, no code will be called.
      *
-     * @implNote  <pre>{@code
+     * @implNote <pre>{@code
      *    typedef void (*FT_Generic_Finalizer)(void* object);
      *  }</pre>
      * Describe a function used to destroy the ‘client’ data of any FreeType object.
