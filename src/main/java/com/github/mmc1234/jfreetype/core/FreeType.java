@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.github.mmc1234.jfreetype;
+package com.github.mmc1234.jfreetype.core;
 
-import com.github.mmc1234.jfreetype.util.FunctionDescriptorUtils;
 import jdk.incubator.foreign.*;
 
 
@@ -26,10 +25,12 @@ import static jdk.incubator.foreign.ValueLayout.*;
 import static com.github.mmc1234.jfreetype.util.FunctionDescriptorUtils.*;
 
 public class FreeType {
-    // VERSION HANDLE
+    /* version handles */
+
     private static final MethodHandle FT_LIBRARY_VERSION;
 
-    // BASIC INTERFACE HANDLE
+    /* basic interface handles*/
+
     private static final MethodHandle FT_INIT_FREETYPE;
     private static final MethodHandle FT_DONE_FREETYPE;
     private static final MethodHandle FT_NEW_FACE;
@@ -63,8 +64,23 @@ public class FreeType {
     private static final MethodHandle FT_GET_FSTYPE_FLAGS;
     private static final MethodHandle FT_GET_SUBGLYPH_INFO;
 
+    /* unicode variation sequences handles*/
+
+    private static final MethodHandle FT_FACE_GET_CHAR_VARIANT_INDEX;
+    private static final MethodHandle FT_FACE_GET_CHAR_VARIANT_IS_DEFAULT;
+    private static final MethodHandle FT_FACE_GET_VARIANT_SELECTORS;
+    private static final MethodHandle FT_FACE_GET_VARIANTS_OF_CHAR;
+    private static final MethodHandle FT_FACE_GET_CHARS_OF_VARIANT;
+
+    /* size management handles */
+
+    private static final MethodHandle FT_NEW_SIZE;
+    private static final MethodHandle FT_DONE_SIZE;
+    private static final MethodHandle FT_ACTIVATE_SIZE;
+
 
     /* generic errors */
+
     public static final int OK = 0x00;
     public static final int CANNOT_OPEN_RESOURCE = 0x01;
     public static final int UNKNOWN_FILE_FORMAT = 0x02;
@@ -237,6 +253,20 @@ public class FreeType {
         FT_GET_CHARMAP_INDEX = load("FT_Get_Charmap_Index", of("IA"));
         FT_GET_FSTYPE_FLAGS = load("FT_Get_FSType_Flags", of("SA"));
         FT_GET_SUBGLYPH_INFO = load("FT_Get_SubGlyph_Info", of("IAIAAAAA"));
+
+        FT_FACE_GET_CHAR_VARIANT_INDEX = load("FT_Face_GetCharVariantIndex", of("IALL"));
+        FT_FACE_GET_CHAR_VARIANT_IS_DEFAULT = load("FT_Face_GetCharVariantIsDefault", of("IALL"));
+        FT_FACE_GET_VARIANT_SELECTORS = load("FT_Face_GetVariantSelectors", of("AA"));
+        FT_FACE_GET_VARIANTS_OF_CHAR = load("FT_Face_GetVariantsOfChar", of("AAL"));
+        FT_FACE_GET_CHARS_OF_VARIANT = load("FT_Face_GetCharsOfVariant", of("AAL"));
+        // TODO Glyph Color Management
+        // TODO Glyph Layer Management
+        // TODO Glyph Management
+        // TODO Mac Specific Interface
+
+        FT_NEW_SIZE = load("FT_New_Size", of("IAA"));
+        FT_DONE_SIZE = load("FT_Done_Size", of("IA"));
+        FT_ACTIVATE_SIZE = load("FT_Done_Size", of("IA"));
     }
 
 
@@ -310,7 +340,7 @@ public class FreeType {
 
     /**
      * Call {@link #FTOpenFace} to open a font by its pathname.
-     * 
+     *
      * @apiNote The pathname string should be recognizable as such by a standard fopen call on your system;
      *          in particular, this means that pathname must not contain null bytes. If that is not sufficient to
      *          address all file name possibilities (for example, to handle wide character file names on Windows
@@ -334,10 +364,10 @@ public class FreeType {
 
     /**
      * Discard a given face object, as well as all of its child slots and sizes.
-     * 
+     *
      * @apiNote  See the discussion of reference counters in the description of {@link #FTReferenceFace}.
      *
-     * @see #FTReferenceFace 
+     * @see #FTReferenceFace
      * @param face A handle to a target face object.
      * @return FreeType error code. 0 means success.
      */
@@ -428,7 +458,7 @@ public class FreeType {
      *           If {@code FT_OPEN_STREAM} is set in args->flags, the stream in args->stream is automatically
      *           closed before this function returns any error (including {@code FT_Err_Invalid_Argument}).
      *
-     * @see #FTReferenceFace 
+     * @see #FTReferenceFace
      * @param library    A handle to the library resource.
      * @param args       A pointer to an FT_Open_Args structure that must be filled by the caller.
      * @param face_index This field holds two different values. Bits 0-15 are the index of the face in
@@ -1072,6 +1102,145 @@ public class FreeType {
         }
     }
 
+    /**
+     * Return the glyph index of a given character code as modified by the variation selector.
+     *
+     * @apiNote If you use FreeType to manipulate the contents of font files directly, be aware that the glyph index returned by this function doesn't always correspond to the internal indices used within the file. This is done to ensure that value 0 always corresponds to the ‘missing glyph’.<br/
+     *
+     * @param face A handle to the source face object.
+     * @param charcode The character code point in Unicode.
+     * @param variantSelector The Unicode code point of the variation selector.
+     * @return The glyph index. 0 means either ‘undefined character code’, or ‘undefined selector code’, or ‘no variation selector cmap subtable’, or ‘current CharMap is not Unicode’.
+     * This function is only meaningful if a) the font has a variation selector cmap sub table, and b) the current charmap has a Unicode encoding.
+     * */
+    public static int FTFaceGetCharVariantIndex(@In MemoryAddress face, @In long charcode, @In long variantSelector) {
+        try {
+            return (int) FT_FACE_GET_CHAR_VARIANT_INDEX.invoke(face, charcode, variantSelector);
+        } catch (Throwable e) {
+            throw st(e);
+        }
+    }
+
+    /**
+     * Check whether this variation of this Unicode character is the one to be found in the charmap.
+     *
+     * @apiNote This function is only meaningful if the font has a variation selector cmap subtable.
+     *
+     * @param face	 A handle to the source face object.
+     * @param charcode The character codepoint in Unicode.
+     * @param variantSelector The Unicode codepoint of the variation selector.
+     * @return 1 if found in the standard (Unicode) cmap, 0 if found in the variation selector cmap, or -1 if it is not a variation.
+     * */
+    public static int FTFaceGetCharVariantIsDefault(@In MemoryAddress face, @In long charcode, @In long variantSelector) {
+        try {
+            return (int) FT_FACE_GET_CHAR_VARIANT_IS_DEFAULT.invoke(face, charcode, variantSelector);
+        } catch (Throwable e) {
+            throw st(e);
+        }
+    }
+
+    /**
+     * Return a zero-terminated list of Unicode variation selectors found in the font.
+     *
+     * @apiNote The last item in the array is 0; the array is owned by the {@link FTFace} object but can be overwritten or released on the next call to a FreeType function.
+     *
+     * @param face A handle to the source face object.
+     * @return A pointer to an array of selector code points, or NULL if there is no valid variation selector cmap subtable.
+     * */
+    public static int FTFaceGetVariantSelectors(@In MemoryAddress face) {
+        try {
+            return (int) FT_FACE_GET_VARIANT_SELECTORS.invoke(face);
+        } catch (Throwable e) {
+            throw st(e);
+        }
+    }
+
+    /**
+     * Return a zero-terminated list of Unicode variation selectors found for the specified character code.
+     *
+     * @apiNote The last item in the array is 0; the array is owned by the {@link FTFace} object but can be overwritten or released on the next call to a FreeType function.
+     *
+     * @param face A handle to the source face object.
+     * @param charcode The character codepoint in Unicode.
+     * @return The last item in the array is 0; the array is owned by the {@link FTFace} object but can be overwritten or released on the next call to a FreeType function.
+     * */
+    public static MemoryAddress FTFaceGetVariantsOfChar(@In MemoryAddress face, @In long charcode) {
+        try {
+            return MemoryAddress.ofLong((long) FT_FACE_GET_VARIANTS_OF_CHAR.invoke(face, charcode));
+        } catch (Throwable e) {
+            throw st(e);
+        }
+    }
+
+    /**
+     * Return a zero-terminated list of Unicode character codes found for the specified variation selector.
+     *
+     * @apiNote The last item in the array is 0; the array is owned by the {@link FTFace} object but can be overwritten or released on the next call to a FreeType function.
+     *
+     * @param face A handle to the source face object.
+     * @param variantSelector  The variation selector code point in Unicode.
+     * @return A list of all the code points that are specified by this selector (both default and non-default codes are returned) or NULL if there is no valid cmap or the variation selector is invalid.
+     * */
+    public static MemoryAddress FTFaceGetCharsOfVariant(@In MemoryAddress face, @In long variantSelector) {
+        try {
+            return MemoryAddress.ofLong((long) FT_FACE_GET_CHARS_OF_VARIANT.invoke(face, variantSelector));
+        } catch (Throwable e) {
+            throw st(e);
+        }
+    }
+
+
+    // CURRENT
+
+    /**
+     * Create a new size object from a given face object.
+     *
+     * @apiNote You need to call {@link #FTActivateSize} in order to select the new size for upcoming calls to {@link #FTSetPixelSizes}, {@link #FTSetCharSize}, {@link #FTLoadGlyph}, {@link #FTLoadChar}, etc.
+     *
+     * @param face A handle to a parent face object.
+     * @param asize A handle to a new size object.
+     * @return A handle to a new size object.
+     * */
+    public static int FTNewSize(@In MemoryAddress face, @Out MemorySegment asize) {
+        try {
+            return (int) FT_NEW_SIZE.invoke(face, asize.address());
+        } catch (Throwable e) {
+            throw st(e);
+        }
+    }
+
+    /**
+     * Discard a given size object. Note that {@link #FTDoneFace} automatically discards all size objects allocated with {@link #FTNewSize}.
+     *
+     * @param size A handle to a target size object.
+     * @return FreeType error code. 0 means success.
+     * */
+    public static int FTDoneSize(@In MemoryAddress size) {
+        try {
+            return (int) FT_DONE_SIZE.invoke(size);
+        } catch (Throwable e) {
+            throw st(e);
+        }
+    }
+
+
+    /**
+     * Even though it is possible to create several size objects for a given face (see {@link #FTNewSize} for details), functions like {@link #FTLoadGlyph} or {@link #FTLoadChar} only use the one that has been activated last to determine the ‘current character pixel size’.<br/>
+     *
+     * This function can be used to ‘activate’ a previously created size object.
+     *
+     * @apiNote If face is the size's parent face object, this function changes the value of face->size to the input size handle.
+     *
+     * @param size A handle to a target size object.
+     * @return FreeType error code. 0 means success.
+     * */
+    public static int FTActivateSize(@In MemoryAddress size) {
+        try {
+            return (int) FT_ACTIVATE_SIZE.invoke(size);
+        } catch (Throwable e) {
+            throw st(e);
+        }
+    }
 
     public static MemoryAddress deRef(MemorySegment v) {
         return v.getAtIndex(ADDRESS, 0);

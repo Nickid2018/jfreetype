@@ -1,4 +1,6 @@
-package com.github.mmc1234.jfreetype;
+package com.github.mmc1234.jfreetype.core;
+
+import com.github.mmc1234.jfreetype.core.FreeType;
 
 /**
  * A handle to a character map (usually abbreviated to ‘charmap’).

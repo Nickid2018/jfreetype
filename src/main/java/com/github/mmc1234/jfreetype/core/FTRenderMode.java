@@ -1,5 +1,6 @@
-package com.github.mmc1234.jfreetype;
+package com.github.mmc1234.jfreetype.core;
 
+// TODO
 public enum FTRenderMode {
     ;
     int value;

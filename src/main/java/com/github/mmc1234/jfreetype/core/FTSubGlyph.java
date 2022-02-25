@@ -1,4 +1,6 @@
-package com.github.mmc1234.jfreetype;
+package com.github.mmc1234.jfreetype.core;
+
+import com.github.mmc1234.jfreetype.core.FreeType;
 
 /**
  * The subglyph structure is an internal object used to describe subglyphs (for example, in the case of composites).

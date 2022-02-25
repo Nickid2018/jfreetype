@@ -1,4 +1,7 @@
-package com.github.mmc1234.jfreetype;
+package com.github.mmc1234.jfreetype.core;
+
+import com.github.mmc1234.jfreetype.scanlineconverter.FTRaster;
+import com.github.mmc1234.jfreetype.system.FTMemory;
 
 /**
  * A handle to a FreeType library instance.

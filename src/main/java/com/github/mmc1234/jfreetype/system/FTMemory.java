@@ -1,4 +1,4 @@
-package com.github.mmc1234.jfreetype;
+package com.github.mmc1234.jfreetype.system;
 
 import com.github.mmc1234.jfreetype.util.StructLayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;

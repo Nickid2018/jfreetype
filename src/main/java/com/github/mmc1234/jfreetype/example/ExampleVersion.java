@@ -16,7 +16,7 @@
 
 package com.github.mmc1234.jfreetype.example;
 
-import com.github.mmc1234.jfreetype.FreeType;
+import com.github.mmc1234.jfreetype.core.FreeType;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.ValueLayout;
