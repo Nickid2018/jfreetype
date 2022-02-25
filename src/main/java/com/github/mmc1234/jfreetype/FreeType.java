@@ -26,10 +26,12 @@ import static jdk.incubator.foreign.ValueLayout.*;
 import static com.github.mmc1234.jfreetype.util.FunctionDescriptorUtils.*;
 
 public class FreeType {
-    // VERSION HANDLE
+    /* version handles */
+
     private static final MethodHandle FT_LIBRARY_VERSION;
 
-    // BASIC INTERFACE HANDLE
+    /* basic interface handles*/
+
     private static final MethodHandle FT_INIT_FREETYPE;
     private static final MethodHandle FT_DONE_FREETYPE;
     private static final MethodHandle FT_NEW_FACE;
@@ -65,6 +67,7 @@ public class FreeType {
 
 
     /* generic errors */
+
     public static final int OK = 0x00;
     public static final int CANNOT_OPEN_RESOURCE = 0x01;
     public static final int UNKNOWN_FILE_FORMAT = 0x02;
@@ -310,7 +313,7 @@ public class FreeType {
 
     /**
      * Call {@link #FTOpenFace} to open a font by its pathname.
-     * 
+     *
      * @apiNote The pathname string should be recognizable as such by a standard fopen call on your system;
      *          in particular, this means that pathname must not contain null bytes. If that is not sufficient to
      *          address all file name possibilities (for example, to handle wide character file names on Windows
@@ -334,10 +337,10 @@ public class FreeType {
 
     /**
      * Discard a given face object, as well as all of its child slots and sizes.
-     * 
+     *
      * @apiNote  See the discussion of reference counters in the description of {@link #FTReferenceFace}.
      *
-     * @see #FTReferenceFace 
+     * @see #FTReferenceFace
      * @param face A handle to a target face object.
      * @return FreeType error code. 0 means success.
      */
@@ -428,7 +431,7 @@ public class FreeType {
      *           If {@code FT_OPEN_STREAM} is set in args->flags, the stream in args->stream is automatically
      *           closed before this function returns any error (including {@code FT_Err_Invalid_Argument}).
      *
-     * @see #FTReferenceFace 
+     * @see #FTReferenceFace
      * @param library    A handle to the library resource.
      * @param args       A pointer to an FT_Open_Args structure that must be filled by the caller.
      * @param face_index This field holds two different values. Bits 0-15 are the index of the face in

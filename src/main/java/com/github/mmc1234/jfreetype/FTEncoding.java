@@ -6,9 +6,9 @@ package com.github.mmc1234.jfreetype;
  *
  * @apiNote Despite the name, this enumeration lists specific character repertories (i.e., charsets),
  *          and not text encoding methods (e.g., UTF-8, UTF-16, etc.).<br/>
- *          Other encodings might be defined in the future.
+ *          Other encodings might be defined in the future.<br/><br/>
  *
- * @apiNote When loading a font, FreeType makes a Unicode charmap active if possible (either if the font provides such a charmap,
+ *          When loading a font, FreeType makes a Unicode charmap active if possible (either if the font provides such a charmap,
  *          or if FreeType can synthesize one from PostScript glyph name dictionaries; in either case, the charmap is tagged with
  *          {@link #UNICODE}). If such a charmap is synthesized, it is placed at the first position of the charmap array.<br/>
  *          All other encodings are considered legacy and tagged only if explicitly defined in the font file.
@@ -35,14 +35,14 @@ public enum FTEncoding {
      */
     NONE(0, 0, 0, 0),
     /**
-     * Microsoft Symbol encoding, used to encode mathematical symbols and wingdings. For more information, see ‘https://www.microsoft.com/typography/otspec/recom.htm#non-standard-symbol-fonts’, ‘http://www.kostis.net/charsets/symbol.htm’, and ‘http://www.kostis.net/charsets/wingding.htm’.
-     * <p>
+     * Microsoft Symbol encoding, used to encode mathematical symbols and wingdings. For more information, see ‘https://www.microsoft.com/typography/otspec/recom.htm#non-standard-symbol-fonts’, ‘http://www.kostis.net/charsets/symbol.htm’, and ‘http://www.kostis.net/charsets/wingding.htm’.<br/>
+     *
      * This encoding uses character codes from the PUA (Private Unicode Area) in the range U+F020-U+F0FF.
      */
     MS_SYMBOL('s', 'y', 'm', 'b'),
     /**
-     * The Unicode character set. This value covers all versions of the Unicode repertoire, including ASCII and Latin-1. Most fonts include a Unicode charmap, but not all of them.
-     * <p>
+     * The Unicode character set. This value covers all versions of the Unicode repertoire, including ASCII and Latin-1. Most fonts include a Unicode charmap, but not all of them.<br/>
+     *
      * For example, if you want to access Unicode value U+1F028 (and the font contains it), use value 0x1F028 as the input value for {@link FreeType#FTGetCharIndex}.
      */
     UNICODE('u', 'n', 'i', 'c'),
