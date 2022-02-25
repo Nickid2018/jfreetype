@@ -33,7 +33,7 @@ public final class FTMemory {
     /**
      * A pointer type to an allocation function.
      *
-     * @implNote Function: (FT_Memory memory, long size)<br/>
+     * @implSpec Function: (FT_Memory memory, long size)<br/>
      * Input:
      * <ul>
      *     <li>memory - A handle to the source memory manager.</li>
@@ -46,7 +46,7 @@ public final class FTMemory {
     /**
      * A pointer type to a memory freeing function.
      *
-     * @implNote Function: (FT_Memory memory, void* block)<br/>
+     * @implSpec Function: (FT_Memory memory, void* block)<br/>
      * Input:
      * <ul>
      *     <li>memory - A handle to the source memory manager.</li>
@@ -58,7 +58,7 @@ public final class FTMemory {
     /**
      * A pointer type to a reallocation function.
      *
-     * @implNote Function: (FT_Memory memory, long cur_size, long new_size, void* block)<br/>
+     * @implSpec Function: (FT_Memory memory, long cur_size, long new_size, void* block)<br/>
      * Input:
      * <ul>
      *     <li>memory - A handle to the source memory manager.</li>

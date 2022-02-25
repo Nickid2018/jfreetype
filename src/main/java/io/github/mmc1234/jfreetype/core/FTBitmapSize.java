@@ -72,9 +72,4 @@ public final class FTBitmapSize {
         X_PPEM = builder.varHandle("x_ppem");
         Y_PPEM = builder.varHandle("y_ppem");
     }
-
-    public static void main(String[] args) {
-        MemorySegment seg = MemorySegment.allocateNative(FTSize.STRUCT_LAYOUT, ResourceScope.globalScope());
-        System.out.println(FTSize.INTERNAL.get(seg, 0));
-    }
 }
