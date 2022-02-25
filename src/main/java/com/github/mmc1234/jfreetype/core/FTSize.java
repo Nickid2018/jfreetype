@@ -1,9 +1,4 @@
-package com.github.mmc1234.jfreetype;
-
-import com.github.mmc1234.jfreetype.util.StructLayoutBuilder;
-import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
+package com.github.mmc1234.jfreetype.core;
 
 /**
  * A handle to an object that models a face scaled to a given character size.

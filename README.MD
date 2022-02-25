@@ -1,5 +1,1 @@
 # JFreeType
-
-- FreeType
-- FTGeneric
-- Main

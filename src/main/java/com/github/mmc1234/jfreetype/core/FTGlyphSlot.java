@@ -1,4 +1,4 @@
-package com.github.mmc1234.jfreetype;
+package com.github.mmc1234.jfreetype.core;
 
 /**
  * A handle to a given ‘glyph slot’
