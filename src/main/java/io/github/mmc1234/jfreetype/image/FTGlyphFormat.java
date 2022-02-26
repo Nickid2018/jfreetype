@@ -1,6 +1,7 @@
 package io.github.mmc1234.jfreetype.image;
 
 import io.github.mmc1234.jfreetype.CEnum;
+import io.github.mmc1234.jfreetype.core.FTLoadFlags;
 
 /**
  * An enumeration type used to describe the format of a given glyph image.
@@ -34,7 +35,7 @@ public enum FTGlyphFormat implements CEnum<FTGlyphFormat> {
 
     /**
      * The glyph image is a composite of several other images.
-     * This format is only used with {@link io.github.mmc1234.jfreetype.core.FreeType#FT_LOAD_NO_RECURSE},
+     * This format is only used with {@link FTLoadFlags#FT_LOAD_NO_RECURSE},
      * and is used to report compound glyphs (like accented characters).
      */
     FT_GLYPH_FORMAT_COMPOSITE('c', 'o', 'm', 'p' ),

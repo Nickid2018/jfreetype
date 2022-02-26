@@ -25,267 +25,32 @@ import jdk.incubator.foreign.MemorySegment;
 import static io.github.mmc1234.jfreetype.internal.LibraryUtil.st;
 import static jdk.incubator.foreign.ValueLayout.ADDRESS;
 
-public class FreeType implements Version {
-
-    public static final int OK = 0x00;
-
-    /* basic interface handles*/
-    public static final int CANNOT_OPEN_RESOURCE = 0x01;
-    public static final int UNKNOWN_FILE_FORMAT = 0x02;
-    public static final int INVALID_FILE_FORMAT = 0x03;
-    public static final int INVALID_VERSION = 0x04;
-    public static final int LOWER_MODULE_VERSION = 0x05;
-    public static final int INVALID_ARGUMENT = 0x06;
-    public static final int UNIMPLEMENTED_FEATURE = 0x07;
-    public static final int INVALID_TABLE = 0x08;
-    public static final int INVALID_OFFSET = 0x00;
-    public static final int ARRAY_TOO_LARGE = 0x0A;
-    public static final int MISSING_MODULE = 0x0B;
-    public static final int MISSING_PROPERTY = 0x0C;
-    public static final int INVALID_GLYPH_INDEX = 0x10;
-    public static final int INVALID_CHARACTER_CODE = 0x11;
-    public static final int INVALID_GLYPH_FORMAT = 0x12;
-    public static final int CANNOT_RENDER_GLYPH = 0x13;
-    public static final int INVALID_OUTLINE = 0x14;
-    public static final int INVALID_COMPOSITE = 0x15;
-    public static final int TOO_MANY_HINTS = 0x16;
-    public static final int INVALID_PIXEL_SIZE = 0x17;
-    public static final int INVALID_HANDLE = 0x20;
-    public static final int INVALID_LIBRARY_HANDLE = 0x21;
-    public static final int INVALID_DRIVER_HANDLE = 0x22;
-    public static final int INVALID_FACE_HANDLE = 0x23;
-    public static final int INVALID_SIZE_HANDLE = 0x24;
-    public static final int INVALID_SLOT_HANDLE = 0x25;
-    public static final int INVALID_CHARMAP_HANDLE = 0x26;
-    public static final int INVALID_CACHE_HANDLE = 0x27;
-    public static final int INVALID_STREAM_HANDLE = 0x28;
-    public static final int TOO_MANY_DRIVERS = 0x30;
-    public static final int TOO_MANY_EXTENSIONS = 0x31;
-    public static final int OUT_OF_MEMORY = 0x40;
-
-    /* unicode variation sequences handles*/
-    public static final int UNLISTED_OBJECT = 0x41;
-    public static final int CANNOT_OPEN_STREAM = 0x51;
-    public static final int INVALID_STREAM_SEEK = 0x52;
-    public static final int INVALID_STREAM_SKIP = 0x53;
-    public static final int INVALID_STREAM_READ = 0x54;
-
-    /* size management handles */
-    public static final int INVALID_STREAM_OPERATION = 0x55;
-    public static final int INVALID_FRAME_OPERATION = 0x56;
-    public static final int NESTED_FRAME_ACCESS = 0x56;
-
-
-    /* generic errors */
-    public static final int INVALID_FRAME_READ = 0x51;
-    public static final int RASTER_UNINITIALIZED = 0x60;
-    public static final int RASTER_CORRUPTED = 0x61;
-    public static final int RASTER_OVERFLOW = 0x62;
-    public static final int RASTER_NEGATIVE_HEIGHT = 0x63;
-    public static final int TOO_MAY_CACHES = 0x70;
-    public static final int INVALID_OPCODE = 0x80;
-    public static final int TOO_FEW_ARGUMENTS = 0x81;
-    public static final int STACK_OVERFLOW = 0x82;
-    public static final int CODE_OVERFLOW = 0x83;
-    public static final int BAD_ARGUMENT = 0x84;
-    public static final int DIVIDE_BY_ZERO = 0x85;
-    public static final int INVALID_REFERENCE = 0x86;
-
-    /* glyph/character errors */
-    public static final int DEBUG_OPCODE = 0x87;
-    public static final int ENDF_IN_EXEC_STREAM = 0x88;
-    public static final int NESTED_DEFS = 0x89;
-    public static final int INVALID_CODERANCE = 0x8A;
-    public static final int EXECUTION_TOO_LONG = 0x8B;
-    public static final int TOO_MANY_FUNCTION_DEFS = 0x8C;
-    public static final int TOO_MANY_INSTRUCTION_DEFS = 0x8D;
-    public static final int TABLE_MISSING = 0x8E;
-
-    /* handle errors */
-    public static final int HORIZ_HEADER_MISSING = 0x8F;
-    public static final int LOCATIONS_MISSING = 0x90;
-    public static final int NAME_TABLE_MISSING = 0x91;
-    public static final int CMAP_TABLE_MISSING = 0x92;
-    public static final int HMTX_TABLE_MISSING = 0x93;
-    public static final int POST_TABLE_MISSING = 0x94;
-    public static final int INVALID_HORIZ_METRICS = 0x95;
-    public static final int INVALID_CHARMAP_FORMAT = 0x96;
-    public static final int INVALID_PPEM = 0x97;
-
-    /* driver errors */
-    public static final int INVALID_VERT_METRICS = 0x98;
-    public static final int COULD_NOT_FIND_CONTEXT = 0x99;
-
-    /* memory errors */
-    public static final int INVALID_POST_TABLE_FORMAT = 0x9A;
-    public static final int INVALID_POST_TABLE = 0x9B;
-
-    /* stream errors */
-    public static final int DEF_IN_GLYF_BYTECODE = 0x9C;
-    public static final int MISSING_BITMAP = 0x9D;
-    public static final int SYNTAX_ERROR = 0xA0;
-    public static final int STACK_UNDERFLOW = 0xA1;
-    public static final int IGNORE = 0xA2;
-    public static final int NO_UNICODE_GLYPH_NAME = 0xA0;
-    public static final int GLYPH_TOO_BIG = 0xA0;
-    public static final int MISSING_STARTFONT_FIELD = 0xB0;
-    /* raster errors */
-    public static final int MISSING_FONT_FIELD = 0xB1;
-    public static final int MISSING_SIZE_FIELD = 0xB2;
-    public static final int MISSING_FONTBOUNDINGBOX_FIELD = 0xB3;
-    public static final int MISSING_CHARS_FIELD = 0xB4;
-
-    /* cache errors */
-    public static final int MISSING_STARTCHAR_FIELD = 0xB5;
-
-    /* TrueType and SFNT errors */
-    public static final int MISSING_ENCODING_FIELD = 0xB6;
-    public static final int MISSING_BBX_FIELD = 0xB7;
-    public static final int BBX_TOO_BIG = 0xB8;
-    public static final int CORRUPTED_FONT_HEADER = 0xB9;
-    public static final int CORRUPTED_FONT_GLYPHS = 0xBA;
-
-    /* Load Glyph Flags */
-    /**
-     * Corresponding to 0, this value is used as the default glyph load operation. In this case, the following happens:<br/>
-     * 1. FreeType looks for a bitmap for the glyph corresponding to the face's current size.
-     * If one is found, the function returns. The bitmap data can be accessed from the glyph slot (see note below).<br/>
-     * 2. If no embedded bitmap is searched for or found, FreeType looks for a scalable outline. If one is found,
-     * it is loaded from the font file, scaled to device pixels, then ‘hinted’ to the pixel grid in order to optimize it.
-     * The outline data can be accessed from the glyph slot (see note below).<br/>
-     * Note that by default the glyph loader doesn't render outlines into bitmaps. The following flags are used
-     * to modify this default behaviour to more specific and useful cases.
-     */
-    public static final int FT_LOAD_DEFAULT = 0x0;
-    /**
-     * Don't scale the loaded outline glyph but keep it in font units.<br/>
-     * This flag implies {@link #FT_LOAD_NO_HINTING} and {@link #FT_LOAD_NO_BITMAP}, and unsets {@link #FT_LOAD_RENDER}.<br/>
-     * If the font is ‘tricky’ (see {@code FT_FACE_FLAG_TRICKY} for more), using {@link #FT_LOAD_NO_SCALE} usually
-     * yields meaningless outlines because the subglyphs must be scaled and positioned with hinting instructions.
-     * This can be solved by loading the font without {@link #FT_LOAD_NO_SCALE} and setting the character size to font->units_per_EM.
-     */
-    public static final int FT_LOAD_NO_SCALE = 1;
-    /**
-     * Disable hinting. This generally generates ‘blurrier’ bitmap glyphs when the glyph are rendered in any of
-     * the anti-aliased modes. See also the note below.<br/>
-     * This flag is implied by {@link #FT_LOAD_NO_SCALE}.
-     */
-    public static final int FT_LOAD_NO_HINTING = 1 << 1;
-    /**
-     * Call {@link #FTRenderGlyph} after the glyph is loaded. By default, the glyph is rendered in {@code FT_RENDER_MODE_NORMAL} mode.
-     * This can be overridden by FT_LOAD_TARGET_XXX or {@link #FT_LOAD_MONOCHROME}.<br/>
-     * This flag is unset by {@link #FT_LOAD_NO_SCALE}.
-     */
-    public static final int FT_LOAD_RENDER = 1 << 2;
-    /**
-     * Ignore bitmap strikes when loading. Bitmap-only fonts ignore this flag.<br/>
-     * {@link #FT_LOAD_NO_SCALE} always sets this flag.
-     */
-    public static final int FT_LOAD_NO_BITMAP = 1 << 3;
-    /**
-     * Load the glyph for vertical text layout. In particular, {@link FTGlyphSlot#ADVANCE} is set to
-     * {@link FTGlyphMetrics#VERT_ADVANCE}.<br/>
-     * In case {@code FT_HAS_VERTICAL} doesn't return true, you shouldn't use this flag currently.
-     * Reason is that in this case vertical metrics get synthesized, and those values are not always
-     * consistent across various font formats.
-     */
-    public static final int FT_LOAD_VERTICAL_LAYOUT = 1 << 4;
-    /**
-     * Prefer the auto-hinter over the font's native hinter. See also the note below.
-     */
-    public static final int FT_LOAD_FORCE_AUTOHINT = 1 << 5;
-    /**
-     * Ignored. Deprecated.
-     */
-    public static final int FT_LOAD_CROP_BITMAP = 1 << 6;
-    /**
-     * Make the font driver perform pedantic verifications during glyph loading and hinting.
-     * This is mostly used to detect broken glyphs in fonts. By default, FreeType tries to handle broken fonts also.<br/>
-     * In particular, errors from the TrueType bytecode engine are not passed to the application if this flag is not set;
-     * this might result in partially hinted or distorted glyphs in case a glyph's bytecode is buggy.
-     */
-    public static final int FT_LOAD_PEDANTIC = 1 << 7;
-    /**
-     * Ignored. Deprecated.
-     */
-    public static final int FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH = 1 << 9;
-    /**
-     * Don't load composite glyphs recursively. Instead, the font driver fills {@link FTGlyphSlot#NUM_SUBGLYPH} and
-     * {@link FTGlyphSlot#SUBGLYPHS}; it also sets {@link FTGlyphSlot#FORMAT} to {@code FT_GLYPH_FORMAT_COMPOSITE}.
-     * The description of subglyphs can then be accessed with {@link #FTGetSubGlyphInfo}.<br/>
-     * Don't use this flag for retrieving metrics information since some font drivers only return rudimentary data.<br/>
-     * This flag implies {@link #FT_LOAD_NO_SCALE} and {@link #FT_LOAD_IGNORE_TRANSFORM}.
-     */
-    public static final int FT_LOAD_NO_RECURSE = 1 << 10;
-    /**
-     * Ignore the transform matrix set by {@link #FTSetTransform}.
-     */
-    public static final int FT_LOAD_IGNORE_TRANSFORM = 1 << 11;
-    /**
-     * This flag is used with {@link #FT_LOAD_RENDER} to indicate that you want to render an outline glyph
-     * to a 1-bit monochrome bitmap glyph, with 8 pixels packed into each byte of the bitmap data.<br/>
-     * Note that this has no effect on the hinting algorithm used. You should rather use {@code FT_LOAD_TARGET_MONO}
-     * so that the monochrome-optimized hinting algorithm is used.
-     */
-    public static final int FT_LOAD_MONOCHROME = 1 << 12;
-    /**
-     * Keep {@link FTGlyphSlot#LINEAR_HORI_ADVANCE} and {@link FTGlyphSlot#LINEAR_VERT_ADVANCE} in font units.
-     * See {@link FTGlyphSlot} for details.
-     */
-    public static final int FT_LOAD_LINEAR_DESIGN = 1 << 13;
-    /**
-     * Disable the auto-hinter. See also the note below.
-     */
-    public static final int FT_LOAD_NO_AUTOHINT = 1 << 15;
-    /* Bits 16-19 are used by `FT_LOAD_TARGET_` */
-    /**
-     * Load colored glyphs. There are slight differences depending on the font format.<br/>
-     * [Since 2.5] Load embedded color bitmap images. The resulting color bitmaps, if available,
-     * will have the {@link io.github.mmc1234.jfreetype.image.FTPixelMode#FT_PIXEL_MODE_BGRA} format,
-     * with pre-multiplied color channels. If the flag is not set
-     * and color bitmaps are found, they are converted to 256-level gray bitmaps,
-     * using the {@link io.github.mmc1234.jfreetype.image.FTPixelMode#FT_PIXEL_MODE_GRAY} format.<br/>
-     * [Since 2.10, experimental] If the glyph index contains an entry in the face's ‘COLR’ table with
-     * a ‘CPAL’ palette table (as defined in the OpenType specification), make {@link #FTRenderGlyph} provide
-     * a default blending of the color glyph layers associated with the glyph index, using the same bitmap format
-     * as embedded color bitmap images. This is mainly for convenience; for full control of color layers use
-     * {@code FT_Get_Color_Glyph_Layer} and FreeType's color functions like FT_Palette_Select instead of
-     * setting {@link #FT_LOAD_COLOR} for rendering so that the client application can handle blending by itself.
-     */
-    public static final int FT_LOAD_COLOR = 1 << 20;
-    /**
-     * [Since 2.6.1] Compute glyph metrics from the glyph data, without the use of bundled metrics tables
-     * (for example, the ‘hdmx’ table in TrueType fonts). This flag is mainly used by font validating or
-     * font editing applications, which need to ignore, verify, or edit those tables.<br/>
-     * Currently, this flag is only implemented for TrueType fonts.
-     */
-    public static final int FT_LOAD_COMPUTE_METRICS = 1 << 21;
-    /**
-     * [Since 2.7.1] Request loading of the metrics and bitmap image information of a (possibly embedded)
-     * bitmap glyph without allocating or copying the bitmap image data itself. No effect if the target glyph
-     * is not a bitmap image.<br/>
-     * This flag unsets {@link #FT_LOAD_RENDER}.
-     */
-    public static final int FT_LOAD_BITMAP_METRICS_ONLY = 1 << 22;
-
-    // --- FT_LOAD_XXX Note:
-    // By default, hinting is enabled and the font's native hinter (see FT_FACE_FLAG_HINTER) is preferred
-    // over the auto-hinter. You can disable hinting by setting FT_LOAD_NO_HINTING or change the precedence
-    // by setting FT_LOAD_FORCE_AUTOHINT. You can also set FT_LOAD_NO_AUTOHINT in case you don't want the auto-hinter
-    // to be used at all.
-    // See the description of FT_FACE_FLAG_TRICKY for a special exception (affecting only a handful of Asian fonts).
-    // Besides deciding which hinter to use, you can also decide which hinting algorithm to use.
-    // See FT_LOAD_TARGET_XXX for details.
-    // Note that the auto-hinter needs a valid Unicode cmap (either a native one or synthesized by FreeType)
-    // for producing correct results. If a font provides an incorrect mapping (for example, assigning
-    // the character code U+005A, LATIN CAPITAL LETTER Z, to a glyph depicting a mathematical integral sign),
-    // the auto-hinter might produce useless results.
-    // --- Note End
+public class FreeType implements FTLoadFlags, FTErrors {
 
     static {
         FreeTypeInternal.loadAll();
     }
 
+    /**
+     * Return the version of the FreeType library being used.
+     * This is useful when dynamically linking to the library,
+     * since one cannot use the macros {@code FREETYPE_MAJOR}, {@code FREETYPE_MINOR}, and {@code FREETYPE_PATCH}.
+     *
+     * @param library A source library handle.
+     * @param amajor  The major version number.
+     * @param aminor  The minor version number.
+     * @param apatch  The patch version number.
+     * @apiNote The reason why this function takes a library argument is because certain programs implement
+     * library initialization in a custom way that doesn't use {@link FreeType#FTInitFreeType}. In such cases,
+     * the library version might not be available before the library object has been created.
+     */
+    public static void FTLibraryVersion(@In MemoryAddress library, @Out MemorySegment amajor, @Out MemorySegment aminor, @Out MemorySegment apatch) {
+        try {
+            VersionInternal.FT_LIBRARY_VERSION.invoke(library, amajor.address(), aminor.address(), apatch.address());
+        } catch (Throwable e) {
+            throw st(e);
+        }
+    }
 
     /**
      * Initialize a new FreeType library object.
@@ -1204,6 +969,4 @@ public class FreeType implements Version {
     public static MemoryAddress deRef(MemorySegment v) {
         return v.getAtIndex(ADDRESS, 0);
     }
-
-
 }
