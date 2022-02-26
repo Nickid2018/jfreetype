@@ -16,12 +16,12 @@
 
 package io.github.mmc1234.jfreetype.core;
 
+import io.github.mmc1234.jfreetype.In;
+import io.github.mmc1234.jfreetype.Out;
 import io.github.mmc1234.jfreetype.internal.FreeTypeInternal;
-import io.github.mmc1234.jfreetype.internal.Util;
-import jdk.incubator.foreign.*;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
 
-import static io.github.mmc1234.jfreetype.util.FunctionDescriptorUtils.of;
-import static io.github.mmc1234.jfreetype.util.FunctionDescriptorUtils.ofVoid;
 import static jdk.incubator.foreign.ValueLayout.ADDRESS;
 
 public class FreeType {
@@ -241,9 +241,10 @@ public class FreeType {
     /**
      * Load colored glyphs. There are slight differences depending on the font format.<br/>
      * [Since 2.5] Load embedded color bitmap images. The resulting color bitmaps, if available,
-     * will have the {@code FT_PIXEL_MODE_BGRA} format, with pre-multiplied color channels. If the flag is not set
+     * will have the {@link io.github.mmc1234.jfreetype.image.FTPixelMode#FT_PIXEL_MODE_BGRA} format,
+     * with pre-multiplied color channels. If the flag is not set
      * and color bitmaps are found, they are converted to 256-level gray bitmaps,
-     * using the {@code FT_PIXEL_MODE_GRAY} format.<br/>
+     * using the {@link io.github.mmc1234.jfreetype.image.FTPixelMode#FT_PIXEL_MODE_GRAY} format.<br/>
      * [Since 2.10, experimental] If the glyph index contains an entry in the face's ‘COLR’ table with
      * a ‘CPAL’ palette table (as defined in the OpenType specification), make {@link #FTRenderGlyph} provide
      * a default blending of the color glyph layers associated with the glyph index, using the same bitmap format

@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.core;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -129,10 +129,10 @@ public final class FTOpenArgs {
     public static final VarHandle PARAMS;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("IALAAAIA", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("IALAAAIA", new String[]{
                 "flags", "memory_base", "memory_size", "pathname", "stream", "driver", "num_params", "params"
         });
-        STRUCT_LAYOUT = builder.getStructLayout();
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         FLAGS = builder.varHandle("flags");
         MEMORY_BASE = builder.varHandle("memory_base");

@@ -1,4 +1,4 @@
-package io.github.mmc1234.jfreetype.scanlineconverter;
+package io.github.mmc1234.jfreetype.image;
 
 /**
  * An opaque handle (pointer) to a raster object. Each object can be used independently

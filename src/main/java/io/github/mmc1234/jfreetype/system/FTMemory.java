@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.system;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -72,10 +72,10 @@ public final class FTMemory {
     public static final VarHandle REALLOC;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("AAAA", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("AAAA", new String[]{
                 "user", "alloc", "free", "realloc"
         });
-        STRUCT_LAYOUT = builder.getStructLayout();
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         USER = builder.varHandle("user");
         ALLOC = builder.varHandle("alloc");

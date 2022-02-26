@@ -1,9 +1,7 @@
 package io.github.mmc1234.jfreetype.core;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
 
 import java.lang.invoke.VarHandle;
 
@@ -61,10 +59,10 @@ public final class FTBitmapSize {
     public static final VarHandle Y_PPEM;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("SSLLL", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("SSLLL", new String[]{
                 "height", "width", "size", "x_ppem", "y_ppem"
         });
-        STRUCT_LAYOUT = builder.getStructLayout();
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         HEIGHT = builder.varHandle("height");
         WIDTH = builder.varHandle("width");

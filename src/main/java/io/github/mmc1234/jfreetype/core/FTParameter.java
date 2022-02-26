@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.core;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -36,8 +36,8 @@ public final class FTParameter {
     public static final VarHandle DATA;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("LA", new String[]{"tag", "data"});
-        STRUCT_LAYOUT = builder.getStructLayout();
+        LayoutBuilder builder = new LayoutBuilder("LA", new String[]{"tag", "data"});
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         TAG = builder.varHandle("tag");
         DATA = builder.varHandle("data");

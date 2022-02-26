@@ -7,7 +7,7 @@ import jdk.incubator.foreign.SymbolLookup;
 
 import java.lang.invoke.MethodHandle;
 
-public class Util {
+public class LibraryUtil {
     public static void loadNative() {
         String lib = System.getProperty("jfreetype.library");
         if (lib == null)

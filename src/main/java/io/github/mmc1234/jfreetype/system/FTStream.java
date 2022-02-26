@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.system;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -82,6 +82,7 @@ public final class FTStream {
 
     /**
      * The stream's close function.
+     *
      * @implSpec Function: (FT_Stream stream)<br/>
      * Input:
      * <ul>
@@ -108,10 +109,10 @@ public final class FTStream {
     public static final VarHandle LIMIT;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("ALL00AAAAA", new String[] {
-            "base", "size", "pos", "descriptor", "pathname", "read", "close", "memory", "cursor", "limit"
-        }, FTStreamDesc.STRUCT_LAYOUT);
-        STRUCT_LAYOUT = builder.getStructLayout();
+        LayoutBuilder builder = new LayoutBuilder("ALL00AAAAA", new String[]{
+                "base", "size", "pos", "descriptor", "pathname", "read", "close", "memory", "cursor", "limit"
+        }, FTStreamDesc.UNION_LAYOUT);
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         BASE = builder.varHandle("base");
         SIZE = builder.varHandle("size");

@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.core;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -53,10 +53,10 @@ public final class FTSize {
     public static final VarHandle INTERNAL;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("A01A", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("A01A", new String[]{
                 "face", "generic", "metrics", "internal"
         }, FTGeneric.STRUCT_LAYOUT, FTSizeMetrics.STRUCT_LAYOUT);
-        STRUCT_LAYOUT = builder.getStructLayout();
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         FACE = builder.varHandle("face");
         INTERNAL = builder.varHandle("internal");
