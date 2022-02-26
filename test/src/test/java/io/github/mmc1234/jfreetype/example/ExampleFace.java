@@ -35,7 +35,9 @@ public class ExampleFace {
         var error = FreeType.FTInitFreeType(alib);
         if (error != 0)
             throw new IllegalStateException("Fail init FreeType");
-        error = FreeType.FTNewFace(FreeType.deRef(alib), path.address(), 0, aface);
+        System.out.println();System.out.println(error);
+        error = FreeType.FTNewFace(alib.address(), path.address(), 0, aface);
+        System.out.println(error);
         if (error != 0)
             throw new IllegalStateException("Fail create face");
         error = FreeType.FTSetCharSize(FreeType.deRef(aface), 0, 16 * 64, 300, 300);
