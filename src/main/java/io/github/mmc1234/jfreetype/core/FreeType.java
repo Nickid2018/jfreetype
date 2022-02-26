@@ -966,7 +966,4 @@ public class FreeType implements FTLoadFlags, FTErrors {
         }
     }
 
-    public static MemoryAddress deRef(MemorySegment v) {
-        return v.getAtIndex(ADDRESS, 0);
-    }
 }

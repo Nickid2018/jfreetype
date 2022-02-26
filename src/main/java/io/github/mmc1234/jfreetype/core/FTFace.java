@@ -3,7 +3,9 @@ package io.github.mmc1234.jfreetype.core;
 import io.github.mmc1234.jfreetype.image.FTBBox;
 import io.github.mmc1234.jfreetype.types.FTList;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.VarUtils;
 import jdk.incubator.foreign.MemoryLayout;
+import jdk.incubator.foreign.MemorySegment;
 
 import java.lang.invoke.VarHandle;
 
@@ -395,8 +397,209 @@ public final class FTFace {
 
     // --- Private End
 
+    // --- Macros Start
+
+    /**
+     * A macro that returns true whenever a face object contains horizontal metrics
+     * (this is true for all font formats though).
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_HAS_HORIZONTAL( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_HORIZONTAL ) )
+     * }</pre>
+     */
+    public static boolean FTHasHorizontal(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_HORIZONTAL) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object contains real vertical metrics (and not only synthesized ones).
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_HAS_VERTICAL( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_VERTICAL ) )
+     * }</pre>
+     */
+    public static boolean FTHasVertical(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_VERTICAL) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object contains kerning data that can be accessed with
+     * {@link FreeType#FTGetKerning}.
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_HAS_KERNING( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_KERNING ) )
+     * }</pre>
+     */
+    public static boolean FTHasKerning(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_KERNING) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object contains some embedded bitmaps. See {@link #AVAILABLE_SIZES}.
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_HAS_FIXED_SIZES( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_FIXED_SIZES ) )
+     * }</pre>
+     */
+    public static boolean FTHasFixedSizes(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_FIXED_SIZES) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object contains some glyph names that can be accessed
+     * through {@link FreeType#FTGetGlyphName}.
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_HAS_GLYPH_NAMES( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_GLYPH_NAMES ) )
+     * }</pre>
+     */
+    public static boolean FTHasGlyphNames(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_GLYPH_NAMES) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object contains tables for color glyphs.
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_HAS_COLOR( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_COLOR ) )
+     * }</pre>
+     */
+    public static boolean FTHasColor(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_COLOR) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object contains some multiple masters. The functions provided by
+     * {@code FT_MULTIPLE_MASTERS_H} are then available to choose the exact design you want.
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_HAS_MULTIPLE_MASTERS( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_MULTIPLE_MASTERS ) )
+     * }</pre>
+     */
+    public static boolean FTHasMultipleMasters(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_MULTIPLE_MASTERS) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object contains a font whose format is based on the SFNT storage scheme.
+     * This usually means: TrueType fonts, OpenType fonts, as well as SFNT-based embedded bitmap fonts.<br/>
+     * If this macro is true, all functions defined in {@code FT_SFNT_NAMES_H} and {@code FT_TRUETYPE_TABLES_H} are available.
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_IS_SFNT( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_SFNT ) )
+     * }</pre>
+     */
+    public static boolean FTIsSFNT(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_SFNT) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object contains a scalable font face
+     * (true for TrueType, Type 1, Type 42, CID, OpenType/CFF, and PFR font formats).
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_IS_SCALABLE( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_SCALABLE ) )
+     * }</pre>
+     */
+    public static boolean FTIsScalable(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_SCALABLE) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object contains a font face
+     * that contains fixed-width (or ‘monospace’, ‘fixed-pitch’, etc.) glyphs.
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_IS_FIXED_WIDTH( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_FIXED_WIDTH ) )
+     * }</pre>
+     */
+    public static boolean FTIsFixedWidth(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_FIXED_WIDTH) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object contains a CID-keyed font.
+     * See the discussion of {@link #FT_FACE_FLAG_CID_KEYED} for more details.<br/>
+     * If this macro is true, all functions defined in {@code FT_CID_H} are available.
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_IS_CID_KEYED( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_CID_KEYED ) )
+     * }</pre>
+     */
+    public static boolean FTIsCIDKeyed(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_CID_KEYED) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face represents a ‘tricky’ font.
+     * See the discussion of {@link #FT_FACE_FLAG_TRICKY} for more details.
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_IS_TRICKY( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_TRICKY ) )
+     * }</pre>
+     */
+    public static boolean FTIsTricky(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_TRICKY) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object is a named instance of a GX or OpenType variation font.<br/>
+     * [Since 2.9] Changing the design coordinates with FT_Set_Var_Design_Coordinates or
+     * FT_Set_Var_Blend_Coordinates does not influence the return value of this macro
+     * (only FT_Set_Named_Instance does that).
+     *
+     * @since 2.7
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_IS_NAMED_INSTANCE( face ) \
+     *           ( !!( (face)->face_index & 0x7FFF0000L ) )
+     * }</pre>
+     */
+    public static boolean FTIsNamedInstance(MemorySegment face) {
+        return (VarUtils.getInt(FACE_INDEX, face) & 0x7FFF0000) != 0;
+    }
+
+    /**
+     * A macro that returns true whenever a face object has been altered
+     * by FT_Set_MM_Design_Coordinates, FT_Set_Var_Design_Coordinates, or FT_Set_Var_Blend_Coordinates.
+     *
+     * @implNote
+     * <pre>{@code
+     * #define FT_IS_VARIATION( face ) \
+     *           ( !!( (face)->face_flags & FT_FACE_FLAG_VARIATION ) )
+     * }</pre>
+     */
+    public static boolean FTIsVariation(MemorySegment face) {
+        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_VARIATION) != 0;
+    }
+
     static {
-        LayoutBuilder builder = new LayoutBuilder("LLLLLAAIAIA01SSSSSSSSAAAAAA20AA", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("IIIIIAAIAIA01SSSSSSSSAAAAAA20AA", new String[]{
                 "num_faces", "face_index", "face_flags", "style_flags", "num_glyphs", "family_name",
                 "style_name", "num_fixed_sizes", "available_sizes", "num_charmaps", "charmaps", "generic",
                 "bbox", "units_per_EM", "ascender", "descender", "height", "max_advance_width",

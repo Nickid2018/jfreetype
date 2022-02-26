@@ -27,27 +27,27 @@ import java.lang.invoke.VarHandle;
  * slot->format is also changed to {@link io.github.mmc1234.jfreetype.image.FTGlyphFormat#FT_GLYPH_FORMAT_BITMAP}.<br/>
  * Here is a small pseudocode fragment that shows how to use lsb_delta and rsb_delta to do fractional positioning of glyphs:
  * <pre>{@code
- *   MemorySegment slot     = VarHandleUtils.getSegment(FTFace.GLYPH, face, FTGlyphSlot.STRUCT_LAYOUT, scope);
+ *   MemorySegment slot     = VarUtils.getSegment(FTFace.GLYPH, face, FTGlyphSlot.STRUCT_LAYOUT, scope);
  *   long          origin_x = 0;
  *
  *   for all glyphs do
  *     [load glyph with `FTLoadGlyph']
  *
- *     FTOutlineTranslate(VarHandleUtils.getAddress(FTGlyphSlot.OUTLINE, slot), origin_x & 63, 0);
+ *     FTOutlineTranslate(VarUtils.getAddress(FTGlyphSlot.OUTLINE, slot), origin_x & 63, 0);
  *
  *     [save glyph image, or render glyph, or ...]
  *
  *     [compute kern between current and next glyph
  *      and add it to `origin_x']
  *
- *     origin_x += VarHandleUtils.getLong(VarHandleUtils.createAccess(FTGlyphSlot.SEQUENCE_LAYOUT, "advance.x"), slot);
- *     origin_x += VarHandleUtils.getLong(FTGlyphSlot.LSB_DELTA, slot) - VarHandleUtils.getLong(FTGlyphSlot.RSB_DELTA, slot);
+ *     origin_x += VarUtils.getLong(VarUtils.createAccess(FTGlyphSlot.SEQUENCE_LAYOUT, "advance.x"), slot);
+ *     origin_x += VarUtils.getLong(FTGlyphSlot.LSB_DELTA, slot) - VarUtils.getLong(FTGlyphSlot.RSB_DELTA, slot);
  *   end for
  * }</pre>
  * Here is another small pseudocode fragment that shows how to use lsb_delta and rsb_delta to improve
  * integer positioning of glyphs:
  * <pre>{@code
- *   MemorySegment slot           = VarHandleUtils.getSegment(FTFace.GLYPH, face, FTGlyphSlot.STRUCT_LAYOUT, scope);
+ *   MemorySegment slot           = VarUtils.getSegment(FTFace.GLYPH, face, FTGlyphSlot.STRUCT_LAYOUT, scope);
  *   long          origin_x       = 0;
  *   long          prev_rsb_delta = 0;
  *
@@ -57,16 +57,16 @@ import java.lang.invoke.VarHandle;
  *
  *     [load glyph with `FTLoadGlyph']
  *
- *     if (prev_rsb_delta - VarHandleUtils.getLong(FTGlyphSlot.LSB_DELTA, slot) > 32)
+ *     if (prev_rsb_delta - VarUtils.getLong(FTGlyphSlot.LSB_DELTA, slot) > 32)
  *       origin_x -= 64;
- *     else if (prev_rsb_delta - VarHandleUtils.getLong(FTGlyphSlot.LSB_DELTA, slot) < -31 )
+ *     else if (prev_rsb_delta - VarUtils.getLong(FTGlyphSlot.LSB_DELTA, slot) < -31 )
  *       origin_x += 64;
  *
- *     prev_rsb_delta = VarHandleUtils.getLong(FTGlyphSlot.RSB_DELTA, slot);
+ *     prev_rsb_delta = VarUtils.getLong(FTGlyphSlot.RSB_DELTA, slot);
  *
  *     [save glyph image, or render glyph, or ...]
  *
- *     origin_x += VarHandleUtils.getLong(VarHandleUtils.createAccess(FTGlyphSlot.SEQUENCE_LAYOUT, "advance.x"), slot);
+ *     origin_x += VarUtils.getLong(VarUtils.createAccess(FTGlyphSlot.SEQUENCE_LAYOUT, "advance.x"), slot);
  *   end for
  * }</pre>
  * If you use strong auto-hinting, you must apply these delta values! Otherwise, you will experience
@@ -252,7 +252,7 @@ public final class FTGlyphSlot {
     public static final VarHandle INTERNAL;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("AAAI01LL2I3II4IAALLLAA", new String[] {
+        LayoutBuilder builder = new LayoutBuilder("AAAI01II2I3II4IAAIIIAA", new String[] {
                 "library", "face", "next", "glyph_index", "generic", "metrics", "linearHoriAdvance",
                 "linearVertAdvance", "advance", "format", "bitmap", "bitmap_left", "bitmap_top",
                 "outline", "num_subglyphs", "subglyphs", "control_data", "control_len", "lsb_delta",
