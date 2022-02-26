@@ -8,12 +8,18 @@ import jdk.incubator.foreign.SymbolLookup;
 import java.lang.invoke.MethodHandle;
 
 public class LibraryUtil {
+
+    private static volatile boolean loaded = false;
+
     public static void loadNative() {
+        if (loaded)
+            return;
         String lib = System.getProperty("jfreetype.library");
         if (lib == null)
             System.loadLibrary("freetype");
         else
             System.load(lib);
+        loaded = true;
     }
 
     public static NativeSymbol getNativeSymbol(String name) {
