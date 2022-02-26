@@ -896,7 +896,7 @@ public class FreeType {
      */
     public static int FTRenderGlyph(@In MemoryAddress slot, @In FTRenderMode render_mode) {
         try {
-            return (int) FreeTypeInternal.FT_RENDER_GLYPH.invoke(slot, render_mode.value());
+            return (int) FreeTypeInternal.FT_RENDER_GLYPH.invoke(slot, render_mode.ordinal());
         } catch (Throwable e) {
             throw st(e);
         }
