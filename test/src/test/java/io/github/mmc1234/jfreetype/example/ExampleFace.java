@@ -16,7 +16,10 @@
 
 package io.github.mmc1234.jfreetype.example;
 
+import io.github.mmc1234.jfreetype.core.FTFace;
 import io.github.mmc1234.jfreetype.core.FreeType;
+import io.github.mmc1234.jfreetype.util.VarHandleUtils;
+import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 import jdk.incubator.foreign.ValueLayout;
@@ -30,14 +33,17 @@ public class ExampleFace {
         MemorySegment path = MemorySegment.allocateNative(ValueLayout.ADDRESS.byteSize() * 1024, ResourceScope.globalScope());
         path.setUtf8String(0, str);
         var error = FreeType.FTInitFreeType(alib);
-        if (error != 0) throw new IllegalStateException("Fail init FreeType");
-
+        if (error != 0)
+            throw new IllegalStateException("Fail init FreeType");
         error = FreeType.FTNewFace(FreeType.deRef(alib), path.address(), 0, aface);
-        if (0 == error) {
-            System.out.println("Success new face");
-        } else {
-            System.out.println("Fail new face(Error " + error + ")");
-        }
+        if (error != 0)
+            throw new IllegalStateException("Fail create face");
+        error = FreeType.FTSetCharSize(FreeType.deRef(aface), 0, 16 * 64, 300, 300);
+        if (error != 0)
+            throw new IllegalStateException("Fail set char size");
+        System.out.println(VarHandleUtils.getLong(FTFace.NUM_CHARMAPS,
+                MemorySegment.ofAddress(FreeType.deRef(aface), FTFace.STRUCT_LAYOUT.byteSize(), ResourceScope.globalScope())));
+        FreeType.FTDoneFace(FreeType.deRef(aface));
         FreeType.FTDoneFreeType(FreeType.deRef(alib));
     }
 }
