@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.image;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -78,10 +78,10 @@ public final class FTBitmap {
     public static final VarHandle PALETTE;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("IIIASCCA", new String[] {
+        LayoutBuilder builder = new LayoutBuilder("IIIASCCA", new String[] {
                 "rows", "width", "pitch", "buffer", "num_grays", "pixel_mode", "palette_mode", "palette"
         });
-        STRUCT_LAYOUT = builder.getStructLayout();
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         ROWS = builder.varHandle("rows");
         WIDTH = builder.varHandle("rows");

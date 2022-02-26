@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.core;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -117,10 +117,10 @@ public final class FTSizeMetrics {
     public static final VarHandle MAX_ADVANCE;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("SSLLLLLL", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("SSLLLLLL", new String[]{
                 "x_ppem", "y_ppem", "x_scale", "y_scale", "ascender", "descender", "height", "max_advance"
         });
-        STRUCT_LAYOUT = builder.getStructLayout();
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         X_PPEM = builder.varHandle("x_ppem");
         Y_PPEM = builder.varHandle("y_ppem");

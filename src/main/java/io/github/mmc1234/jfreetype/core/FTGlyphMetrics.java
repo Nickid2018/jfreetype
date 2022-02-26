@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.core;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -80,10 +80,10 @@ public final class FTGlyphMetrics {
     public static final VarHandle VERT_ADVANCE;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("LLLLLLLL", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("LLLLLLLL", new String[]{
                 "width", "height", "horiBearingX", "horiBearingY", "horiAdvance", "vertBearingX", "vertBearingY", "vertAdvance"
         });
-        STRUCT_LAYOUT = builder.getStructLayout();
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         WIDTH = builder.varHandle("width");
         HEIGHT = builder.varHandle("height");

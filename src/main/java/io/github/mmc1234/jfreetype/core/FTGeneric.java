@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.core;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -48,8 +48,8 @@ public final class FTGeneric {
     public static final VarHandle FINALIZER;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("AA", new String[]{"data", "finalizer"});
-        STRUCT_LAYOUT = builder.getStructLayout();
+        LayoutBuilder builder = new LayoutBuilder("AA", new String[]{"data", "finalizer"});
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         DATA = builder.varHandle("data");
         FINALIZER = builder.varHandle("finalizer");

@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.system;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -15,23 +15,22 @@ import java.lang.invoke.VarHandle;
  *   {
  *     long   value;
  *     void*  pointer;
- *
  *   } FT_StreamDesc;
  * }</pre>
  */
 public final class FTStreamDesc {
 
-    public static final MemoryLayout STRUCT_LAYOUT;
+    public static final MemoryLayout UNION_LAYOUT;
     public static final MemoryLayout SEQUENCE_LAYOUT;
 
     public static final VarHandle VALUE;
     public static final VarHandle POINTER;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("LA", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("LA", new String[] {
                 "value", "pointer"
         }, true);
-        STRUCT_LAYOUT = builder.getStructLayout();
+        UNION_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         VALUE = builder.varHandle("value");
         POINTER = builder.varHandle("pointer");

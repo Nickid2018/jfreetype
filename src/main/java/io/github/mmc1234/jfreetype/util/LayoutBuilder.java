@@ -4,21 +4,21 @@ import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
 
-public class StructLayoutBuilder {
+public class LayoutBuilder {
 
-    private final MemoryLayout structLayout;
+    private final MemoryLayout groupLayout;
     private final MemoryLayout sequenceLayout;
 
-    public StructLayoutBuilder(String recipe, String[] names, MemoryLayout... layouts) {
+    public LayoutBuilder(String recipe, String[] names, MemoryLayout... layouts) {
         this(recipe, names, false, layouts);
     }
 
-    public StructLayoutBuilder(String recipe, String[] names, boolean isUnion, MemoryLayout... layouts) {
+    public LayoutBuilder(String recipe, String[] names, boolean isUnion, MemoryLayout... layouts) {
         MemoryLayout[] struct = new MemoryLayout[recipe.length()];
         for (int i = 0; i < recipe.length(); i++)
             struct[i] = pick(recipe.charAt(i), names[i], layouts);
-        structLayout = isUnion ? MemoryLayout.unionLayout(struct) : MemoryLayout.structLayout(struct);
-        sequenceLayout = MemoryLayout.sequenceLayout(structLayout);
+        groupLayout = isUnion ? MemoryLayout.unionLayout(struct) : MemoryLayout.structLayout(struct);
+        sequenceLayout = MemoryLayout.sequenceLayout(groupLayout);
     }
 
     static MemoryLayout pick(int name, String element, MemoryLayout... layouts) {
@@ -32,8 +32,8 @@ public class StructLayoutBuilder {
      *
      * @return a layout
      */
-    public MemoryLayout getStructLayout() {
-        return structLayout;
+    public MemoryLayout getGroupLayout() {
+        return groupLayout;
     }
 
     /**

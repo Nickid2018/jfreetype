@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.image;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -50,10 +50,10 @@ public final class FTBBox {
     public static final VarHandle Y_MAX;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("LLLL", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("LLLL", new String[]{
                 "xMin", "yMin", "xMax", "yMax"
         });
-        STRUCT_LAYOUT = builder.getStructLayout();
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         X_MIN = builder.varHandle("xMin");
         Y_MIN = builder.varHandle("yMin");

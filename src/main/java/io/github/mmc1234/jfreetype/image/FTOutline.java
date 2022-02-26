@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.image;
 
-import io.github.mmc1234.jfreetype.util.StructLayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -143,10 +143,10 @@ public final class FTOutline {
     public static final VarHandle FLAGS;
 
     static {
-        StructLayoutBuilder builder = new StructLayoutBuilder("SSAAAI", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("SSAAAI", new String[]{
                 "n_contours", "n_points", "points", "tags", "contours", "flags"
         });
-        STRUCT_LAYOUT = builder.getStructLayout();
+        STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         N_CONTOURS = builder.varHandle("n_contours");
         N_POINTS = builder.varHandle("n_points");
