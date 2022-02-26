@@ -18,7 +18,7 @@ package io.github.mmc1234.jfreetype.core;
 
 import io.github.mmc1234.jfreetype.In;
 import io.github.mmc1234.jfreetype.Out;
-import io.github.mmc1234.jfreetype.internal.FreeTypeInternal;
+import io.github.mmc1234.jfreetype.internal.*;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 
@@ -303,7 +303,7 @@ public class FreeType {
      */
     public static void FTLibraryVersion(@In MemoryAddress library, @Out MemorySegment amajor, @Out MemorySegment aminor, @Out MemorySegment apatch) {
         try {
-            FreeTypeInternal.FT_LIBRARY_VERSION.invoke(library, amajor.address(), aminor.address(), apatch.address());
+            Version.FT_LIBRARY_VERSION.invoke(library, amajor.address(), aminor.address(), apatch.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -332,7 +332,7 @@ public class FreeType {
      */
     public static int FTInitFreeType(@Out MemorySegment alibrary) {
         try {
-            return (int) FreeTypeInternal.FT_INIT_FREETYPE.invoke(alibrary.address());
+            return (int) BaseInterface.FT_INIT_FREETYPE.invoke(alibrary.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -346,7 +346,7 @@ public class FreeType {
      */
     public static int FTDoneFreeType(@In MemoryAddress library) {
         try {
-            return (int) FreeTypeInternal.FT_DONE_FREETYPE.invoke(library);
+            return (int) BaseInterface.FT_DONE_FREETYPE.invoke(library);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -369,7 +369,7 @@ public class FreeType {
      */
     public static int FTNewFace(@In MemoryAddress library, @In MemoryAddress filepathname, @In long face_index, @Out MemorySegment aface) {
         try {
-            return (int) FreeTypeInternal.FT_NEW_FACE.invoke(library, filepathname, face_index, aface.address());
+            return (int) BaseInterface.FT_NEW_FACE.invoke(library, filepathname, face_index, aface.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -385,7 +385,7 @@ public class FreeType {
      */
     public static int FTDoneFace(@In MemoryAddress face) {
         try {
-            return (int) FreeTypeInternal.FT_DONE_FACE.invoke(face);
+            return (int) BaseInterface.FT_DONE_FACE.invoke(face);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -402,7 +402,7 @@ public class FreeType {
      */
     public static int FTReferenceFace(@In MemoryAddress face) {
         try {
-            return (int) FreeTypeInternal.FT_REFERENCE_FACE.invoke(face);
+            return (int) BaseInterface.FT_REFERENCE_FACE.invoke(face);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -420,7 +420,7 @@ public class FreeType {
      */
     public static int FTNewMemoryFace(@In MemoryAddress library, @In MemoryAddress file_base, @In long file_size, @In long face_index, @Out MemorySegment aface) {
         try {
-            return (int) FreeTypeInternal.FT_NEW_MEMORY_FACE.invoke(library, file_base, file_size, face_index, aface.address());
+            return (int) BaseInterface.FT_NEW_MEMORY_FACE.invoke(library, file_base, file_size, face_index, aface.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -450,7 +450,7 @@ public class FreeType {
     // TODO FT_Parameter
     public static int FTFaceProperties(@In MemoryAddress face, @In int num_properties, @In MemoryAddress properties) {
         try {
-            return (int) FreeTypeInternal.FT_FACE_PROPERTIES.invoke(face, num_properties, properties);
+            return (int) BaseInterface.FT_FACE_PROPERTIES.invoke(face, num_properties, properties);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -501,7 +501,7 @@ public class FreeType {
      */
     public static int FTOpenFace(@In MemoryAddress library, @In MemoryAddress args, @In long face_index, @Out MemorySegment aface) {
         try {
-            return (int) FreeTypeInternal.FT_OPEN_FACE.invoke(library, args, face_index, aface.address());
+            return (int) BaseInterface.FT_OPEN_FACE.invoke(library, args, face_index, aface.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -516,7 +516,7 @@ public class FreeType {
      */
     public static int FTAttachFile(@In MemoryAddress face, @In MemoryAddress filepath) {
         try {
-            return (int) FreeTypeInternal.FT_ATTACH_FILE.invoke(face, filepath);
+            return (int) BaseInterface.FT_ATTACH_FILE.invoke(face, filepath);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -541,7 +541,7 @@ public class FreeType {
      */
     public static int FTAttachStream(@In MemoryAddress face, @In MemoryAddress parameters) {
         try {
-            return (int) FreeTypeInternal.FT_ATTACH_STREAM.invoke(face, parameters);
+            return (int) BaseInterface.FT_ATTACH_STREAM.invoke(face, parameters);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -566,7 +566,7 @@ public class FreeType {
      */
     public static int FTSetCharSize(@In MemoryAddress face, @In long char_width, @In long char_height, @In int horz_resolution, @In int vert_resolution) {
         try {
-            return (int) FreeTypeInternal.FT_SET_CHAR_SIZE.invoke(face, char_width, char_height, horz_resolution, vert_resolution);
+            return (int) BaseInterface.FT_SET_CHAR_SIZE.invoke(face, char_width, char_height, horz_resolution, vert_resolution);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -585,7 +585,7 @@ public class FreeType {
      */
     public static int FTSetPixelSizes(@In MemoryAddress face, @In int pixel_width, @In int pixel_height) {
         try {
-            return (int) FreeTypeInternal.FT_SET_PIXEL_SIZES.invoke(face, pixel_width, pixel_height);
+            return (int) BaseInterface.FT_SET_PIXEL_SIZES.invoke(face, pixel_width, pixel_height);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -610,7 +610,7 @@ public class FreeType {
      */
     public static int FTRequestSize(@In MemoryAddress face, @In MemoryAddress req) {
         try {
-            return (int) FreeTypeInternal.FT_REQUEST_SIZE.invoke(face, req);
+            return (int) BaseInterface.FT_REQUEST_SIZE.invoke(face, req);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -635,7 +635,7 @@ public class FreeType {
      */
     public static int FTSelectSize(@In MemoryAddress face, @In int strike_index) {
         try {
-            return (int) FreeTypeInternal.FT_SELECT_SIZE.invoke(face, strike_index);
+            return (int) BaseInterface.FT_SELECT_SIZE.invoke(face, strike_index);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -659,7 +659,7 @@ public class FreeType {
      */
     public static void FTSetTransform(@In MemoryAddress face, @In MemoryAddress matrix, @In MemoryAddress delta) {
         try {
-            FreeTypeInternal.FT_SET_TRANSFORM.invoke(face, matrix, delta);
+            BaseInterface.FT_SET_TRANSFORM.invoke(face, matrix, delta);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -677,7 +677,7 @@ public class FreeType {
      */
     public static void FTGetTransform(@In MemoryAddress face, @Out MemorySegment matrix, @Out MemorySegment delta) {
         try {
-            FreeTypeInternal.FT_GET_TRANSFORM.invoke(face, matrix.address(), delta.address());
+            BaseInterface.FT_GET_TRANSFORM.invoke(face, matrix.address(), delta.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -702,7 +702,7 @@ public class FreeType {
      */
     public static int FTLoadGlyph(@In MemoryAddress face, @In int glyph_index, @In int load_flags) {
         try {
-            return (int) FreeTypeInternal.FT_LOAD_GLYPH.invoke(face, glyph_index, load_flags);
+            return (int) BaseInterface.FT_LOAD_GLYPH.invoke(face, glyph_index, load_flags);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -724,7 +724,7 @@ public class FreeType {
      */
     public static int FTGetCharIndex(@In MemoryAddress face, @In long charcode) {
         try {
-            return (int) FreeTypeInternal.FT_GET_CHAR_INDEX.invoke(face, charcode);
+            return (int) BaseInterface.FT_GET_CHAR_INDEX.invoke(face, charcode);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -758,7 +758,7 @@ public class FreeType {
      */
     public static long FTGetFirstChar(@In MemoryAddress face, @Out MemorySegment agindex) {
         try {
-            return (long) FreeTypeInternal.FT_GET_FIRST_CHAR.invoke(face, agindex.address());
+            return (long) BaseInterface.FT_GET_FIRST_CHAR.invoke(face, agindex.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -778,7 +778,7 @@ public class FreeType {
      */
     public static long FTGetNextChar(@In MemoryAddress face, @In long charcode, @Out MemorySegment agindex) {
         try {
-            return (int) FreeTypeInternal.FT_GET_NEXT_CHAR.invoke(face, charcode, agindex.address());
+            return (int) BaseInterface.FT_GET_NEXT_CHAR.invoke(face, charcode, agindex.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -793,7 +793,7 @@ public class FreeType {
      */
     public static int FTGetNameIndex(@In MemoryAddress face, @In MemoryAddress glyph_name) {
         try {
-            return (int) FreeTypeInternal.FT_GET_NAME_INDEX.invoke(face, glyph_name);
+            return (int) BaseInterface.FT_GET_NAME_INDEX.invoke(face, glyph_name);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -816,7 +816,7 @@ public class FreeType {
      */
     public static int FTLoadChar(@In MemoryAddress face, @In long parameters, @In long load_flags) {
         try {
-            return (int) FreeTypeInternal.FT_LOAD_CHAR.invoke(face, parameters, load_flags);
+            return (int) BaseInterface.FT_LOAD_CHAR.invoke(face, parameters, load_flags);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -896,7 +896,7 @@ public class FreeType {
      */
     public static int FTRenderGlyph(@In MemoryAddress slot, @In FTRenderMode render_mode) {
         try {
-            return (int) FreeTypeInternal.FT_RENDER_GLYPH.invoke(slot, render_mode.ordinal());
+            return (int) BaseInterface.FT_RENDER_GLYPH.invoke(slot, render_mode.ordinal());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -920,7 +920,7 @@ public class FreeType {
      */
     public static int FTGetKerning(@In MemoryAddress face, @In int left_glyph, @In int right_glyph, @In int kern_mode, @Out MemorySegment akerning) {
         try {
-            return (int) FreeTypeInternal.FT_GET_KERNING.invoke(face, left_glyph, right_glyph, kern_mode, akerning.address());
+            return (int) BaseInterface.FT_GET_KERNING.invoke(face, left_glyph, right_glyph, kern_mode, akerning.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -945,7 +945,7 @@ public class FreeType {
      */
     public static int FTGetTrackKerning(@In MemoryAddress face, @In long point_size, @In int degree, @Out MemorySegment akerning) {
         try {
-            return (int) FreeTypeInternal.FT_GET_TRACK_KERNING.invoke(face, point_size, degree, akerning.address());
+            return (int) BaseInterface.FT_GET_TRACK_KERNING.invoke(face, point_size, degree, akerning.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -971,7 +971,7 @@ public class FreeType {
      */
     public static int FTGetGlyphName(@In MemoryAddress face, @In int glyph_index, @Out MemorySegment buffer, @In int buffer_max) {
         try {
-            return (int) FreeTypeInternal.FT_GET_GLYPH_NAME.invoke(face, glyph_index, buffer.address(), buffer_max);
+            return (int) BaseInterface.FT_GET_GLYPH_NAME.invoke(face, glyph_index, buffer.address(), buffer_max);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -995,7 +995,7 @@ public class FreeType {
     public static MemoryAddress FTGetPostscriptName(@In MemoryAddress face) {
         try {
             // TODO
-            return MemoryAddress.ofLong((long) FreeTypeInternal.FT_GET_POSTSCRIPT_NAME.invoke(face));
+            return MemoryAddress.ofLong((long) BaseInterface.FT_GET_POSTSCRIPT_NAME.invoke(face));
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1014,7 +1014,7 @@ public class FreeType {
      */
     public static int FTSelectCharmap(@In MemoryAddress face, @In FTEncoding encoding) {
         try {
-            return (int) FreeTypeInternal.FT_SELECT_CHARMAP.invoke(face, encoding.value());
+            return (int) BaseInterface.FT_SELECT_CHARMAP.invoke(face, encoding.value());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1032,7 +1032,7 @@ public class FreeType {
      */
     public static int FTSetCharmap(@In MemoryAddress face, @In MemoryAddress charmap) {
         try {
-            return (int) FreeTypeInternal.FT_SET_CHARMAP.invoke(face, charmap);
+            return (int) BaseInterface.FT_SET_CHARMAP.invoke(face, charmap);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1047,7 +1047,7 @@ public class FreeType {
      */
     public static int FTGetCharmapIndex(@In MemoryAddress charmap) {
         try {
-            return (int) FreeTypeInternal.FT_GET_CHARMAP_INDEX.invoke(charmap);
+            return (int) BaseInterface.FT_GET_CHARMAP_INDEX.invoke(charmap);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1063,7 +1063,7 @@ public class FreeType {
      */
     public static short FTGetFSTypeFlags(@In MemoryAddress face) {
         try {
-            return (short) FreeTypeInternal.FT_GET_FSTYPE_FLAGS.invoke(face);
+            return (short) BaseInterface.FT_GET_FSTYPE_FLAGS.invoke(face);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1087,7 +1087,7 @@ public class FreeType {
      */
     public static int FTGetSubGlyphInfo(@In MemoryAddress glyph, @In int sub_index, @Out MemorySegment p_index, @Out MemorySegment p_flags, @Out MemorySegment p_arg1, @Out MemorySegment p_arg2, @Out MemorySegment p_transform) {
         try {
-            return (int) FreeTypeInternal.FT_GET_SUBGLYPH_INFO.invoke(glyph, sub_index, p_index.address(), p_flags.address(), p_arg1.address(), p_arg2.address(), p_transform.address());
+            return (int) BaseInterface.FT_GET_SUBGLYPH_INFO.invoke(glyph, sub_index, p_index.address(), p_flags.address(), p_arg1.address(), p_arg2.address(), p_transform.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1105,7 +1105,7 @@ public class FreeType {
      */
     public static int FTFaceGetCharVariantIndex(@In MemoryAddress face, @In long charcode, @In long variantSelector) {
         try {
-            return (int) FreeTypeInternal.FT_FACE_GET_CHAR_VARIANT_INDEX.invoke(face, charcode, variantSelector);
+            return (int) UnicodeVariationSequences.FT_FACE_GET_CHAR_VARIANT_INDEX.invoke(face, charcode, variantSelector);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1122,7 +1122,7 @@ public class FreeType {
      */
     public static int FTFaceGetCharVariantIsDefault(@In MemoryAddress face, @In long charcode, @In long variantSelector) {
         try {
-            return (int) FreeTypeInternal.FT_FACE_GET_CHAR_VARIANT_IS_DEFAULT.invoke(face, charcode, variantSelector);
+            return (int) UnicodeVariationSequences.FT_FACE_GET_CHAR_VARIANT_IS_DEFAULT.invoke(face, charcode, variantSelector);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1137,7 +1137,7 @@ public class FreeType {
      */
     public static int FTFaceGetVariantSelectors(@In MemoryAddress face) {
         try {
-            return (int) FreeTypeInternal.FT_FACE_GET_VARIANT_SELECTORS.invoke(face);
+            return (int) UnicodeVariationSequences.FT_FACE_GET_VARIANT_SELECTORS.invoke(face);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1153,7 +1153,7 @@ public class FreeType {
      */
     public static MemoryAddress FTFaceGetVariantsOfChar(@In MemoryAddress face, @In long charcode) {
         try {
-            return MemoryAddress.ofLong((long) FreeTypeInternal.FT_FACE_GET_VARIANTS_OF_CHAR.invoke(face, charcode));
+            return MemoryAddress.ofLong((long) UnicodeVariationSequences.FT_FACE_GET_VARIANTS_OF_CHAR.invoke(face, charcode));
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1169,7 +1169,7 @@ public class FreeType {
      */
     public static MemoryAddress FTFaceGetCharsOfVariant(@In MemoryAddress face, @In long variantSelector) {
         try {
-            return MemoryAddress.ofLong((long) FreeTypeInternal.FT_FACE_GET_CHARS_OF_VARIANT.invoke(face, variantSelector));
+            return MemoryAddress.ofLong((long) UnicodeVariationSequences.FT_FACE_GET_CHARS_OF_VARIANT.invoke(face, variantSelector));
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1188,7 +1188,7 @@ public class FreeType {
      */
     public static int FTNewSize(@In MemoryAddress face, @Out MemorySegment asize) {
         try {
-            return (int) FreeTypeInternal.FT_NEW_SIZE.invoke(face, asize.address());
+            return (int) SizeManagement.FT_NEW_SIZE.invoke(face, asize.address());
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1202,7 +1202,7 @@ public class FreeType {
      */
     public static int FTDoneSize(@In MemoryAddress size) {
         try {
-            return (int) FreeTypeInternal.FT_DONE_SIZE.invoke(size);
+            return (int) SizeManagement.FT_DONE_SIZE.invoke(size);
         } catch (Throwable e) {
             throw st(e);
         }
@@ -1220,7 +1220,7 @@ public class FreeType {
      */
     public static int FTActivateSize(@In MemoryAddress size) {
         try {
-            return (int) FreeTypeInternal.FT_ACTIVATE_SIZE.invoke(size);
+            return (int) SizeManagement.FT_ACTIVATE_SIZE.invoke(size);
         } catch (Throwable e) {
             throw st(e);
         }
