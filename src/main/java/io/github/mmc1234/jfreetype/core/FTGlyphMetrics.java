@@ -7,9 +7,9 @@ import java.lang.invoke.VarHandle;
 
 /**
  * A structure to model the metrics of a single glyph. The values are expressed in 26.6 fractional pixel format;
- * if the flag {@link FreeType#FT_LOAD_NO_SCALE} has been used while loading the glyph, values are expressed in font units instead.
+ * if the flag {@link FTLoadFlags#FT_LOAD_NO_SCALE} has been used while loading the glyph, values are expressed in font units instead.
  *
- * @apiNote If not disabled with {@link FreeType#FT_LOAD_NO_HINTING}, the values represent dimensions of
+ * @apiNote If not disabled with {@link FTLoadFlags#FT_LOAD_NO_HINTING}, the values represent dimensions of
  * the hinted glyph (in case hinting is applicable).<br/>
  * Stroking a glyph with an outside border does not increase horiAdvance or vertAdvance; you have to manually
  * adjust these values to account for the added width and height.<br/>

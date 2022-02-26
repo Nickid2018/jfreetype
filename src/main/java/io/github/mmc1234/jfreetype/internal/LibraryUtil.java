@@ -29,4 +29,8 @@ public class LibraryUtil {
     public static MethodHandle load(String name, FunctionDescriptor fd) {
         return CLinker.systemCLinker().downcallHandle(getNativeSymbol(name), fd);
     }
+
+    public static RuntimeException st(Throwable e) {
+        return new RuntimeException(e);
+    }
 }

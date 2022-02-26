@@ -1,6 +1,7 @@
 package io.github.mmc1234.jfreetype.image;
 
 import io.github.mmc1234.jfreetype.CEnum;
+import io.github.mmc1234.jfreetype.core.FTLoadFlags;
 
 /**
  * An enumeration type used to describe the format of pixels in a given bitmap.
@@ -73,7 +74,7 @@ public enum FTPixelMode implements CEnum<FTPixelMode> {
      * with alpha channel. For each pixel, the format is BGRA, which means, the blue channel comes first in memory.
      * The color channels are pre-multiplied and in the sRGB colorspace. For example, full red at
      * half-translucent opacity will be represented as ‘00,00,80,80’, not ‘00,00,FF,80’. See also
-     * {@link io.github.mmc1234.jfreetype.core.FreeType#FT_LOAD_COLOR}.
+     * {@link FTLoadFlags#FT_LOAD_COLOR}.
      */
     FT_PIXEL_MODE_BGRA,
 

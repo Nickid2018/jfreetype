@@ -10,10 +10,4 @@ public interface CEnum<T> {
      * @return a number
      */
     int value();
-
-    /**
-     * Values of the enum. Default implemented by {@link Enum}.
-     * @return an array contains all elements in the enum
-     */
-    T[] values();
 }

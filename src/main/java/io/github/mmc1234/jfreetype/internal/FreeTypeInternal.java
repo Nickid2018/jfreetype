@@ -6,12 +6,12 @@ public class FreeTypeInternal {
 
     public static final boolean loadAll() {
         loadNative();
-        Version.loadMethodHandles();
+        VersionInternal.loadMethodHandles();
         BaseInterface.loadMethodHandles();
         UnicodeVariationSequences.loadMethodHandles();
         // TODO Glyph Color Management
         // TODO Glyph Layer Management
-        // TODO Glyph Management
+        GlyphManagement.loadMethodHandles();
         // TODO Mac Specific Interface
         SizeManagement.loadMethodHandles();
 

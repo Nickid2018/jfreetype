@@ -14,10 +14,10 @@ import java.lang.invoke.VarHandle;
  * the slot's content is erased by the new glyph data, i.e., the glyph's metrics
  * , its image (bitmap or outline), and other control information.
  *
- * @apiNote If {@link FreeType#FTLoadGlyph} is called with default flags (see {@link FreeType#FT_LOAD_DEFAULT})
+ * @apiNote If {@link FreeType#FTLoadGlyph} is called with default flags (see {@link FTLoadFlags#FT_LOAD_DEFAULT})
  * the glyph image is loaded in the glyph slot in its native format (e.g., an outline glyph for TrueType and Type 1 formats).
  * [Since 2.9] The prospective bitmap metrics are calculated according to FT_LOAD_TARGET_XXX and other flags
- * even for the outline glyph, even if {@link FreeType#FT_LOAD_RENDER} is not set.<br/>
+ * even for the outline glyph, even if {@link FTLoadFlags#FT_LOAD_RENDER} is not set.<br/>
  * This image can later be converted into a bitmap by calling {@link FreeType#FTRenderGlyph}.
  * This function searches the current renderer for the native image's format, then invokes it.<br/>
  * The renderer is in charge of transforming the native image through the slot's face transformation fields,
@@ -155,21 +155,21 @@ public final class FTGlyphSlot {
 
     /**
      * The advance width of the unhinted glyph. Its value is expressed in 16.16 fractional pixels,
-     * unless {@link FreeType#FT_LOAD_LINEAR_DESIGN} is set when loading the glyph. This field can be important
+     * unless {@link FTLoadFlags#FT_LOAD_LINEAR_DESIGN} is set when loading the glyph. This field can be important
      * to perform correct WYSIWYG layout. Only relevant for outline glyphs.
      */
     public static final VarHandle LINEAR_HORI_ADVANCE;
 
     /**
      * The advance height of the unhinted glyph. Its value is expressed in 16.16 fractional pixels,
-     * unless {@link FreeType#FT_LOAD_LINEAR_DESIGN} is set when loading the glyph. This field can be important
+     * unless {@link FTLoadFlags#FT_LOAD_LINEAR_DESIGN} is set when loading the glyph. This field can be important
      * to perform correct WYSIWYG layout. Only relevant for outline glyphs.
      */
     public static final VarHandle LINEAR_VERT_ADVANCE;
 
     /**
-     * This shorthand is, depending on {@link FreeType#FT_LOAD_IGNORE_TRANSFORM}, the transformed (hinted) advance width
-     * for the glyph, in 26.6 fractional pixel format. As specified with {@link FreeType#FT_LOAD_VERTICAL_LAYOUT},
+     * This shorthand is, depending on {@link FTLoadFlags#FT_LOAD_IGNORE_TRANSFORM}, the transformed (hinted) advance width
+     * for the glyph, in 26.6 fractional pixel format. As specified with {@link FTLoadFlags#FT_LOAD_VERTICAL_LAYOUT},
      * it uses either the horiAdvance or the vertAdvance value of metrics field.
      */
     public static final VarHandle ADVANCE = null;
@@ -204,17 +204,17 @@ public final class FTGlyphSlot {
      * {@link io.github.mmc1234.jfreetype.image.FTGlyphFormat#FT_GLYPH_FORMAT_OUTLINE}.
      * Once a glyph is loaded, outline can be transformed, distorted, emboldened, etc.
      * However, it must not be freed.<br/>
-     * [Since 2.10.1] If {@link FreeType#FT_LOAD_NO_SCALE} is set, outline coordinates of OpenType variation fonts
+     * [Since 2.10.1] If {@link FTLoadFlags#FT_LOAD_NO_SCALE} is set, outline coordinates of OpenType variation fonts
      * for a selected instance are internally handled as 26.6 fractional font units but returned as (rounded) integers,
      * as expected. To get unrounded font units, don't use FT_LOAD_NO_SCALE but load the glyph
-     * with {@link FreeType#FT_LOAD_NO_HINTING} and scale it, using the font's units_per_EM value as the ppem.
+     * with {@link FTLoadFlags#FT_LOAD_NO_HINTING} and scale it, using the font's units_per_EM value as the ppem.
      */
     public static final VarHandle OUTLINE = null;
 
     /**
      * The number of subglyphs in a composite glyph.
      * This field is only valid for the composite glyph format that should normally only be loaded
-     * with the {@link FreeType#FT_LOAD_NO_RECURSE} flag.
+     * with the {@link FTLoadFlags#FT_LOAD_NO_RECURSE} flag.
      */
     public static final VarHandle NUM_SUBGLYPHS;
 
