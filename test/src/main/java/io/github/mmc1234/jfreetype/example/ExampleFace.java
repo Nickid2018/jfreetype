@@ -24,28 +24,33 @@ import jdk.incubator.foreign.*;
 public class ExampleFace {
 
     public static void main(String[] args) {
-        String str = "C:\\Windows\\Fonts\\Arial.ttf";
-        MemorySegment pointerLib = VarUtils.address(ResourceScope.globalScope());
-        MemorySegment pointerFace = VarUtils.address(ResourceScope.globalScope());
-        MemorySegment path = VarUtils.string(str, ResourceScope.globalScope());
-        var error = FreeType.FTInitFreeType(pointerLib);
-        if (error != 0)
-            throw new IllegalStateException("Fail init FreeType");
-        error = FreeType.FTNewFace(VarUtils.starAddress(pointerLib), path.address(), 0, pointerFace);
-        if (error != 0)
-            throw new IllegalStateException("Fail create face");
-        error = FreeType.FTSetCharSize(VarUtils.starAddress(pointerFace), 0, 16 * 64, 300, 300);
-        if (error != 0)
-            throw new IllegalStateException("Fail set char size");
+        String fontName = "C:\\Windows\\Fonts\\Arial.ttf";
+        MemorySegment libPtr = VarUtils.address(ResourceScope.globalScope());
+        MemorySegment facePtr = VarUtils.address(ResourceScope.globalScope());
+        MemorySegment filePath = VarUtils.string(fontName, ResourceScope.globalScope());
+
+        // Init
+        var error = FreeType.FTInitFreeType(libPtr);
+        Asserts.assertEquals(FreeType.OK, error);
+
+        error = FreeType.FTNewFace(VarUtils.starAddress(libPtr), filePath.address(), 0, facePtr);
+        Asserts.assertEquals(FreeType.OK, error);
+
+        error = FreeType.FTSetCharSize(VarUtils.starAddress(facePtr), 0, 16 * 64, 300, 300);
+        Asserts.assertEquals(FreeType.OK, error);
+
+        // Print debug info
         System.out.println(FTFace.STRUCT_LAYOUT.byteSize());
-        MemorySegment face = VarUtils.star(pointerFace, FTFace.STRUCT_LAYOUT, ResourceScope.globalScope());
+        MemorySegment face = VarUtils.star(facePtr, FTFace.STRUCT_LAYOUT, ResourceScope.globalScope());
         System.out.println(VarUtils.getString(FTFace.FAMILY_NAME, face));
         System.out.println(VarUtils.getString(FTFace.STYLE_NAME, face));
         System.out.println(VarUtils.getInt(FTFace.ASCENDER, face));
         System.out.println(VarUtils.getInt(FTFace.DESCENDER, face));
         System.out.println(VarUtils.getInt(FTFace.HEIGHT, face));
         System.out.println(VarUtils.getInt(FTFace.UNITS_PER_EM, face));
-        FreeType.FTDoneFace(VarUtils.starAddress(pointerFace));
-        FreeType.FTDoneFreeType(VarUtils.starAddress(pointerLib));
+
+        // Done
+        FreeType.FTDoneFace(VarUtils.starAddress(facePtr));
+        FreeType.FTDoneFreeType(VarUtils.starAddress(libPtr));
     }
 }
