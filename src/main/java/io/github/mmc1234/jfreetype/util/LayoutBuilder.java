@@ -61,6 +61,8 @@ public class LayoutBuilder {
     static MemoryLayout pick(int name, String element, MemoryLayout... layouts) {
         if (name >= '0' && name <= '9')
             return layouts[name - '0'].withName(element);
+        if (name >= 'a' && name <= 'z')
+            return layouts[name - 'a' + 10].withName(element);
         return (switch (name) {
             case 'A' -> ALIGNED_ADDRESS;
             case 'I' -> ALIGNED_INT;
@@ -71,7 +73,7 @@ public class LayoutBuilder {
             case 'D' -> ALIGNED_DOUBLE;
             case 'C' -> ALIGNED_CHAR;
             case 'F' -> ALIGNED_FLOAT;
-            case 'l' -> ALIGNED_LONG_64;
+            case 'T' -> ALIGNED_LONG_64;
             default -> throw new IllegalStateException("Unexpected value: " + name);
         }).withName(element);
     }
