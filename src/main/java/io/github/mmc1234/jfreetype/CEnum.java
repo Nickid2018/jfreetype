@@ -11,7 +11,12 @@ public interface CEnum extends IntSupplier {
      * Return number indicating the enum constant
      * @return a number
      */
-    int value();
+    default int value() {
+        if(this instanceof Enum<?> e) {
+            return e.ordinal();
+        }
+        throw new UnsupportedOperationException();
+    }
 
     default int getAsInt() {
         return value();
