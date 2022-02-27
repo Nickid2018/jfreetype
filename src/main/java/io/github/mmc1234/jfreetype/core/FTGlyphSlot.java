@@ -252,7 +252,7 @@ public final class FTGlyphSlot {
     public static final VarHandle INTERNAL;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("AAAI01II2I3II4IAAIIIAA", new String[] {
+        LayoutBuilder builder = new LayoutBuilder("AAAI01LL2I3II4IAALLLAA", new String[] {
                 "library", "face", "next", "glyph_index", "generic", "metrics", "linearHoriAdvance",
                 "linearVertAdvance", "advance", "format", "bitmap", "bitmap_left", "bitmap_top",
                 "outline", "num_subglyphs", "subglyphs", "control_data", "control_len", "lsb_delta",

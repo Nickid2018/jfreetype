@@ -50,7 +50,7 @@ public final class FTBBox {
     public static final VarHandle Y_MAX;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("IIII", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("LLLL", new String[]{
                 "xMin", "yMin", "xMax", "yMax"
         });
         STRUCT_LAYOUT = builder.getGroupLayout();

@@ -599,7 +599,7 @@ public final class FTFace {
     }
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("IIIIIAAIAIA01SSSSSSSSAAAAAA20AA", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("LLLLLAAIAIA01SSSSSSSSAAAAAA20AA", new String[]{
                 "num_faces", "face_index", "face_flags", "style_flags", "num_glyphs", "family_name",
                 "style_name", "num_fixed_sizes", "available_sizes", "num_charmaps", "charmaps", "generic",
                 "bbox", "units_per_EM", "ascender", "descender", "height", "max_advance_width",

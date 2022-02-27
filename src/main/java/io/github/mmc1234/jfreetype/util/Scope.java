@@ -117,6 +117,25 @@ public class Scope implements AutoCloseable {
         return MemorySegment.ofAddress(addr, layout.byteSize(), scope);
     }
 
+    /**
+     * Get the object that the segment is pointing to using global scope.
+     * @param segment segment to operate
+     * @param layout layout of the object
+     * @return object which is pointed
+     */
+    public MemorySegment star(MemorySegment segment, MemoryLayout layout) {
+        return MemorySegment.ofAddress(VarUtils.starAddress(segment), layout.byteSize(), scope);
+    }
+
+    /**
+     * Create segment using the scope
+     * @param layout layout of segment
+     * @return a segment
+     */
+    public MemorySegment newSegment(MemoryLayout layout) {
+        return MemorySegment.allocateNative(layout, scope);
+    }
+
     public ResourceScope getResourceScope() {
         return scope;
     }

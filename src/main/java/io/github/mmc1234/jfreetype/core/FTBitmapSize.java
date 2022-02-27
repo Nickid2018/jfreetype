@@ -59,7 +59,7 @@ public final class FTBitmapSize {
     public static final VarHandle Y_PPEM;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("SSIII", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("SSLLL", new String[]{
                 "height", "width", "size", "x_ppem", "y_ppem"
         });
         STRUCT_LAYOUT = builder.getGroupLayout();

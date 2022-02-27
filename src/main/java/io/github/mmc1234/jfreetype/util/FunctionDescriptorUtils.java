@@ -1,8 +1,11 @@
 package io.github.mmc1234.jfreetype.util;
 
+import io.github.mmc1234.jfreetype.internal.LibraryUtil;
 import jdk.incubator.foreign.FunctionDescriptor;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.ValueLayout;
+
+import java.lang.invoke.MethodHandle;
 
 /**
  * Utility class for {@link FunctionDescriptor}
@@ -15,9 +18,9 @@ public class FunctionDescriptorUtils {
      * @param desc descriptor
      * @return a FunctionDescriptor
      */
-    public static FunctionDescriptor of(String desc) {
+    public static FunctionDescriptor of(String desc, MemoryLayout... layouts) {
         MemoryLayout returnType = pick(desc.charAt(0));
-        MemoryLayout[] parameters = desc.chars().skip(1).mapToObj(FunctionDescriptorUtils::pick).toArray(MemoryLayout[]::new);
+        MemoryLayout[] parameters = desc.chars().skip(1).mapToObj(ch -> pick(ch, layouts)).toArray(MemoryLayout[]::new);
         return FunctionDescriptor.of(returnType, parameters);
     }
 
@@ -27,12 +30,14 @@ public class FunctionDescriptorUtils {
      * @param desc descriptor
      * @return a FunctionDescriptor
      */
-    public static FunctionDescriptor ofVoid(String desc) {
-        MemoryLayout[] parameters = desc.chars().mapToObj(FunctionDescriptorUtils::pick).toArray(MemoryLayout[]::new);
+    public static FunctionDescriptor ofVoid(String desc, MemoryLayout... layouts) {
+        MemoryLayout[] parameters = desc.chars().mapToObj(ch -> pick(ch, layouts)).toArray(MemoryLayout[]::new);
         return FunctionDescriptor.ofVoid(parameters);
     }
 
-    static MemoryLayout pick(int name) {
+    static MemoryLayout pick(int name, MemoryLayout... layouts) {
+        if (name >= '0' && name <= '9')
+            return layouts[name - '0'];
         return switch (name) {
             case 'A' -> ValueLayout.ADDRESS;
             case 'I' -> ValueLayout.JAVA_INT;
@@ -45,5 +50,21 @@ public class FunctionDescriptorUtils {
             case 'F' -> ValueLayout.JAVA_FLOAT;
             default -> throw new IllegalStateException("Unexpected value: " + name);
         };
+    }
+
+    private static final MethodHandle SIZE_OF_LONG;
+
+    public static int sizeOfLong() {
+        try {
+            return SIZE_OF_LONG == null ? 4 : (int) SIZE_OF_LONG.invoke();
+        } catch (Throwable e) {
+            return 4;
+        }
+    }
+
+    static {
+        SIZE_OF_LONG = LibraryUtil.loadSilent("JFT_longSize", of("I"));
+        if (SIZE_OF_LONG == null)
+            System.err.println("Cannot link JFT_longSize function, maybe you aren't using our library.");
     }
 }

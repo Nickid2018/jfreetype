@@ -15,6 +15,21 @@ import static jdk.incubator.foreign.ValueLayout.*;
 public class VarUtils {
 
     /**
+     * C: bool true = 1
+     */
+    public static final int TRUE = 1;
+
+    /**
+     * C: bool false = 0
+     */
+    public static final int FALSE = 0;
+
+    /**
+     * nullptr
+     */
+    public static final int NULL = 0;
+
+    /**
      * Create access to a field.
      * @param seqLayout sequence layout of the struct
      * @param path path to the element
