@@ -1,5 +1,8 @@
 package io.github.mmc1234.jfreetype.internal;
 
+import io.github.mmc1234.jfreetype.util.FunctionDescriptorUtils;
+import jdk.incubator.foreign.FunctionDescriptor;
+
 import java.lang.invoke.MethodHandle;
 
 import static io.github.mmc1234.jfreetype.internal.LibraryUtil.load;
@@ -19,6 +22,7 @@ public class GlyphLayerManagement {
         FT_GET_COLOR_GLYPH_CLIP_BOX = load("FT_Get_Color_Glyph_ClipBox", of("BAIA"));
         FT_GET_PAINT_LAYERS = load("FT_Get_Paint_Layers", of("BAAA"));
         FT_GET_COLOR_LINE_STOPS = load("FT_Get_Colorline_Stops", of("BAAA"));
-        FT_GET_PAINT = load("FT_Get_Paint", of("BAAA"));
+        // FT_GET_PAINT = load("FT_Get_Paint", of("BA1A"));
+        // TODO direct struct
     }
 }

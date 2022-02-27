@@ -16,7 +16,7 @@ public class GlyphColorManagement {
     static void loadMethodHandles() {
         FT_PALETTE_DATA_GET = load("FT_Palette_Data_Get", of("IAA"));
         FT_PALETTE_SELECT = load("FT_Palette_Select", of("IASA"));
-        FT_PALETTE_SET_FOREGROUND_COLOR = load("FT_Palette_Set_Foreground_Color", of("IA1"));
-        // TODO
+        // FT_PALETTE_SET_FOREGROUND_COLOR = load("FT_Palette_Set_Foreground_Color", of("IA1"));
+        // TODO direct struct
     }
 }
