@@ -18,34 +18,34 @@ package io.github.mmc1234.jfreetype.example;
 
 import io.github.mmc1234.jfreetype.core.FTFace;
 import io.github.mmc1234.jfreetype.core.FreeType;
-import io.github.mmc1234.jfreetype.util.VarHandleUtils;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.ValueLayout;
+import io.github.mmc1234.jfreetype.util.VarUtils;
+import jdk.incubator.foreign.*;
 
 public class ExampleFace {
 
     public static void main(String[] args) {
         String str = "C:\\Windows\\Fonts\\Arial.ttf";
-        MemorySegment alib = MemorySegment.allocateNative(ValueLayout.ADDRESS, ResourceScope.globalScope());
-        MemorySegment aface = MemorySegment.allocateNative(ValueLayout.ADDRESS, ResourceScope.globalScope());
-        MemorySegment path = MemorySegment.allocateNative(ValueLayout.ADDRESS.byteSize() * 1024, ResourceScope.globalScope());
-        path.setUtf8String(0, str);
-        var error = FreeType.FTInitFreeType(alib);
+        MemorySegment pointerLib = VarUtils.address(ResourceScope.globalScope());
+        MemorySegment pointerFace = VarUtils.address(ResourceScope.globalScope());
+        MemorySegment path = VarUtils.string(str, ResourceScope.globalScope());
+        var error = FreeType.FTInitFreeType(pointerLib);
         if (error != 0)
             throw new IllegalStateException("Fail init FreeType");
-        System.out.println();System.out.println(error);
-        error = FreeType.FTNewFace(alib.address(), path.address(), 0, aface);
-        System.out.println(error);
+        error = FreeType.FTNewFace(VarUtils.starAddress(pointerLib), path.address(), 0, pointerFace);
         if (error != 0)
             throw new IllegalStateException("Fail create face");
-        error = FreeType.FTSetCharSize(FreeType.deRef(aface), 0, 16 * 64, 300, 300);
+        error = FreeType.FTSetCharSize(VarUtils.starAddress(pointerFace), 0, 16 * 64, 300, 300);
         if (error != 0)
             throw new IllegalStateException("Fail set char size");
-        System.out.println(VarHandleUtils.getLong(FTFace.NUM_CHARMAPS,
-                MemorySegment.ofAddress(FreeType.deRef(aface), FTFace.STRUCT_LAYOUT.byteSize(), ResourceScope.globalScope())));
-        FreeType.FTDoneFace(FreeType.deRef(aface));
-        FreeType.FTDoneFreeType(FreeType.deRef(alib));
+        System.out.println(FTFace.STRUCT_LAYOUT.byteSize());
+        MemorySegment face = VarUtils.star(pointerFace, FTFace.STRUCT_LAYOUT, ResourceScope.globalScope());
+        System.out.println(VarUtils.getString(FTFace.FAMILY_NAME, face));
+        System.out.println(VarUtils.getString(FTFace.STYLE_NAME, face));
+        System.out.println(VarUtils.getInt(FTFace.ASCENDER, face));
+        System.out.println(VarUtils.getInt(FTFace.DESCENDER, face));
+        System.out.println(VarUtils.getInt(FTFace.HEIGHT, face));
+        System.out.println(VarUtils.getInt(FTFace.UNITS_PER_EM, face));
+        FreeType.FTDoneFace(VarUtils.starAddress(pointerFace));
+        FreeType.FTDoneFreeType(VarUtils.starAddress(pointerLib));
     }
 }

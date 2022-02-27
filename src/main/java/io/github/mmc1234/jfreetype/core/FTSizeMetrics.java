@@ -15,8 +15,8 @@ import java.lang.invoke.VarHandle;
  * by scaling the corresponding {@link FTFace} values manually, with code similar to the following.
  *
  * <pre>{@code
- *              scaled_ascender = FTMulFix(VarHandleUtils.getShort(FTFace.ASCENDER, face),
- *                                         VarHandleUtils.getLong(FTSizeMetrics.Y_SCALE, size_metrics));
+ *              scaled_ascender = FTMulFix(VarUtils.getShort(FTFace.ASCENDER, face),
+ *                                         VarUtils.getLong(FTSizeMetrics.Y_SCALE, size_metrics));
  *          }</pre>
  * <p>
  * Note that due to glyph hinting and the selected rendering mode these values are usually not exact;
@@ -37,17 +37,17 @@ import java.lang.invoke.VarHandle;
  * <pre>{@code
  *                if (!FTGetFontFormat(face).getUtf8String(0).equals("TrueType")) &&
  *                          do_native_bytecode_hinting) {
- *                      ascender  = Math.round(FTMulFix(VarHandleUtils.getShort(FTFace.ASCENDER, face),
- *                                                      VarHandleUtils.getLong(FTSizeMetrics.Y_SCALE, size_metrics))));
- *                      descender = Math.round(FTMulFix(VarHandleUtils.getShort(FTFace.ASCENDER, face),
- *                                                      VarHandleUtils.getLong(FTSizeMetrics.Y_SCALE, size_metrics))));
+ *                      ascender  = Math.round(FTMulFix(VarUtils.getShort(FTFace.ASCENDER, face),
+ *                                                      VarUtils.getLong(FTSizeMetrics.Y_SCALE, size_metrics))));
+ *                      descender = Math.round(FTMulFix(VarUtils.getShort(FTFace.ASCENDER, face),
+ *                                                      VarUtils.getLong(FTSizeMetrics.Y_SCALE, size_metrics))));
  *                } else {
- *                      ascender  = VarHandleUtils.getLong(FTSizeMetrics.ASCENDER, size_metrics);
- *                      descender = VarHandleUtils.getLong(FTSizeMetrics.DESCENDER, size_metrics);
+ *                      ascender  = VarUtils.getLong(FTSizeMetrics.ASCENDER, size_metrics);
+ *                      descender = VarUtils.getLong(FTSizeMetrics.DESCENDER, size_metrics);
  *                }
  *
- *                height      = VarHandleUtils.getLong(FTSizeMetrics.HEIGHT, size_metrics));
- *                max_advance = VarHandleUtils.getLong(FTSizeMetrics.MAX_ADVANCE, size_metrics));
+ *                height      = VarUtils.getLong(FTSizeMetrics.HEIGHT, size_metrics));
+ *                max_advance = VarUtils.getLong(FTSizeMetrics.MAX_ADVANCE, size_metrics));
  *          }</pre>
  * @implNote In freetype/freetype.h
  * <pre>{@code
@@ -117,7 +117,7 @@ public final class FTSizeMetrics {
     public static final VarHandle MAX_ADVANCE;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("SSLLLLLL", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("SSIIIIII", new String[]{
                 "x_ppem", "y_ppem", "x_scale", "y_scale", "ascender", "descender", "height", "max_advance"
         });
         STRUCT_LAYOUT = builder.getGroupLayout();

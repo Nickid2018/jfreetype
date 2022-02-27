@@ -27,7 +27,7 @@ public final class FTStreamDesc {
     public static final VarHandle POINTER;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("LA", new String[] {
+        LayoutBuilder builder = new LayoutBuilder("IA", new String[] {
                 "value", "pointer"
         }, true);
         UNION_LAYOUT = builder.getGroupLayout();

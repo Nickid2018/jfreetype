@@ -22,9 +22,9 @@ import io.github.mmc1234.jfreetype.CEnum;
  *      // then use the output buffer as follows.
  *
  *      ...
- *      MemorySegment bitmap = VarHandleUtils.getSegment(
+ *      MemorySegment bitmap = VarUtils.getSegment(
  *                                      FTGlyphSlot.BITMAP, glyph, FTBitmap.STRUCT_LAYOUT, scope);
- *      MemoryAddress buffer = VarHandleUtils.getAddress(FTBitmap.BUFFER, bitmap);
+ *      MemoryAddress buffer = VarUtils.getAddress(FTBitmap.BUFFER, bitmap);
  *
  *      for pixel in buffer
  *      {
