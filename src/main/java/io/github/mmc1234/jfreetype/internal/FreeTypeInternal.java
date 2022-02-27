@@ -4,7 +4,7 @@ import static io.github.mmc1234.jfreetype.internal.LibraryUtil.loadNative;
 
 public class FreeTypeInternal {
 
-    public static final boolean loadAll() {
+    public static boolean loadAll() {
         loadNative();
         VersionInternal.loadMethodHandles();
         BaseInterface.loadMethodHandles();

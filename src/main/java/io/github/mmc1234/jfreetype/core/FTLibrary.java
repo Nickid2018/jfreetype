@@ -11,10 +11,10 @@ import io.github.mmc1234.jfreetype.system.FTMemory;
  * as well as a scan-line converter object (see {@link FTRaster}).<br/>
  * [Since 2.5.6] In multi-threaded applications it is easiest to use one {@link FTLibrary} object per thread.
  * In case this is too cumbersome, a single {@link FTLibrary} object across threads is possible also
- * as long as a mutex lock is used around {@link FreeType#FTNewFace} and {@link FreeType#FTDoneFace}.
+ * as long as a mutex lock is used around {@link FreeTypeFace#FTNewFace} and {@link FreeTypeFace#FTDoneFace}.
  *
  * @apiNote Library objects are normally created by {@link FreeType#FTInitFreeType}, and destroyed
- * with {@link FreeType#FTDoneFreeType}. If you need reference-counting (cf. {@code FT_Reference_Library}),
+ * with {@link FreeTypeLibrary#FTDoneFreeType}. If you need reference-counting (cf. {@code FT_Reference_Library}),
  * use {@code FT_New_Library} and {@code FT_Done_Library}.
  * @implNote In freetype/freetype.h
  * <pre>{@code

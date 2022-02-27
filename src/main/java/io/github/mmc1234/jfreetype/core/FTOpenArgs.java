@@ -7,14 +7,14 @@ import java.lang.invoke.VarHandle;
 
 /**
  * A structure to indicate how to open a new font file or stream. A pointer to such a structure
- * can be used as a parameter for the functions {@link FreeType#FTOpenFace} and {@link FreeType#FTAttachStream}.
+ * can be used as a parameter for the functions {@link FreeTypeFace#FTOpenFace} and {@link FreeTypeFace#FTAttachStream}.
  *
  * @apiNote The stream type is determined by the contents of {@link #FLAGS}:
  * <ul>
  *     <li>
  *         If the {@link #FT_OPEN_MEMORY} bit is set, assume that this is a memory file of memory_size bytes,
  *         located at memory_address. The data are not copied, and the client is responsible for releasing
- *         and destroying them after the corresponding call to {@link FreeType#FTDoneFace}.
+ *         and destroying them after the corresponding call to {@link FreeTypeFace#FTDoneFace}.
  *     </li>
  *     <li>
  *         Otherwise, if the {@link #FT_OPEN_STREAM} bit is set, assume that a custom input stream stream is used.
@@ -24,10 +24,10 @@ import java.lang.invoke.VarHandle;
  *     </li>
  *     <li>
  *         If none of the above bits are set or if multiple are set at the same time, the flags are invalid
- *         and {@link FreeType#FTOpenFace} fails.
+ *         and {@link FreeTypeFace#FTOpenFace} fails.
  *     </li>
  *     <li>
- *         If the {@link #FT_OPEN_DRIVER} bit is set, {@link FreeType#FTOpenFace} only tries to open the file with the driver
+ *         If the {@link #FT_OPEN_DRIVER} bit is set, {@link FreeTypeFace#FTOpenFace} only tries to open the file with the driver
  *         whose handler is in driver.
  *     </li>
  *     <li>
@@ -113,7 +113,7 @@ public final class FTOpenArgs {
     public static final VarHandle STREAM;
 
     /**
-     * This field is exclusively used by {@link FreeType#FTOpenFace}; it simply specifies the font driver to use for opening the face.
+     * This field is exclusively used by {@link FreeTypeFace#FTOpenFace}; it simply specifies the font driver to use for opening the face.
      * If set to NULL, FreeType tries to load the face with each one of the drivers in its list.
      */
     public static final VarHandle DRIVER;

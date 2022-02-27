@@ -33,7 +33,7 @@ public final class FTStream {
     public static final MemoryLayout SEQUENCE_LAYOUT;
 
     /**
-     * For memory-based streams, this is the address of the first stream byte in memory.
+     * For memory-based streams, this is the newAddress of the first stream byte in memory.
      * This field should always be set to NULL for disk-based streams.
      */
     public static final VarHandle BASE;
@@ -71,7 +71,7 @@ public final class FTStream {
      * <ul>
      *     <li>stream - A handle to the source stream.</li>
      *     <li>offset - The offset of read in stream (always from start).</li>
-     *     <li>buffer - The address of the read buffer.</li>
+     *     <li>buffer - The newAddress of the read buffer.</li>
      *     <li>count - The number of bytes to read from the stream.</li>
      * </ul>
      * Return: The number of bytes effectively read by the stream.<br/>

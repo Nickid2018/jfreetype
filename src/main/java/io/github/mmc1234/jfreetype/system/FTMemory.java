@@ -50,7 +50,7 @@ public final class FTMemory {
      * Input:
      * <ul>
      *     <li>memory - A handle to the source memory manager.</li>
-     *     <li>block - The address of the target memory block.</li>
+     *     <li>block - The newAddress of the target memory block.</li>
      * </ul>
      */
     public static final VarHandle FREE;
@@ -64,9 +64,9 @@ public final class FTMemory {
      *     <li>memory - A handle to the source memory manager.</li>
      *     <li>cur_size - The block's current size in bytes.</li>
      *     <li>new_size - The block's requested new size.</li>
-     *     <li>block - The block's current address.</li>
+     *     <li>block - The block's current newAddress.</li>
      * </ul>
-     * Return: New block address. 0 in case of memory shortage.<br/>
+     * Return: New block newAddress. 0 in case of memory shortage.<br/>
      * Note: In case of error, the old block must still be available.
      */
     public static final VarHandle REALLOC;
