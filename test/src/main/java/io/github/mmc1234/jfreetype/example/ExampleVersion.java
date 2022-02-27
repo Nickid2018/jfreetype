@@ -16,8 +16,7 @@
 
 package io.github.mmc1234.jfreetype.example;
 
-import io.github.mmc1234.jfreetype.core.FreeTypeFace;
-import io.github.mmc1234.jfreetype.core.FreeTypeLibrary;
+import io.github.mmc1234.jfreetype.core.FreeType;
 import io.github.mmc1234.jfreetype.util.VarUtils;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
@@ -25,26 +24,31 @@ import jdk.incubator.foreign.ValueLayout;
 
 public class ExampleVersion {
 
-    private static int[] getVersion(MemorySegment lib) {
+    private static String getVersionString(MemorySegment libPtr) {
         try (var scope = ResourceScope.newConfinedScope()) {
-            MemorySegment versionA = MemorySegment.allocateNative(ValueLayout.JAVA_INT.byteSize(), scope);
-            MemorySegment versionB = MemorySegment.allocateNative(ValueLayout.JAVA_INT.byteSize(), scope);
-            MemorySegment versionC = MemorySegment.allocateNative(ValueLayout.JAVA_INT.byteSize(), scope);
-
-            FreeTypeLibrary.FTLibraryVersion(VarUtils.starAddress(lib), versionA, versionB, versionC);
-            var v1 = versionA.getAtIndex(ValueLayout.JAVA_INT, 0);
-            var v2 = versionB.getAtIndex(ValueLayout.JAVA_INT, 0);
-            var v3 = versionC.getAtIndex(ValueLayout.JAVA_INT, 0);
-            return new int[]{v1, v2, v3};
+            MemorySegment outV1 = MemorySegment.allocateNative(ValueLayout.JAVA_INT, scope);
+            MemorySegment outV2 = MemorySegment.allocateNative(ValueLayout.JAVA_INT, scope);
+            MemorySegment outV3 = MemorySegment.allocateNative(ValueLayout.JAVA_INT, scope);
+            FreeType.FTLibraryVersion(VarUtils.starAddress(libPtr), outV1, outV2, outV3);
+            var v1 = outV1.getAtIndex(ValueLayout.JAVA_INT, 0);
+            var v2 = outV2.getAtIndex(ValueLayout.JAVA_INT, 0);
+            var v3 = outV3.getAtIndex(ValueLayout.JAVA_INT, 0);
+            return v1+"."+v2+"."+v3;
         }
     }
 
     public static void main(String[] args) {
-        MemorySegment alib = MemorySegment.allocateNative(ValueLayout.ADDRESS, ResourceScope.globalScope());
-        var error = FreeTypeLibrary.FTInitFreeType(alib);
-        if (error != 0) throw new IllegalStateException("Fail init FreeType");
-        var version = getVersion(alib);
-        System.out.printf("Free Type Version=%d,%d,%d\n", version[0], version[1], version[2]);
-        FreeTypeFace.FTDoneFreeType(VarUtils.starAddress(alib));
+        MemorySegment libPtr = MemorySegment.allocateNative(ValueLayout.ADDRESS, ResourceScope.globalScope());
+
+        // Init
+        var error = FreeType.FTInitFreeType(libPtr);
+        Asserts.assertEquals(FreeType.OK, error);
+
+        // Print version
+        var version = getVersionString(libPtr);
+        System.out.println("Free Type Version="+version);
+
+        // Done
+        FreeType.FTDoneFreeType(VarUtils.starAddress(libPtr));
     }
 }
