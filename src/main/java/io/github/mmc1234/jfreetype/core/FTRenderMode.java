@@ -5,10 +5,11 @@ import io.github.mmc1234.jfreetype.CEnum;
 /**
  * Render modes supported by FreeType 2. Each mode corresponds to a specific type of scanline conversion
  * performed on the outline.<br/>
- * For bitmap fonts and embedded bitmaps {@link FTGlyphSlot#PIXEL_MODE} gives the format of the returned bitmap.<br/>
+ * For bitmap fonts and embedded bitmaps {@link io.github.mmc1234.jfreetype.image.FTPixelMode}
+ * gives the format of the returned bitmap.<br/>
  * All modes except {@link #FT_RENDER_MODE_MONO} use 256 levels of opacity, indicating pixel coverage.
  * Use linear alpha blending and gamma correction to correctly render non-monochrome glyph bitmaps onto a surface;
- * see {@link FreeType#FTRenderGlyph}.<br/>
+ * see {@link FreeTypeGlyph#FTRenderGlyph}.<br/>
  * The {@link #FT_RENDER_MODE_SDF} is a special render mode that uses up to 256 distance values,
  * indicating the signed distance from the grid position to the nearest outline.
  *

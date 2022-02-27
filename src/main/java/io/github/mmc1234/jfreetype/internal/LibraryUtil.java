@@ -30,7 +30,7 @@ public class LibraryUtil {
         return CLinker.systemCLinker().downcallHandle(getNativeSymbol(name), fd);
     }
 
-    public static RuntimeException st(Throwable e) {
+    public static RuntimeException rethrow(Throwable e) {
         return new RuntimeException(e);
     }
 }

@@ -46,7 +46,7 @@ public interface FTLoadFlags {
      */
     int FT_LOAD_NO_HINTING = 1 << 1;
     /**
-     * Call {@link FreeType#FTRenderGlyph} after the glyph is loaded. By default, the glyph is rendered in {@code FT_RENDER_MODE_NORMAL} mode.
+     * Call {@link FreeTypeGlyph#FTRenderGlyph} after the glyph is loaded. By default, the glyph is rendered in {@code FT_RENDER_MODE_NORMAL} mode.
      * This can be overridden by FT_LOAD_TARGET_XXX or {@link #FT_LOAD_MONOCHROME}.<br/>
      * This flag is unset by {@link #FT_LOAD_NO_SCALE}.
      */
@@ -84,15 +84,15 @@ public interface FTLoadFlags {
      */
     int FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH = 1 << 9;
     /**
-     * Don't load composite glyphs recursively. Instead, the font driver fills {@link FTGlyphSlot#NUM_SUBGLYPH} and
+     * Don't load composite glyphs recursively. Instead, the font driver fills {@link FTGlyphSlot#NUM_SUBGLYPHS} and
      * {@link FTGlyphSlot#SUBGLYPHS}; it also sets {@link FTGlyphSlot#FORMAT} to {@code FT_GLYPH_FORMAT_COMPOSITE}.
-     * The description of subglyphs can then be accessed with {@link FreeType#FTGetSubGlyphInfo}.<br/>
+     * The description of subglyphs can then be accessed with {@link FreeTypeGlyph#FTGetSubGlyphInfo}.<br/>
      * Don't use this flag for retrieving metrics information since some font drivers only return rudimentary data.<br/>
      * This flag implies {@link #FT_LOAD_NO_SCALE} and {@link #FT_LOAD_IGNORE_TRANSFORM}.
      */
     int FT_LOAD_NO_RECURSE = 1 << 10;
     /**
-     * Ignore the transform matrix set by {@link FreeType#FTSetTransform}.
+     * Ignore the transform matrix set by {@link FreeTypeFace#FTSetTransform}.
      */
     int FT_LOAD_IGNORE_TRANSFORM = 1 << 11;
     /**
@@ -119,7 +119,7 @@ public interface FTLoadFlags {
      * and color bitmaps are found, they are converted to 256-level gray bitmaps,
      * using the {@link io.github.mmc1234.jfreetype.image.FTPixelMode#FT_PIXEL_MODE_GRAY} format.<br/>
      * [Since 2.10, experimental] If the glyph index contains an entry in the face's ‘COLR’ table with
-     * a ‘CPAL’ palette table (as defined in the OpenType specification), make {@link FreeType#FTRenderGlyph} provide
+     * a ‘CPAL’ palette table (as defined in the OpenType specification), make {@link FreeTypeGlyph#FTRenderGlyph} provide
      * a default blending of the color glyph layers associated with the glyph index, using the same bitmap format
      * as embedded color bitmap images. This is mainly for convenience; for full control of color layers use
      * {@code FT_Get_Color_Glyph_Layer} and FreeType's color functions like FT_Palette_Select instead of

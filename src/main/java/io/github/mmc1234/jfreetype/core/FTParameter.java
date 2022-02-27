@@ -6,8 +6,8 @@ import jdk.incubator.foreign.MemoryLayout;
 import java.lang.invoke.VarHandle;
 
 /**
- * A simple structure to pass more or less generic parameters to {@link FreeType#FTOpenFace}
- * and {@link FreeType#FTFaceProperties}.
+ * A simple structure to pass more or less generic parameters to {@link FreeTypeFace#FTOpenFace}
+ * and {@link FreeTypeFace#FTFaceProperties}.
  *
  * @apiNote The ID and function of parameters are driver-specific.
  * See section ‘Parameter Tags’ for more information.

@@ -4,7 +4,7 @@ import io.github.mmc1234.jfreetype.CEnum;
 
 /**
  * An enumeration to specify character sets supported by charmaps.
- * Used in the {@link FreeType#FTSelectCharmap} API function.
+ * Used in the {@link FreeTypeFace#FTSelectCharmap} API function.
  *
  * @apiNote Despite the name, this enumeration lists specific character repertories (i.e., charsets),
  * and not text encoding methods (e.g., UTF-8, UTF-16, etc.).<br/>
@@ -86,7 +86,7 @@ public enum FTEncoding implements CEnum<FTEncoding> {
      * The Unicode character set. This value covers all versions of the Unicode repertoire, including ASCII and Latin-1.
      * Most fonts include a Unicode charmap, but not all of them.<br/>
      * For example, if you want to access Unicode value U+1F028 (and the font contains it),
-     * use value 0x1F028 as the input value for {@link FreeType#FTGetCharIndex}.
+     * use value 0x1F028 as the input value for {@link FreeTypeFace#FTGetCharIndex}.
      */
     UNICODE('u', 'n', 'i', 'c'),
     /**

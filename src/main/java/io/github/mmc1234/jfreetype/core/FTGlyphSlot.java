@@ -14,11 +14,11 @@ import java.lang.invoke.VarHandle;
  * the slot's content is erased by the new glyph data, i.e., the glyph's metrics
  * , its image (bitmap or outline), and other control information.
  *
- * @apiNote If {@link FreeType#FTLoadGlyph} is called with default flags (see {@link FTLoadFlags#FT_LOAD_DEFAULT})
+ * @apiNote If {@link FreeTypeFace#FTLoadGlyph} is called with default flags (see {@link FTLoadFlags#FT_LOAD_DEFAULT})
  * the glyph image is loaded in the glyph slot in its native format (e.g., an outline glyph for TrueType and Type 1 formats).
  * [Since 2.9] The prospective bitmap metrics are calculated according to FT_LOAD_TARGET_XXX and other flags
  * even for the outline glyph, even if {@link FTLoadFlags#FT_LOAD_RENDER} is not set.<br/>
- * This image can later be converted into a bitmap by calling {@link FreeType#FTRenderGlyph}.
+ * This image can later be converted into a bitmap by calling {@link FreeTypeGlyph#FTRenderGlyph}.
  * This function searches the current renderer for the native image's format, then invokes it.<br/>
  * The renderer is in charge of transforming the native image through the slot's face transformation fields,
  * then converting it into a bitmap that is returned in slot->bitmap.<br/>
@@ -135,7 +135,7 @@ public final class FTGlyphSlot {
     public static final VarHandle NEXT;
 
     /**
-     * [Since 2.10] The glyph index passed as an argument to {@link FreeType#FTLoadGlyph} while initializing the glyph slot.
+     * [Since 2.10] The glyph index passed as an argument to {@link FreeTypeFace#FTLoadGlyph} while initializing the glyph slot.
      */
     public static final VarHandle GLYPH_INDEX;
 
@@ -147,7 +147,7 @@ public final class FTGlyphSlot {
 
     /**
      * The metrics of the last loaded glyph in the slot. The returned values depend on the last load flags
-     * (see the {@link FreeType#FTLoadGlyph} API function) and can be expressed either
+     * (see the {@link FreeTypeFace#FTLoadGlyph} API function) and can be expressed either
      * in 26.6 fractional pixels or font units.<br/>
      * Note that even when the glyph image is transformed, the metrics are not.
      */
@@ -184,7 +184,7 @@ public final class FTGlyphSlot {
 
     /**
      * This field is used as a bitmap descriptor. Note that the address and content of the bitmap buffer
-     * can change between calls of {@link FreeType#FTLoadGlyph} and a few other functions.
+     * can change between calls of {@link FreeTypeFace#FTLoadGlyph} and a few other functions.
      */
     public static final VarHandle BITMAP = null;
 

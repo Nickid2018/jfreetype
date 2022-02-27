@@ -15,16 +15,16 @@ import java.lang.invoke.VarHandle;
  *
  * @apiNote A face object also owns a single {@link FTGlyphSlot} object,
  * as well as one or more {@link FTSize} objects.<br/>
- * Use {@link FreeType#FTNewFace} or {@link FreeType#FTOpenFace} to create
+ * Use {@link FreeTypeFace#FTNewFace} or {@link FreeTypeFace#FTOpenFace} to create
  * a new face object from a given filepath or a custom input stream.<br/>
- * Use {@link FreeType#FTDoneFace} to destroy it (along with its slot and sizes).<br/>
+ * Use {@link FreeTypeFace#FTDoneFace} to destroy it (along with its slot and sizes).<br/>
  * An {@link FTFace} object can only be safely used from one thread at a time.
  * Similarly, creation and destruction of {@link FTFace}
  * with the same {@link FTLibrary} object can only be done from one thread at a time.
- * On the other hand, functions like {@link FreeType#FTLoadGlyph}
+ * On the other hand, functions like {@link FreeTypeFace#FTLoadGlyph}
  * and its siblings are thread-safe and do not need the lock to be held as long as
  * the same {@link FTFace} object is not used from multiple threads at the same time.<br/>
- * Fields may be changed after a call to {@link FreeType#FTAttachFile} or {@link FreeType#FTAttachStream}.<br/>
+ * Fields may be changed after a call to {@link FreeTypeFace#FTAttachFile} or {@link FreeTypeFace#FTAttachStream}.<br/>
  * For an OpenType variation font, the values of the following fields can change after a call to FT_Set_Var_Design_Coordinates
  * (and friends) if the font contains an ‘MVAR’ table: ascender, descender, height, underline_position, and underline_thickness.<br/>
  * Especially for TrueType fonts see also the documentation for {@link FTSizeMetrics}.
@@ -126,7 +126,7 @@ public final class FTFace {
     public static final long FT_FACE_FLAG_VERTICAL = 1L << 5;
 
     /**
-     * The face contains kerning information. If set, the kerning distance can be retrieved using {@link FreeType#FTGetKerning}.
+     * The face contains kerning information. If set, the kerning distance can be retrieved using {@link FreeTypeFace#FTGetKerning}.
      * Otherwise the function always return the vector (0,0).
      * Note that FreeType doesn't handle kerning data from the SFNT ‘GPOS’ table (as present in many OpenType fonts).
      */
@@ -145,14 +145,14 @@ public final class FTFace {
     public static final long FT_FACE_FLAG_MULTIPLE_MASTERS = 1L << 8;
 
     /**
-     * The face contains glyph names, which can be retrieved using {@link FreeType#FTGetGlyphName}.
+     * The face contains glyph names, which can be retrieved using {@link FreeTypeFace#FTGetGlyphName}.
      * Note that some TrueType fonts contain broken glyph name tables. Use the function FT_Has_PS_Glyph_Names when needed.
      */
     public static final long FT_FACE_FLAG_GLYPH_NAMES = 1L << 9;
 
     /**
      * Used internally by FreeType to indicate that a face's stream was provided by the client application and should not be destroyed
-     * when {@link FreeType#FTDoneFace} is called. Don't read or test this flag.
+     * when {@link FreeTypeFace#FTDoneFace} is called. Don't read or test this flag.
      */
     public static final long FT_FACE_FLAG_EXTERNAL_STREAM = 1L << 10;
 
@@ -166,8 +166,8 @@ public final class FTFace {
     /**
      * The face is CID-keyed. In that case, the face is not accessed by glyph indices but by CID values.
      * For subset CID-keyed fonts this has the consequence that not all index values are a valid argument
-     * to {@link FreeType#FTLoadGlyph}. Only the CID values for which corresponding glyphs in the subset font
-     * exist make {@link FreeType#FTLoadGlyph} return successfully; in all other cases you get an
+     * to {@link FreeTypeFace#FTLoadGlyph}. Only the CID values for which corresponding glyphs in the subset font
+     * exist make {@link FreeTypeFace#FTLoadGlyph} return successfully; in all other cases you get an
      * FT_Err_Invalid_Argument error.<br/>
      * Note that CID-keyed fonts that are in an SFNT wrapper (this is, all OpenType/CFF fonts)
      * don't have this flag set since the glyphs are accessed in the normal way (using contiguous indices);
@@ -428,7 +428,7 @@ public final class FTFace {
 
     /**
      * A macro that returns true whenever a face object contains kerning data that can be accessed with
-     * {@link FreeType#FTGetKerning}.
+     * {@link FreeTypeFace#FTGetKerning}.
      *
      * @implNote
      * <pre>{@code
@@ -455,7 +455,7 @@ public final class FTFace {
 
     /**
      * A macro that returns true whenever a face object contains some glyph names that can be accessed
-     * through {@link FreeType#FTGetGlyphName}.
+     * through {@link FreeTypeFace#FTGetGlyphName}.
      *
      * @implNote
      * <pre>{@code

@@ -9,10 +9,10 @@ import java.lang.invoke.VarHandle;
  * A handle to an object that models a face scaled to a given character size.
  *
  * @apiNote An {@link FTFace} has one active {@link FTSize} object that is used
- * by functions like {@link FreeType#FTLoadGlyph} to determine
+ * by functions like {@link FreeTypeFace#FTLoadGlyph} to determine
  * the scaling transformation that in turn is used to load and hint glyphs and metrics.<br/>
- * You can use {@link FreeType#FTSetCharSize}, {@link FreeType#FTSetPixelSizes},
- * {@link FreeType#FTRequestSize} or even {@link FreeType#FTSelectSize} to change
+ * You can use {@link FreeTypeFace#FTSetCharSize}, {@link FreeTypeFace#FTSetPixelSizes},
+ * {@link FreeTypeFace#FTRequestSize} or even {@link FreeTypeFace#FTSelectSize} to change
  * the content (i.e., the scaling values) of the active {@link FTSize}.<br/>
  * You can use FTNewSize to create additional size objects for a given {@link FTFace},
  * but they won't be used by other functions until you activate it through FTActivateSize.

@@ -3,12 +3,12 @@ package io.github.mmc1234.jfreetype.core;
 import io.github.mmc1234.jfreetype.CEnum;
 
 /**
- * An enumeration to specify the format of kerning values returned by {@link FreeType#FTGetKerning}.
+ * An enumeration to specify the format of kerning values returned by {@link FreeTypeFace#FTGetKerning}.
  *
  * @apiNote {@link #FT_KERNING_DEFAULT} returns full pixel values; it also makes FreeType heuristically scale
  * down kerning distances at small ppem values so that they don't become too big.<br/>
  * Both {@link #FT_KERNING_DEFAULT} and {@link #FT_KERNING_UNFITTED} use the current horizontal scaling factor
- * (as set e.g. with {@link FreeType#FTSetCharSize}) to convert font units to pixels.
+ * (as set e.g. with {@link FreeTypeFace#FTSetCharSize}) to convert font units to pixels.
  * @implNote In freetype/freetype.h
  * <pre>{@code
  *   typedef enum FT_Kerning_Mode_

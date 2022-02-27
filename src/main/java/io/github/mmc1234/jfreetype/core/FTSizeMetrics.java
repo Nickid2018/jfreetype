@@ -31,7 +31,7 @@ import java.lang.invoke.VarHandle;
  * rely on a TTF's vertical data (for example, to properly align box characters vertically).<br/>
  * Only the application knows in advance that it is going to use native hinting for TTFs! FreeType,
  * on the other hand, selects the hinting mode not at the time of creating an {@link FTSize} object
- * but much later, namely while calling {@link FreeType#FTLoadGlyph}.<br/>
+ * but much later, namely while calling {@link FreeTypeFace#FTLoadGlyph}.<br/>
  * Here is some pseudocode that illustrates a possible solution.
  *
  * <pre>{@code

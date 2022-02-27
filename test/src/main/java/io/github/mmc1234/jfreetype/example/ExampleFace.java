@@ -17,7 +17,8 @@
 package io.github.mmc1234.jfreetype.example;
 
 import io.github.mmc1234.jfreetype.core.FTFace;
-import io.github.mmc1234.jfreetype.core.FreeType;
+import io.github.mmc1234.jfreetype.core.FreeTypeFace;
+import io.github.mmc1234.jfreetype.core.FreeTypeLibrary;
 import io.github.mmc1234.jfreetype.util.VarUtils;
 import jdk.incubator.foreign.*;
 
@@ -28,13 +29,13 @@ public class ExampleFace {
         MemorySegment pointerLib = VarUtils.address(ResourceScope.globalScope());
         MemorySegment pointerFace = VarUtils.address(ResourceScope.globalScope());
         MemorySegment path = VarUtils.string(str, ResourceScope.globalScope());
-        var error = FreeType.FTInitFreeType(pointerLib);
+        var error = FreeTypeLibrary.FTInitFreeType(pointerLib);
         if (error != 0)
             throw new IllegalStateException("Fail init FreeType");
-        error = FreeType.FTNewFace(VarUtils.starAddress(pointerLib), path.address(), 0, pointerFace);
+        error = FreeTypeFace.FTNewFace(VarUtils.starAddress(pointerLib), path.address(), 0, pointerFace);
         if (error != 0)
             throw new IllegalStateException("Fail create face");
-        error = FreeType.FTSetCharSize(VarUtils.starAddress(pointerFace), 0, 16 * 64, 300, 300);
+        error = FreeTypeFace.FTSetCharSize(VarUtils.starAddress(pointerFace), 0, 16 * 64, 300, 300);
         if (error != 0)
             throw new IllegalStateException("Fail set char size");
         System.out.println(FTFace.STRUCT_LAYOUT.byteSize());
@@ -45,7 +46,7 @@ public class ExampleFace {
         System.out.println(VarUtils.getInt(FTFace.DESCENDER, face));
         System.out.println(VarUtils.getInt(FTFace.HEIGHT, face));
         System.out.println(VarUtils.getInt(FTFace.UNITS_PER_EM, face));
-        FreeType.FTDoneFace(VarUtils.starAddress(pointerFace));
-        FreeType.FTDoneFreeType(VarUtils.starAddress(pointerLib));
+        FreeTypeFace.FTDoneFace(VarUtils.starAddress(pointerFace));
+        FreeTypeFace.FTDoneFreeType(VarUtils.starAddress(pointerLib));
     }
 }
