@@ -26,7 +26,7 @@ import io.github.mmc1234.jfreetype.CEnum;
  *   } FT_Size_Request_Type;
  * }</pre>
  */
-public enum FTSizeRequestType implements CEnum<FTSizeRequestType> {
+public enum FTSizeRequestType implements CEnum {
 
     /**
      * The nominal size. {@link FTFace#UNITS_PER_EM} is used to determine both scaling values.<br/>

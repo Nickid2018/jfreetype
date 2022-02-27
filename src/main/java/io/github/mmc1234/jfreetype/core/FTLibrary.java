@@ -14,7 +14,7 @@ import io.github.mmc1234.jfreetype.system.FTMemory;
  * as long as a mutex lock is used around {@link FreeTypeFace#FTNewFace} and {@link FreeTypeFace#FTDoneFace}.
  *
  * @apiNote Library objects are normally created by {@link FreeType#FTInitFreeType}, and destroyed
- * with {@link FreeTypeFace#FTDoneFreeType}. If you need reference-counting (cf. {@code FT_Reference_Library}),
+ * with {@link FreeTypeLibrary#FTDoneFreeType}. If you need reference-counting (cf. {@code FT_Reference_Library}),
  * use {@code FT_New_Library} and {@code FT_Done_Library}.
  * @implNote In freetype/freetype.h
  * <pre>{@code

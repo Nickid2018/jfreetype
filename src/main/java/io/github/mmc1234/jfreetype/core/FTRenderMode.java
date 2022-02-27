@@ -57,7 +57,7 @@ import io.github.mmc1234.jfreetype.CEnum;
  *   } FT_Render_Mode;
  * }</pre>
  */
-public enum FTRenderMode implements CEnum<FTRenderMode> {
+public enum FTRenderMode implements CEnum {
 
     /**
      * Default render mode; it corresponds to 8-bit anti-aliased bitmaps.

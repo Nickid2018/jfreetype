@@ -20,7 +20,7 @@ import io.github.mmc1234.jfreetype.CEnum;
  *   } FT_Kerning_Mode;
  * }</pre>
  */
-public enum FTKerningMode implements CEnum<FTKerningMode> {
+public enum FTKerningMode implements CEnum {
 
     /**
      * Return grid-fitted kerning distances in 26.6 fractional pixels.

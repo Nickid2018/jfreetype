@@ -70,7 +70,7 @@ import io.github.mmc1234.jfreetype.CEnum;
  *   }FT_Encoding;
  * }</pre>
  */
-public enum FTEncoding implements CEnum<FTEncoding> {
+public enum FTEncoding implements CEnum {
     /**
      * The encoding value 0 is reserved for all formats except BDF, PCF, and Windows FNT; see below for more information.
      */

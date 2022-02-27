@@ -183,7 +183,7 @@ public final class FTGlyphSlot {
     public static final VarHandle FORMAT;
 
     /**
-     * This field is used as a bitmap descriptor. Note that the address and content of the bitmap buffer
+     * This field is used as a bitmap descriptor. Note that the newAddress and content of the bitmap buffer
      * can change between calls of {@link FreeTypeFace#FTLoadGlyph} and a few other functions.
      */
     public static final VarHandle BITMAP = null;

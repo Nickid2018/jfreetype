@@ -9,8 +9,8 @@ import java.lang.invoke.VarHandle;
  * Client applications often need to associate their own data to a variety of FreeType core objects.
  * For example, a text layout API might want to associate a glyph cache to a given size object.
  * Some FreeType object contains a generic field, of type {@link FTGeneric}, which usage is left to client applications and font servers.<br/>
- * It can be used to store a pointer to client-specific data, as well as the address of a ‘finalizer’ function,
- * which will be called by FreeType when the object is destroyed (for example, the previous client example would put the address
+ * It can be used to store a pointer to client-specific data, as well as the newAddress of a ‘finalizer’ function,
+ * which will be called by FreeType when the object is destroyed (for example, the previous client example would put the newAddress
  * of the glyph cache destructor in the finalizer field).
  *
  * @implNote In freetype/fttypes.h
@@ -42,7 +42,7 @@ public final class FTGeneric {
      *  }</pre>
      * Describe a function used to destroy the ‘client’ data of any FreeType object.
      * See the description of the {@link FTGeneric} type for details of usage.<br/>
-     * Input: The address of the FreeType object that is under finalization.
+     * Input: The newAddress of the FreeType object that is under finalization.
      * Its client data is accessed through its generic field.
      */
     public static final VarHandle FINALIZER;

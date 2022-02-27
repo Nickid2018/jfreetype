@@ -24,7 +24,7 @@ import io.github.mmc1234.jfreetype.core.FTLoadFlags;
  *   } FT_Pixel_Mode;
  * }</pre>
  */
-public enum FTPixelMode implements CEnum<FTPixelMode> {
+public enum FTPixelMode implements CEnum {
 
     /**
      * Value 0 is reserved.

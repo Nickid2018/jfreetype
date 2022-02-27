@@ -9,20 +9,10 @@ import jdk.incubator.foreign.MemorySegment;
 
 import static io.github.mmc1234.jfreetype.internal.LibraryUtil.rethrow;
 
+/**
+ * An interface stores face operations.
+ */
 public interface FreeTypeFace {
-    /**
-     * Destroy a given FreeType library object and all of its children, including resources, drivers, faces, sizes, etc.
-     *
-     * @param library A handle to the target library object.
-     * @return FreeType error code. 0 means success.
-     */
-    static int FTDoneFreeType(@In MemoryAddress library) {
-        try {
-            return (int) BaseInterface.FT_DONE_FREETYPE.invoke(library);
-        } catch (Throwable e) {
-            throw rethrow(e);
-        }
-    }
 
     /**
      * Call {@link #FTOpenFace} to open a font by its pathname.
@@ -34,7 +24,7 @@ public interface FreeTypeFace {
      * @return FreeType error code. 0 means success.
      * @apiNote The pathname string should be recognizable as such by a standard fopen call on your system;
      * in particular, this means that pathname must not contain null bytes. If that is not sufficient to
-     * address all file name possibilities (for example, to handle wide character file names on Windows
+     * newAddress all file name possibilities (for example, to handle wide character file names on Windows
      * in UTF-16 encoding) you might use {@link #FTOpenFace} to pass a memory array or a stream object instead.<br/>
      * <p>
      * Use {@link #FTDoneFace} to destroy the created {@link FTFace} object (along with its slot and sizes).

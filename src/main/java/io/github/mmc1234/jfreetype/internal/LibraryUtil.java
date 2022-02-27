@@ -11,6 +11,9 @@ public class LibraryUtil {
 
     private static volatile boolean loaded = false;
 
+    private static final SymbolLookup SYMBOL_LOOKUP = SymbolLookup.loaderLookup();
+    private static final CLinker LINKER = CLinker.systemCLinker();
+
     public static void loadNative() {
         if (loaded)
             return;
@@ -23,14 +26,14 @@ public class LibraryUtil {
     }
 
     public static NativeSymbol getNativeSymbol(String name) {
-        return SymbolLookup.loaderLookup().lookup(name).get();
+        return SYMBOL_LOOKUP.lookup(name).orElseThrow(UnsatisfiedLinkError::new);
     }
 
     public static MethodHandle load(String name, FunctionDescriptor fd) {
-        return CLinker.systemCLinker().downcallHandle(getNativeSymbol(name), fd);
+        return LINKER.downcallHandle(getNativeSymbol(name), fd);
     }
 
     public static RuntimeException rethrow(Throwable e) {
-        return new RuntimeException(e);
+        return new RuntimeException("An error occurred in invoking C-Library function!", e);
     }
 }

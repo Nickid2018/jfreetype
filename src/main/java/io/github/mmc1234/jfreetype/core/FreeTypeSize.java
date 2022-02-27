@@ -8,8 +8,10 @@ import jdk.incubator.foreign.MemorySegment;
 
 import static io.github.mmc1234.jfreetype.internal.LibraryUtil.rethrow;
 
+/**
+ * An interface stores size operations.
+ */
 public interface FreeTypeSize {
-
 
     /**
      * Create a new size object from a given face object.

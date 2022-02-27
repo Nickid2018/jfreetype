@@ -8,7 +8,11 @@ import jdk.incubator.foreign.MemorySegment;
 
 import static io.github.mmc1234.jfreetype.internal.LibraryUtil.rethrow;
 
+/**
+ * An interface stores glyph operations.
+ */
 public interface FreeTypeGlyph {
+
     /**
      * Convert a given glyph image to a bitmap. It does so by inspecting the glyph image format,
      * finding the relevant renderer, and invoking it.

@@ -26,7 +26,7 @@ import io.github.mmc1234.jfreetype.core.FTLoadFlags;
  *   } FT_Glyph_Format;
  * }</pre>
  */
-public enum FTGlyphFormat implements CEnum<FTGlyphFormat> {
+public enum FTGlyphFormat implements CEnum {
 
     /**
      * The value 0 is reserved.

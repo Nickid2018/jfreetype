@@ -18,10 +18,17 @@ package io.github.mmc1234.jfreetype.core;
 
 import io.github.mmc1234.jfreetype.internal.*;
 
+/**
+ * A class indexes to all Core APIs.<br/>
+ * Please use sub-interfaces to call functions.
+ */
 public class FreeType implements
         FTLoadFlags, FTErrors, FreeTypeLibrary, FreeTypeFace, FreeTypeSize, FreeTypeGlyph {
 
-    static {
-        FreeTypeInternal.loadAll();
+    /**
+     * Load Method Handles of FreeType API.
+     */
+    public static boolean load() {
+         return FreeTypeInternal.loadAll();
     }
 }

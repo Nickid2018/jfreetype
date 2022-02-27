@@ -9,6 +9,9 @@ import jdk.incubator.foreign.MemorySegment;
 
 import static io.github.mmc1234.jfreetype.internal.LibraryUtil.rethrow;
 
+/**
+ * An interface stores library operations.
+ */
 public interface FreeTypeLibrary {
 
     /**
@@ -53,6 +56,20 @@ public interface FreeTypeLibrary {
     static int FTInitFreeType(@Out MemorySegment alibrary) {
         try {
             return (int) BaseInterface.FT_INIT_FREETYPE.invoke(alibrary.address());
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+    /**
+     * Destroy a given FreeType library object and all of its children, including resources, drivers, faces, sizes, etc.
+     *
+     * @param library A handle to the target library object.
+     * @return FreeType error code. 0 means success.
+     */
+    static int FTDoneFreeType(@In MemoryAddress library) {
+        try {
+            return (int) BaseInterface.FT_DONE_FREETYPE.invoke(library);
         } catch (Throwable e) {
             throw rethrow(e);
         }
