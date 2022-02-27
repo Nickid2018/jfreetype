@@ -43,8 +43,8 @@ public final class FTListNode {
         LayoutBuilder builder = new LayoutBuilder("AAA", new String[] { "prev", "next", "data" });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        PREV = builder.varHandle("prev");
-        NEXT = builder.varHandle("next");
-        DATA = builder.varHandle("data");
+        PREV = builder.primitiveField("prev");
+        NEXT = builder.primitiveField("next");
+        DATA = builder.primitiveField("data");
     }
 }

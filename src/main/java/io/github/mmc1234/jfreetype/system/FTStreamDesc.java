@@ -32,7 +32,7 @@ public final class FTStreamDesc {
         }, true);
         UNION_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        VALUE = builder.varHandle("value");
-        POINTER = builder.varHandle("pointer");
+        VALUE = builder.primitiveField("value");
+        POINTER = builder.primitiveField("pointer");
     }
 }

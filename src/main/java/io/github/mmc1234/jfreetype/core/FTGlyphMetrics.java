@@ -85,13 +85,13 @@ public final class FTGlyphMetrics {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        WIDTH = builder.varHandle("width");
-        HEIGHT = builder.varHandle("height");
-        HORI_BEARING_X = builder.varHandle("horiBearingX");
-        HORI_BEARING_Y = builder.varHandle("horiBearingY");
-        HORI_ADVANCE = builder.varHandle("horiAdvance");
-        VERT_BEARING_X = builder.varHandle("vertBearingX");
-        VERT_BEARING_Y = builder.varHandle("vertBearingY");
-        VERT_ADVANCE = builder.varHandle("vertAdvance");
+        WIDTH = builder.primitiveField("width");
+        HEIGHT = builder.primitiveField("height");
+        HORI_BEARING_X = builder.primitiveField("horiBearingX");
+        HORI_BEARING_Y = builder.primitiveField("horiBearingY");
+        HORI_ADVANCE = builder.primitiveField("horiAdvance");
+        VERT_BEARING_X = builder.primitiveField("vertBearingX");
+        VERT_BEARING_Y = builder.primitiveField("vertBearingY");
+        VERT_ADVANCE = builder.primitiveField("vertAdvance");
     }
 }

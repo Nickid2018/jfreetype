@@ -55,9 +55,9 @@ public final class FTBBox {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        X_MIN = builder.varHandle("xMin");
-        Y_MIN = builder.varHandle("yMin");
-        X_MAX = builder.varHandle("xMax");
-        Y_MAX = builder.varHandle("yMax");
+        X_MIN = builder.primitiveField("xMin");
+        Y_MIN = builder.primitiveField("yMin");
+        X_MAX = builder.primitiveField("xMax");
+        Y_MAX = builder.primitiveField("yMax");
     }
 }

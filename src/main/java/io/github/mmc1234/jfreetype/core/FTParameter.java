@@ -39,7 +39,7 @@ public final class FTParameter {
         LayoutBuilder builder = new LayoutBuilder("LA", new String[]{"tag", "data"});
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        TAG = builder.varHandle("tag");
-        DATA = builder.varHandle("data");
+        TAG = builder.primitiveField("tag");
+        DATA = builder.primitiveField("data");
     }
 }

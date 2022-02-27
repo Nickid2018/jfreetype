@@ -83,13 +83,13 @@ public final class FTBitmap {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        ROWS = builder.varHandle("rows");
-        WIDTH = builder.varHandle("rows");
-        PITCH = builder.varHandle("pitch");
-        BUFFER = builder.varHandle("buffer");
-        NUM_GRAYS = builder.varHandle("num_grays");
-        PIXEL_MODE = builder.varHandle("pixel_mode");
-        PALETTE_MODE = builder.varHandle("palette_mode");
-        PALETTE = builder.varHandle("palette");
+        ROWS = builder.primitiveField("rows");
+        WIDTH = builder.primitiveField("rows");
+        PITCH = builder.primitiveField("pitch");
+        BUFFER = builder.primitiveField("buffer");
+        NUM_GRAYS = builder.primitiveField("num_grays");
+        PIXEL_MODE = builder.primitiveField("pixel_mode");
+        PALETTE_MODE = builder.primitiveField("palette_mode");
+        PALETTE = builder.primitiveField("palette");
     }
 }

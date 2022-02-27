@@ -2,6 +2,7 @@ package io.github.mmc1234.jfreetype.util;
 
 import jdk.incubator.foreign.*;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +70,50 @@ public class VarUtils {
     }
 
     /**
-     * Get newAddress from the field.
+     * Get segment from the field.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param index index of the element
+     * @param layout layout of the struct
+     * @param scope scope of the segment
+     * @return segment of the field
+     */
+    public static MemorySegment getSegment(MethodHandle handle, MemorySegment segment, int index,
+                                           MemoryLayout layout, ResourceScope scope) {
+        MemoryAddress addr = getAddress(handle, segment, index);
+        return MemorySegment.ofAddress(addr, layout.byteSize(), scope);
+    }
+
+    /**
+     * Get segment from the field using global scope.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param index index of the element
+     * @param layout layout of the struct
+     * @return segment of the field
+     */
+    public static MemorySegment getSegment(VarHandle handle, MemorySegment segment, int index,
+                                           MemoryLayout layout) {
+        MemoryAddress addr = getAddress(handle, segment, index);
+        return MemorySegment.ofAddress(addr, layout.byteSize(), ResourceScope.globalScope());
+    }
+
+    /**
+     * Get segment from the field using global scope.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param index index of the element
+     * @param layout layout of the struct
+     * @return segment of the field
+     */
+    public static MemorySegment getSegment(MethodHandle handle, MemorySegment segment, int index,
+                                           MemoryLayout layout) {
+        MemoryAddress addr = getAddress(handle, segment, index);
+        return MemorySegment.ofAddress(addr, layout.byteSize(), ResourceScope.globalScope());
+    }
+
+    /**
+     * Get address from the field.
      * @param handle handle of the field
      * @param segment segment to operate
      * @param index index of the element
@@ -77,6 +121,21 @@ public class VarUtils {
      */
     public static MemoryAddress getAddress(VarHandle handle, MemorySegment segment, int index) {
         return (MemoryAddress) handle.get(segment, index);
+    }
+
+    /**
+     * Get newAddress from the field.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param index index of the element
+     * @return newAddress in the field
+     */
+    public static MemoryAddress getAddress(MethodHandle handle, MemorySegment segment, int index) {
+        try {
+            return (MemoryAddress) handle.invoke(segment, index);
+        } catch (Throwable e) {
+            return MemoryAddress.NULL;
+        }
     }
 
     /**
@@ -191,13 +250,64 @@ public class VarUtils {
     }
 
     /**
-     * Get newAddress from the field.
+     * Get segment from the field.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param layout layout of the struct
+     * @param scope scope of the segment
+     * @return segment of the field
+     */
+    public static MemorySegment getSegment(MethodHandle handle, MemorySegment segment, MemoryLayout layout, ResourceScope scope) {
+        MemoryAddress addr = getAddress(handle, segment);
+        return MemorySegment.ofAddress(addr, layout.byteSize(), scope);
+    }
+
+    /**
+     * Get segment from the field using global scope.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param layout layout of the struct
+     * @return segment of the field
+     */
+    public static MemorySegment getSegment(VarHandle handle, MemorySegment segment, MemoryLayout layout) {
+        MemoryAddress addr = getAddress(handle, segment);
+        return MemorySegment.ofAddress(addr, layout.byteSize(), ResourceScope.globalScope());
+    }
+
+    /**
+     * Get segment from the field using global scope.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param layout layout of the struct
+     * @return segment of the field
+     */
+    public static MemorySegment getSegment(MethodHandle handle, MemorySegment segment, MemoryLayout layout) {
+        MemoryAddress addr = getAddress(handle, segment);
+        return MemorySegment.ofAddress(addr, layout.byteSize(), ResourceScope.globalScope());
+    }
+
+    /**
+     * Get address from the field.
      * @param handle handle of the field
      * @param segment segment to operate
      * @return newAddress in the field
      */
     public static MemoryAddress getAddress(VarHandle handle, MemorySegment segment) {
         return (MemoryAddress) handle.get(segment, 0);
+    }
+
+    /**
+     * Get address from the field.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @return newAddress in the field
+     */
+    public static MemoryAddress getAddress(MethodHandle handle, MemorySegment segment) {
+        try {
+            return (MemoryAddress) handle.invoke(segment, 0);
+        } catch (Throwable e) {
+            return MemoryAddress.NULL;
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
 import static jdk.incubator.foreign.ValueLayout.*;
@@ -113,6 +114,19 @@ public class Scope implements AutoCloseable {
      * @return segment of the field
      */
     public MemorySegment getSegment(VarHandle handle, MemorySegment segment, int index, MemoryLayout layout) {
+        MemoryAddress addr = VarUtils.getAddress(handle, segment, index);
+        return MemorySegment.ofAddress(addr, layout.byteSize(), scope);
+    }
+
+    /**
+     * Get segment from the field.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param index index of the element
+     * @param layout layout of the struct
+     * @return segment of the field
+     */
+    public MemorySegment getSegment(MethodHandle handle, MemorySegment segment, int index, MemoryLayout layout) {
         MemoryAddress addr = VarUtils.getAddress(handle, segment, index);
         return MemorySegment.ofAddress(addr, layout.byteSize(), scope);
     }

@@ -1,9 +1,10 @@
 package io.github.mmc1234.jfreetype.util;
 
-import jdk.incubator.foreign.MemoryLayout;
-import jdk.incubator.foreign.ValueLayout;
+import jdk.incubator.foreign.*;
 
 import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.invoke.VarHandle;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,8 +100,37 @@ public class LayoutBuilder {
      * @param name path element name
      * @return a VarHandle
      */
-    public VarHandle varHandle(String name) {
+    public VarHandle primitiveField(String name) {
         return sequenceLayout.varHandle(MemoryLayout.PathElement.sequenceElement(),
                 MemoryLayout.PathElement.groupElement(name));
+    }
+
+    // --- Create Address Access
+    private static MemoryAddress toFieldAddress(MemorySegment segment, long index, long structLen, long offset) {
+        return MemoryAddress.ofLong(segment.address().toRawLongValue() + index * structLen + offset);
+    }
+
+    private static final MethodHandle TO_FIELD_ADDRESS;
+
+    static {
+        MethodHandle tmp;
+        try {
+            tmp = MethodHandles.lookup().findStatic(
+                    LayoutBuilder.class, "toFieldAddress", MethodType.methodType(
+                            MemoryAddress.class, MemorySegment.class, long.class, long.class,long.class));
+        } catch (Exception e) {
+            tmp = null;
+        }
+        TO_FIELD_ADDRESS = tmp;
+    }
+
+    /**
+     * Create MethodHandle for struct element.
+     * @param name path element name
+     * @return a MethodHandle
+     */
+    public MethodHandle structField(String name) {
+        long offset = groupLayout.byteOffset(MemoryLayout.PathElement.groupElement(name));
+        return MethodHandles.insertArguments(TO_FIELD_ADDRESS, 2, groupLayout.byteSize(), offset);
     }
 }

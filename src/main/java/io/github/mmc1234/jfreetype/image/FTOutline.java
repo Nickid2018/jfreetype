@@ -148,11 +148,11 @@ public final class FTOutline {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        N_CONTOURS = builder.varHandle("n_contours");
-        N_POINTS = builder.varHandle("n_points");
-        POINTS = builder.varHandle("points");
-        TAGS = builder.varHandle("tags");
-        CONTOURS = builder.varHandle("contours");
-        FLAGS = builder.varHandle("flags");
+        N_CONTOURS = builder.primitiveField("n_contours");
+        N_POINTS = builder.primitiveField("n_points");
+        POINTS = builder.primitiveField("points");
+        TAGS = builder.primitiveField("tags");
+        CONTOURS = builder.primitiveField("contours");
+        FLAGS = builder.primitiveField("flags");
     }
 }

@@ -134,13 +134,13 @@ public final class FTOpenArgs {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        FLAGS = builder.varHandle("flags");
-        MEMORY_BASE = builder.varHandle("memory_base");
-        MEMORY_SIZE = builder.varHandle("memory_size");
-        PATHNAME = builder.varHandle("pathname");
-        STREAM = builder.varHandle("stream");
-        DRIVER = builder.varHandle("driver");
-        NUM_PARAMS = builder.varHandle("num_params");
-        PARAMS = builder.varHandle("params");
+        FLAGS = builder.primitiveField("flags");
+        MEMORY_BASE = builder.primitiveField("memory_base");
+        MEMORY_SIZE = builder.primitiveField("memory_size");
+        PATHNAME = builder.primitiveField("pathname");
+        STREAM = builder.primitiveField("stream");
+        DRIVER = builder.primitiveField("driver");
+        NUM_PARAMS = builder.primitiveField("num_params");
+        PARAMS = builder.primitiveField("params");
     }
 }

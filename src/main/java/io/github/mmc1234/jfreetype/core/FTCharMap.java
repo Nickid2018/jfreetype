@@ -64,9 +64,9 @@ public final class FTCharMap {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        FACE = builder.varHandle("face");
-        ENCODING = builder.varHandle("encoding");
-        PLATFORM_ID = builder.varHandle("platform_id");
-        ENCODING_ID = builder.varHandle("encoding_id");
+        FACE = builder.primitiveField("face");
+        ENCODING = builder.primitiveField("encoding");
+        PLATFORM_ID = builder.primitiveField("platform_id");
+        ENCODING_ID = builder.primitiveField("encoding_id");
     }
 }
