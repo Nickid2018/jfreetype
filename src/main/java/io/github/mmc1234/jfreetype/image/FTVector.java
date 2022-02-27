@@ -33,7 +33,7 @@ public final class FTVector {
     public static final VarHandle Y;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("II", new String[]{"x", "y"});
+        LayoutBuilder builder = new LayoutBuilder("LL", new String[]{"x", "y"});
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         X = builder.varHandle("x");

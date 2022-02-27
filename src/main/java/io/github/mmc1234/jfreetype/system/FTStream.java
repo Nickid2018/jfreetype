@@ -109,7 +109,7 @@ public final class FTStream {
     public static final VarHandle LIMIT;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("AII00AAAAA", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("ALL00AAAAA", new String[]{
                 "base", "size", "pos", "descriptor", "pathname", "read", "close", "memory", "cursor", "limit"
         }, FTStreamDesc.UNION_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();

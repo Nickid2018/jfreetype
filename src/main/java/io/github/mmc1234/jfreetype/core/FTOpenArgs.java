@@ -129,7 +129,7 @@ public final class FTOpenArgs {
     public static final VarHandle PARAMS;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("IAIAAAIA", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("IALAAAIA", new String[]{
                 "flags", "memory_base", "memory_size", "pathname", "stream", "driver", "num_params", "params"
         });
         STRUCT_LAYOUT = builder.getGroupLayout();

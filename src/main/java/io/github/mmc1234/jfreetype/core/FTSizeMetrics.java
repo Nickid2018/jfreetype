@@ -117,7 +117,7 @@ public final class FTSizeMetrics {
     public static final VarHandle MAX_ADVANCE;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("SSIIIIII", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("SSLLLLLL", new String[]{
                 "x_ppem", "y_ppem", "x_scale", "y_scale", "ascender", "descender", "height", "max_advance"
         });
         STRUCT_LAYOUT = builder.getGroupLayout();

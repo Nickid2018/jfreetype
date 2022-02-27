@@ -6,6 +6,7 @@ import jdk.incubator.foreign.NativeSymbol;
 import jdk.incubator.foreign.SymbolLookup;
 
 import java.lang.invoke.MethodHandle;
+import java.util.Optional;
 
 public class LibraryUtil {
 
@@ -29,8 +30,19 @@ public class LibraryUtil {
         return SYMBOL_LOOKUP.lookup(name).orElseThrow(UnsatisfiedLinkError::new);
     }
 
+    public static Optional<NativeSymbol> getNativeSymbolSilent(String name) {
+        return SYMBOL_LOOKUP.lookup(name);
+    }
+
     public static MethodHandle load(String name, FunctionDescriptor fd) {
         return LINKER.downcallHandle(getNativeSymbol(name), fd);
+    }
+
+    public static MethodHandle loadSilent(String name, FunctionDescriptor fd) {
+        Optional<NativeSymbol> symbol =  getNativeSymbolSilent(name);
+        if (symbol.isEmpty())
+            return null;
+        return LINKER.downcallHandle(symbol.get(), fd);
     }
 
     public static RuntimeException rethrow(Throwable e) {

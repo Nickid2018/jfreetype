@@ -36,7 +36,7 @@ public final class FTParameter {
     public static final VarHandle DATA;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("IA", new String[]{"tag", "data"});
+        LayoutBuilder builder = new LayoutBuilder("LA", new String[]{"tag", "data"});
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
         TAG = builder.varHandle("tag");

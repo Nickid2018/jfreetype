@@ -80,7 +80,7 @@ public final class FTGlyphMetrics {
     public static final VarHandle VERT_ADVANCE;
 
     static {
-        LayoutBuilder builder = new LayoutBuilder("IIIIIIII", new String[]{
+        LayoutBuilder builder = new LayoutBuilder("LLLLLLLL", new String[]{
                 "width", "height", "horiBearingX", "horiBearingY", "horiAdvance", "vertBearingX", "vertBearingY", "vertAdvance"
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
