@@ -19,7 +19,7 @@ import java.lang.invoke.VarHandle;
  *   } FT_ColorLine;
  * }</pre>
  */
-public class FTColorLine {
+public final class FTColorLine {
 
     public static final MemoryLayout STRUCT_LAYOUT;
     public static final MemoryLayout SEQUENCE_LAYOUT;
