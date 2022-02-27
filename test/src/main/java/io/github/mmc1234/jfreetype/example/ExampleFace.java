@@ -20,6 +20,7 @@ import io.github.mmc1234.jfreetype.core.FTFace;
 import io.github.mmc1234.jfreetype.core.FreeType;
 import io.github.mmc1234.jfreetype.core.FreeTypeFace;
 import io.github.mmc1234.jfreetype.core.FreeTypeLibrary;
+import io.github.mmc1234.jfreetype.image.FTBBox;
 import io.github.mmc1234.jfreetype.util.VarUtils;
 import jdk.incubator.foreign.*;
 
@@ -44,6 +45,9 @@ public class ExampleFace {
         // Print debug info
         System.out.println(FTFace.STRUCT_LAYOUT.byteSize());
         MemorySegment face = VarUtils.star(facePtr, FTFace.STRUCT_LAYOUT);
+        MemorySegment bbox = VarUtils.getSegment(FTFace.BBOX, face, FTBBox.STRUCT_LAYOUT);
+        System.out.println(VarUtils.getLong(FTBBox.X_MAX, bbox));
+        System.out.println(VarUtils.getLong(VarUtils.createAccess(FTFace.SEQUENCE_LAYOUT, "bbox.xMax"), face));
         System.out.println(VarUtils.getString(FTFace.FAMILY_NAME, face));
         System.out.println(VarUtils.getString(FTFace.STYLE_NAME, face));
         System.out.println(VarUtils.getInt(FTFace.ASCENDER, face));

@@ -51,7 +51,7 @@ public final class FTGeneric {
         LayoutBuilder builder = new LayoutBuilder("AA", new String[]{"data", "finalizer"});
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        DATA = builder.varHandle("data");
-        FINALIZER = builder.varHandle("finalizer");
+        DATA = builder.primitiveField("data");
+        FINALIZER = builder.primitiveField("finalizer");
     }
 }

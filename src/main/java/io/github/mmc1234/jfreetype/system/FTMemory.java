@@ -77,9 +77,9 @@ public final class FTMemory {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        USER = builder.varHandle("user");
-        ALLOC = builder.varHandle("alloc");
-        FREE = builder.varHandle("free");
-        REALLOC = builder.varHandle("realloc");
+        USER = builder.primitiveField("user");
+        ALLOC = builder.primitiveField("alloc");
+        FREE = builder.primitiveField("free");
+        REALLOC = builder.primitiveField("realloc");
     }
 }

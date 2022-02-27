@@ -2,7 +2,13 @@ package io.github.mmc1234.jfreetype.core;
 
 import io.github.mmc1234.jfreetype.In;
 import io.github.mmc1234.jfreetype.Out;
+import io.github.mmc1234.jfreetype.Struct;
+import io.github.mmc1234.jfreetype.color.FTLayerIterator;
+import io.github.mmc1234.jfreetype.color.FTPaletteData;
+import io.github.mmc1234.jfreetype.glyph.FTGlyph;
 import io.github.mmc1234.jfreetype.internal.BaseInterface;
+import io.github.mmc1234.jfreetype.internal.GlyphColorManagement;
+import io.github.mmc1234.jfreetype.internal.GlyphLayerManagement;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 
@@ -26,7 +32,7 @@ public interface FreeTypeGlyph {
      *                    the glyph slot's outline.
      *                    This is an experimental feature; see {@code FT_LOAD_COLOR} for more information.
      * @return The render mode used to render the glyph image into a bitmap. See {@link FTRenderMode} for a list of possible values.<br/>
-     * If {@code FT_RENDER_MODE_NORMAL} is used, a previous call of {@link FreeTypeFace#FTLoadGlyph} with flag
+     * If {@code FT_RENDER_MODE_NORMAL} is used, a previous call of {@link FreeTypeGlyph#FTLoadGlyph} with flag
      * {@code FT_LOAD_COLOR} makes {@link #FTRenderGlyph} provide a default blending of colored glyph layers associated with
      * the current glyph slot (provided the font contains such layers) instead of rendering the glyph slot's outline.
      * This is an experimental feature; see FT_LOAD_COLOR for more information.
@@ -112,6 +118,269 @@ public interface FreeTypeGlyph {
     static int FTGetSubGlyphInfo(@In MemoryAddress glyph, @In int sub_index, @Out MemorySegment p_index, @Out MemorySegment p_flags, @Out MemorySegment p_arg1, @Out MemorySegment p_arg2, @Out MemorySegment p_transform) {
         try {
             return (int) BaseInterface.FT_GET_SUBGLYPH_INFO.invoke(glyph, sub_index, p_index.address(), p_flags.address(), p_arg1.address(), p_arg2.address(), p_transform.address());
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+    // --- Glyph Color Management
+
+    /**
+     * Retrieve the face's color palette data.
+     *
+     * @apiNote All arrays in the returned {@link FTPaletteData} structure are read-only.
+     * This function always returns an error if the config macro {@code TT_CONFIG_OPTION_COLOR_LAYERS} is not defined in ftoption.h.
+     *
+     * @param face The source face handle.
+     * @param apalette A pointer to an {@link FTPaletteData} structure.
+     * @return FreeType error code. 0 means success.
+     */
+    static int FTPaletteDataGet(@In MemoryAddress face, @Out MemorySegment apalette) {
+        try {
+            return (int) GlyphColorManagement.FT_PALETTE_DATA_GET.invoke(face, apalette.address());
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+    /**
+     * This function has two purposes.<br/>
+     * (1) It activates a palette for rendering color glyphs, and<br/>
+     * (2) it retrieves all (unmodified) color entries of this palette. This function returns a read-write array,
+     * which means that a calling application can modify the palette entries on demand.<br/>
+     * A corollary of (2) is that calling the function, then modifying some values, then calling
+     * the function again with the same arguments resets all color entries to the original ‘CPAL’ values;
+     * all user modifications are lost.
+     *
+     * @apiNote The array pointed to by apalette_entries is owned and managed by FreeType.<br/>
+     * This function always returns an error if the config macro {@code TT_CONFIG_OPTION_COLOR_LAYERS} is not defined in ftoption.h.
+     *
+     * @param face The source face handle.
+     * @param palette_index The palette index.
+     * @param apalette An array of color entries for a palette with index palette_index,
+     *                 having num_palette_entries elements (as found in the {@link FTPaletteData} structure).
+     *                 If apalette is set to NULL, no array gets returned (and no color entries can be modified).<br/>
+     *                 In case the font doesn't support color palettes, NULL is returned.
+     * @return FreeType error code. 0 means success.
+     */
+    static int FTPaletteSelect(@In MemoryAddress face, short palette_index, @Out MemorySegment apalette) {
+        try {
+            return (int) GlyphColorManagement.FT_PALETTE_SELECT.invoke(face, palette_index, apalette.address());
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+
+    /**
+     * ‘COLR’ uses palette index 0xFFFF to indicate a ‘text foreground color’. This function sets this value.
+     *
+     * @apiNote If this function isn't called, the text foreground color is set to white opaque
+     * (BGRA value 0xFFFFFFFF) if {@link FTPaletteData#FT_PALETTE_FOR_DARK_BACKGROUND} is present for the current palette,
+     * and black opaque (BGRA value 0x000000FF) otherwise, including the case that no palette types
+     * are available in the ‘CPAL’ table.<br/>
+     * This function always returns an error if the config macro {@code TT_CONFIG_OPTION_COLOR_LAYERS}
+     * is not defined in ftoption.h.
+     *
+     * @param face
+     * @param foregroundColor
+     * @return
+     */
+    static int FTPaletteSetForegroundColor(@In MemoryAddress face, @In @Struct MemorySegment foregroundColor) {
+        try {
+            return (int) GlyphColorManagement.FT_PALETTE_SELECT.invoke(face, foregroundColor.address());
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+    /**
+     * This is an interface to the ‘COLR’ table in OpenType fonts to iteratively retrieve the colored glyph layers
+     * associated with the current glyph slot.<br/>
+     * https://docs.microsoft.com/en-us/typography/opentype/spec/colr<br/>
+     * The glyph layer data for a given glyph index, if present, provides an alternative, multi-color glyph representation:
+     * Instead of rendering the outline or bitmap with the given glyph index, glyphs with the indices and colors returned
+     * by this function are rendered layer by layer.<br/>
+     * The returned elements are ordered in the z direction from bottom to top; the 'n'th element should be rendered
+     * with the associated palette color and blended on top of the already rendered layers (elements 0, 1, …, n-1).
+     *
+     * @apiNote This function is necessary if you want to handle glyph layers by yourself. In particular, functions
+     * that operate with {@link FTGlyph} objects (like FT_Get_Glyph or FT_Glyph_To_Bitmap) don't have access to this information.<br/>
+     * Note that {@link #FTRenderGlyph} is able to handle colored glyph layers automatically
+     * if the {@link FTLoadFlags#FT_LOAD_COLOR} flag is passed to a previous call
+     * to {@link FreeTypeGlyph#FTLoadGlyph}. [This is an experimental feature.]
+     *
+     * @param face A handle to the parent face object.
+     * @param base_glyph The glyph index the colored glyph layers are associated with.
+     * @param aglyph_index The glyph index of the current layer.
+     * @param acolor_index The color index into the font face's color palette of the current layer.
+     *                     The value 0xFFFF is special; it doesn't reference a palette entry but indicates
+     *                     that the text foreground color should be used instead (to be set up by the application
+     *                     outside of FreeType).<br/>
+     *                     The color palette can be retrieved with {@link #FTPaletteSelect}.
+     * @param iterator An {@link FTLayerIterator} object. For the first call you should set iterator->p to NULL.
+     *                 For all following calls, simply use the same object again.
+     * @return Value 1 if everything is OK. If there are no more layers (or if there are no layers at all),
+     * value 0 gets returned. In case of an error, value 0 is returned also.
+     */
+    static int FTGetColorGlyphLayer(@In MemoryAddress face,
+                                    @In int base_glyph,
+                                    @Out MemorySegment aglyph_index,
+                                    @Out MemorySegment acolor_index,
+                                    @In @Out MemoryAddress iterator) {
+        try {
+            return (int) GlyphLayerManagement.FT_GET_COLOR_GLYPH_LAYER
+                    .invoke(face, base_glyph, aglyph_index.address(), acolor_index.address(), iterator);
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+    /**
+     * This is the starting point and interface to color gradient information in a ‘COLR’ v1 table in OpenType fonts
+     * to recursively retrieve the paint tables for the directed acyclic graph of a colored glyph, given a glyph ID.<br/>
+     * https://github.com/googlefonts/colr-gradients-spec<br/>
+     * In a ‘COLR’ v1 font, each color glyph defines a directed acyclic graph of nested paint tables,
+     * such as PaintGlyph, PaintSolid, PaintLinearGradient, PaintRadialGradient, and so on.
+     * Using this function and specifying a glyph ID, one retrieves the root paint table for this glyph ID.<br/>
+     * This function allows control whether an initial root transform is returned to configure scaling, transform,
+     * and translation correctly on the client's graphics context. The initial root transform is computed and returned
+     * according to the values configured for {@link FTSize} and {@link FreeTypeFace#FTSetTransform} on the {@link FTFace} object,
+     * see below for details of the root_transform parameter. This has implications for a client ‘COLR’ v1 implementation:
+     * When this function returns an initially computed root transform, at the time of executing the
+     * FTPaintGlyph operation, the contours should be retrieved using {@link #FTLoadGlyph} at unscaled,
+     * untransformed size. This is because the root transform applied to the graphics context will
+     * take care of correct scaling.<br/>
+     * Alternatively, to allow hinting of contours, at the time of executing {@link #FTLoadGlyph},
+     * the current graphics context transformation matrix can be decomposed into a scaling matrix and a remainder,
+     * and {@link #FTLoadGlyph} can be used to retrieve the contours at scaled size. Care must then be taken to blit or
+     * clip to the graphics context with taking this remainder transformation into account.
+     *
+     * @param face A handle to the parent face object.
+     * @param base_glyph The glyph index for which to retrieve the root paint table.
+     * @param root_transform Specifies whether an initially computed root is returned by the FTPaintTransform
+     *                       operation to account for the activated size (see {@link FreeTypeSize#FTActivateSize}) and
+     *                       the configured transform and translate (see {@link FreeTypeFace#FTSetTransform}).<br/>
+     *                       This root transform is returned before nodes of the glyph graph of the font are returned.
+     *                       Subsequent FT_COLR_Paint structures contain unscaled and untransformed values.
+     *                       The inserted root transform enables the client application to apply an initial transform
+     *                       to its graphics context. When executing subsequent FT_COLR_Paint operations,
+     *                       values from FT_COLR_Paint operations will ultimately be correctly scaled because of
+     *                       the root transform applied to the graphics context. Use FT_COLOR_INCLUDE_ROOT_TRANSFORM
+     *                       to include the root transform, use FT_COLOR_NO_ROOT_TRANSFORM to not include it.
+     *                       The latter may be useful when traversing the ‘COLR’ v1 glyph graph and reaching
+     *                       a FT_PaintColrGlyph. When recursing into FT_PaintColrGlyph and painting that inline,
+     *                       no additional root transform is needed as it has already been applied to
+     *                       the graphics context at the beginning of drawing this glyph.
+     * @param paint The FT_OpaquePaint object that references the actual paint table.<br/>
+     *              The respective actual FT_COLR_Paint object is retrieved via {@link #FTGetPaint}.
+     * @return Value 1 if everything is OK. If no color glyph is found, or the root paint could not be retrieved,
+     * value 0 gets returned. In case of an error, value 0 is returned also.
+     */
+    static boolean FTGetColorGlyphPaint(@In MemoryAddress face,
+                                        @In int base_glyph,
+                                        @Out FTColorRootTransform root_transform,
+                                        @In MemoryAddress paint) {
+        try {
+            return (boolean) GlyphLayerManagement.FT_GET_COLOR_GLYPH_PAINT
+                    .invoke(face, base_glyph, root_transform.getAsInt(), paint);
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+
+    static boolean FTGetColorGlyphClipBox(@In MemoryAddress face,
+                                          @In int base_glyph,
+                                          @In MemoryAddress clip_box) {
+        try {
+            return (boolean) GlyphLayerManagement.FT_GET_COLOR_GLYPH_CLIP_BOX
+                    .invoke(face, base_glyph, clip_box);
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+    static boolean FTGetPaintLayers(@In MemoryAddress face,
+                                    @In MemoryAddress iterator,
+                                    @In MemoryAddress paint) {
+        try {
+            return (boolean) GlyphLayerManagement.FT_GET_PAINT_LAYERS
+                    .invoke(face, iterator, paint);
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+    static boolean FTGetColorlineStops(@In MemoryAddress face,
+                                       @In MemoryAddress color_stop,
+                                       @In MemoryAddress iterator) {
+        try {
+            return (boolean) GlyphLayerManagement.FT_GET_COLOR_LINE_STOPS
+                    .invoke(face, color_stop, iterator);
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+
+    static boolean FTGetPaint(@In MemoryAddress face,
+                              @In @Struct MemorySegment opaque_paint,
+                              @In MemoryAddress paint) {
+        try {
+            return (boolean) GlyphLayerManagement.FT_GET_PAINT
+                    .invoke(face, opaque_paint.address(), paint);
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+    /**
+     * Load a glyph into the glyph slot of a face object.
+     *
+     * @param face        Load a glyph into the glyph slot of a face object.
+     * @param glyph_index The index of the glyph in the font file.
+     *                    For CID-keyed fonts (either in PS or in CFF format) this argument specifies the CID value.
+     * @param load_flags  The index of the glyph in the font file.
+     *                    For CID-keyed fonts (either in PS or in CFF format) this argument specifies the CID value.
+     * @return The index of the glyph in the font file.
+     * For CID-keyed fonts (either in PS or in CFF format) this argument specifies the CID value.
+     * @apiNote The loaded glyph may be transformed. See {@link #FTSetTransform} for the details.<br/>
+     * For subsetted CID-keyed fonts, {@code FT_Err_Invalid_Argument} is returned for
+     * invalid CID values (this is, for CID values that don't have a corresponding glyph in the font).
+     * See the discussion of the {@code FT_FACE_FLAG_CID_KEYED} flag for more details.<br/>
+     * If you receive {@code FT_Err_Glyph_Too_Big}, try getting the glyph outline at EM size,
+     * then scale it manually and fill it as a graphics operation.
+     */
+    static int FTLoadGlyph(@In MemoryAddress face, @In int glyph_index, @In int load_flags) {
+        try {
+            return (int) BaseInterface.FT_LOAD_GLYPH.invoke(face, glyph_index, load_flags);
+        } catch (Throwable e) {
+            throw rethrow(e);
+        }
+    }
+
+    /**
+     * Retrieve the ASCII name of a given glyph in a face. This only works for those faces where {@code FT_HAS_GLYPH_NAMES}
+     * (face) returns 1.
+     *
+     * @param face        Retrieve the ASCII name of a given glyph in a face. This only works for those faces where FT_HAS_GLYPH_NAMES(face) returns 1.
+     * @param glyph_index The glyph index.
+     * @param buffer_max  The maximum number of bytes available in the buffer.
+     * @param buffer      A pointer to a target buffer where the name is copied to.
+     * @return A pointer to a target buffer where the name is copied to.
+     * @apiNote An error is returned if the face doesn't provide glyph names or if the glyph index is invalid.
+     * In all cases of failure, the first byte of buffer is set to 0 to indicate an empty name.<br/>
+     * The glyph name is truncated to fit within the buffer if it is too long. The returned string is always
+     * zero-terminated.<br/>
+     * Be aware that FreeType reorders glyph indices internally so that glyph index 0 always corresponds
+     * to the ‘missing glyph’ (called ‘.notdef’).<br/>
+     * This function always returns an error if the config macro {@code FT_CONFIG_OPTION_NO_GLYPH_NAMES}
+     * is not defined in ftoption.h.
+     */
+    static int FTGetGlyphName(@In MemoryAddress face, @In int glyph_index, @Out MemorySegment buffer, @In int buffer_max) {
+        try {
+            return (int) BaseInterface.FT_GET_GLYPH_NAME.invoke(face, glyph_index, buffer.address(), buffer_max);
         } catch (Throwable e) {
             throw rethrow(e);
         }

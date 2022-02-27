@@ -36,7 +36,7 @@ public final class FTVector {
         LayoutBuilder builder = new LayoutBuilder("LL", new String[]{"x", "y"});
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        X = builder.varHandle("x");
-        Y = builder.varHandle("y");
+        X = builder.primitiveField("x");
+        Y = builder.primitiveField("y");
     }
 }

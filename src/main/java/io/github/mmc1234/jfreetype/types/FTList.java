@@ -37,7 +37,7 @@ public final class FTList {
         LayoutBuilder builder = new LayoutBuilder("AA", new String[] { "head", "tail" });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        HEAD = builder.varHandle("head");
-        TAIL = builder.varHandle("tail");
+        HEAD = builder.primitiveField("head");
+        TAIL = builder.primitiveField("tail");
     }
 }

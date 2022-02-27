@@ -6,6 +6,7 @@ import io.github.mmc1234.jfreetype.image.FTVector;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
 /**
@@ -14,7 +15,7 @@ import java.lang.invoke.VarHandle;
  * the slot's content is erased by the new glyph data, i.e., the glyph's metrics
  * , its image (bitmap or outline), and other control information.
  *
- * @apiNote If {@link FreeTypeFace#FTLoadGlyph} is called with default flags (see {@link FTLoadFlags#FT_LOAD_DEFAULT})
+ * @apiNote If {@link FreeTypeGlyph#FTLoadGlyph} is called with default flags (see {@link FTLoadFlags#FT_LOAD_DEFAULT})
  * the glyph image is loaded in the glyph slot in its native format (e.g., an outline glyph for TrueType and Type 1 formats).
  * [Since 2.9] The prospective bitmap metrics are calculated according to FT_LOAD_TARGET_XXX and other flags
  * even for the outline glyph, even if {@link FTLoadFlags#FT_LOAD_RENDER} is not set.<br/>
@@ -135,7 +136,7 @@ public final class FTGlyphSlot {
     public static final VarHandle NEXT;
 
     /**
-     * [Since 2.10] The glyph index passed as an argument to {@link FreeTypeFace#FTLoadGlyph} while initializing the glyph slot.
+     * [Since 2.10] The glyph index passed as an argument to {@link FreeTypeGlyph#FTLoadGlyph} while initializing the glyph slot.
      */
     public static final VarHandle GLYPH_INDEX;
 
@@ -143,15 +144,15 @@ public final class FTGlyphSlot {
      * A typeless pointer unused by the FreeType library or any of its drivers.
      * It can be used by client applications to link their own data to each glyph slot object.
      */
-    public static final VarHandle GENERIC = null;
+    public static final MethodHandle GENERIC;
 
     /**
      * The metrics of the last loaded glyph in the slot. The returned values depend on the last load flags
-     * (see the {@link FreeTypeFace#FTLoadGlyph} API function) and can be expressed either
+     * (see the {@link FreeTypeGlyph#FTLoadGlyph} API function) and can be expressed either
      * in 26.6 fractional pixels or font units.<br/>
      * Note that even when the glyph image is transformed, the metrics are not.
      */
-    public static final VarHandle METRICS = null;
+    public static final MethodHandle METRICS;
 
     /**
      * The advance width of the unhinted glyph. Its value is expressed in 16.16 fractional pixels,
@@ -172,7 +173,7 @@ public final class FTGlyphSlot {
      * for the glyph, in 26.6 fractional pixel format. As specified with {@link FTLoadFlags#FT_LOAD_VERTICAL_LAYOUT},
      * it uses either the horiAdvance or the vertAdvance value of metrics field.
      */
-    public static final VarHandle ADVANCE = null;
+    public static final MethodHandle ADVANCE;
 
     /**
      * This field indicates the format of the image contained in the glyph slot.
@@ -184,9 +185,9 @@ public final class FTGlyphSlot {
 
     /**
      * This field is used as a bitmap descriptor. Note that the newAddress and content of the bitmap buffer
-     * can change between calls of {@link FreeTypeFace#FTLoadGlyph} and a few other functions.
+     * can change between calls of {@link FreeTypeGlyph#FTLoadGlyph} and a few other functions.
      */
-    public static final VarHandle BITMAP = null;
+    public static final MethodHandle BITMAP;
 
     /**
      * The bitmap's left bearing expressed in integer pixels.
@@ -209,7 +210,7 @@ public final class FTGlyphSlot {
      * as expected. To get unrounded font units, don't use FT_LOAD_NO_SCALE but load the glyph
      * with {@link FTLoadFlags#FT_LOAD_NO_HINTING} and scale it, using the font's units_per_EM value as the ppem.
      */
-    public static final VarHandle OUTLINE = null;
+    public static final MethodHandle OUTLINE;
 
     /**
      * The number of subglyphs in a composite glyph.
@@ -261,22 +262,28 @@ public final class FTGlyphSlot {
                 FTBitmap.STRUCT_LAYOUT, FTOutline.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        LIBRARY = builder.varHandle("library");
-        FACE = builder.varHandle("face");
-        NEXT = builder.varHandle("next");
-        GLYPH_INDEX = builder.varHandle("glyph_index");
-        LINEAR_HORI_ADVANCE = builder.varHandle("linearHoriAdvance");
-        LINEAR_VERT_ADVANCE = builder.varHandle("linearVertAdvance");
-        FORMAT = builder.varHandle("format");
-        BITMAP_LEFT = builder.varHandle("bitmap_left");
-        BITMAP_TOP = builder.varHandle("bitmap_top");
-        NUM_SUBGLYPHS = builder.varHandle("num_subglyphs");
-        SUBGLYPHS = builder.varHandle("subglyphs");
-        CONTROL_DATA = builder.varHandle("control_data");
-        CONTROL_LEN = builder.varHandle("control_len");
-        LSB_DELTA = builder.varHandle("lsb_delta");
-        RSB_DELTA = builder.varHandle("rsb_delta");
-        OTHER = builder.varHandle("other");
-        INTERNAL = builder.varHandle("internal");
+        LIBRARY = builder.primitiveField("library");
+        FACE = builder.primitiveField("face");
+        NEXT = builder.primitiveField("next");
+        GLYPH_INDEX = builder.primitiveField("glyph_index");
+        LINEAR_HORI_ADVANCE = builder.primitiveField("linearHoriAdvance");
+        LINEAR_VERT_ADVANCE = builder.primitiveField("linearVertAdvance");
+        FORMAT = builder.primitiveField("format");
+        BITMAP_LEFT = builder.primitiveField("bitmap_left");
+        BITMAP_TOP = builder.primitiveField("bitmap_top");
+        NUM_SUBGLYPHS = builder.primitiveField("num_subglyphs");
+        SUBGLYPHS = builder.primitiveField("subglyphs");
+        CONTROL_DATA = builder.primitiveField("control_data");
+        CONTROL_LEN = builder.primitiveField("control_len");
+        LSB_DELTA = builder.primitiveField("lsb_delta");
+        RSB_DELTA = builder.primitiveField("rsb_delta");
+        OTHER = builder.primitiveField("other");
+        INTERNAL = builder.primitiveField("internal");
+
+        GENERIC = builder.structField("generic");
+        METRICS = builder.structField("metrics");
+        ADVANCE = builder.structField("advance");
+        BITMAP = builder.structField("bitmap");
+        OUTLINE = builder.structField("outline");
     }
 }

@@ -114,13 +114,13 @@ public final class FTStream {
         }, FTStreamDesc.UNION_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        BASE = builder.varHandle("base");
-        SIZE = builder.varHandle("size");
-        POS = builder.varHandle("pos");
-        READ = builder.varHandle("read");
-        CLOSE = builder.varHandle("close");
-        MEMORY = builder.varHandle("memory");
-        CURSOR = builder.varHandle("cursor");
-        LIMIT = builder.varHandle("limit");
+        BASE = builder.primitiveField("base");
+        SIZE = builder.primitiveField("size");
+        POS = builder.primitiveField("pos");
+        READ = builder.primitiveField("read");
+        CLOSE = builder.primitiveField("close");
+        MEMORY = builder.primitiveField("memory");
+        CURSOR = builder.primitiveField("cursor");
+        LIMIT = builder.primitiveField("limit");
     }
 }

@@ -18,10 +18,10 @@ public class GlyphLayerManagement {
 
     static void loadMethodHandles() {
         FT_GET_COLOR_GLYPH_LAYER = load("FT_Get_Color_Glyph_Layer", of("BAIIIA"));
-        FT_GET_COLOR_GLYPH_PAINT = load("FT_Get_Color_Glyph_Paint", of("BAIIA"));
-        FT_GET_COLOR_GLYPH_CLIP_BOX = load("FT_Get_Color_Glyph_ClipBox", of("BAIA"));
-        FT_GET_PAINT_LAYERS = load("FT_Get_Paint_Layers", of("BAAA"));
-        FT_GET_COLOR_LINE_STOPS = load("FT_Get_Colorline_Stops", of("BAAA"));
+        FT_GET_COLOR_GLYPH_PAINT = load("FT_Get_Color_Glyph_Paint", of("ZAIIA"));
+        FT_GET_COLOR_GLYPH_CLIP_BOX = load("FT_Get_Color_Glyph_ClipBox", of("ZAIA"));
+        FT_GET_PAINT_LAYERS = load("FT_Get_Paint_Layers", of("ZAAA"));
+        FT_GET_COLOR_LINE_STOPS = load("FT_Get_Colorline_Stops", of("ZAAA"));
         // FT_GET_PAINT = load("FT_Get_Paint", of("BA1A"));
         // TODO direct struct
     }

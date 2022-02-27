@@ -20,7 +20,7 @@ public interface FreeTypeSize {
      * @param asize A handle to a new size object.
      * @return A handle to a new size object.
      * @apiNote You need to call {@link #FTActivateSize} in order to select the new size for upcoming calls to
-     * {@link FreeTypeFace#FTSetPixelSizes}, {@link FreeTypeFace#FTSetCharSize}, {@link FreeTypeFace#FTLoadGlyph}
+     * {@link FreeTypeFace#FTSetPixelSizes}, {@link FreeTypeFace#FTSetCharSize}, {@link FreeTypeGlyph#FTLoadGlyph}
      * , {@link FreeTypeFace#FTLoadChar}, etc.
      */
     static int FTNewSize(@In MemoryAddress face, @Out MemorySegment asize) {
@@ -48,7 +48,7 @@ public interface FreeTypeSize {
 
     /**
      * Even though it is possible to create several size objects for a given face (see {@link #FTNewSize} for details),
-     * functions like {@link FreeTypeFace#FTLoadGlyph} or {@link FreeTypeFace#FTLoadChar} only use the one that has been activated last to
+     * functions like {@link FreeTypeGlyph#FTLoadGlyph} or {@link FreeTypeFace#FTLoadChar} only use the one that has been activated last to
      * determine the ‘current character pixel size’.<br/>
      * This function can be used to ‘activate’ a previously created size object.
      *

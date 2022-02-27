@@ -31,7 +31,7 @@ import java.lang.invoke.VarHandle;
  * rely on a TTF's vertical data (for example, to properly align box characters vertically).<br/>
  * Only the application knows in advance that it is going to use native hinting for TTFs! FreeType,
  * on the other hand, selects the hinting mode not at the time of creating an {@link FTSize} object
- * but much later, namely while calling {@link FreeTypeFace#FTLoadGlyph}.<br/>
+ * but much later, namely while calling {@link FreeTypeGlyph#FTLoadGlyph}.<br/>
  * Here is some pseudocode that illustrates a possible solution.
  *
  * <pre>{@code
@@ -122,13 +122,13 @@ public final class FTSizeMetrics {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        X_PPEM = builder.varHandle("x_ppem");
-        Y_PPEM = builder.varHandle("y_ppem");
-        X_SCALE = builder.varHandle("x_scale");
-        Y_SCALE = builder.varHandle("y_scale");
-        ASCENDER = builder.varHandle("ascender");
-        DESCENDER = builder.varHandle("descender");
-        HEIGHT = builder.varHandle("height");
-        MAX_ADVANCE = builder.varHandle("max_advance");
+        X_PPEM = builder.primitiveField("x_ppem");
+        Y_PPEM = builder.primitiveField("y_ppem");
+        X_SCALE = builder.primitiveField("x_scale");
+        Y_SCALE = builder.primitiveField("y_scale");
+        ASCENDER = builder.primitiveField("ascender");
+        DESCENDER = builder.primitiveField("descender");
+        HEIGHT = builder.primitiveField("height");
+        MAX_ADVANCE = builder.primitiveField("max_advance");
     }
 }

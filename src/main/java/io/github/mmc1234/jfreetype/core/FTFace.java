@@ -7,6 +7,7 @@ import io.github.mmc1234.jfreetype.util.VarUtils;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
 /**
@@ -21,7 +22,7 @@ import java.lang.invoke.VarHandle;
  * An {@link FTFace} object can only be safely used from one thread at a time.
  * Similarly, creation and destruction of {@link FTFace}
  * with the same {@link FTLibrary} object can only be done from one thread at a time.
- * On the other hand, functions like {@link FreeTypeFace#FTLoadGlyph}
+ * On the other hand, functions like {@link FreeTypeGlyph#FTLoadGlyph}
  * and its siblings are thread-safe and do not need the lock to be held as long as
  * the same {@link FTFace} object is not used from multiple threads at the same time.<br/>
  * Fields may be changed after a call to {@link FreeTypeFace#FTAttachFile} or {@link FreeTypeFace#FTAttachStream}.<br/>
@@ -145,7 +146,7 @@ public final class FTFace {
     public static final long FT_FACE_FLAG_MULTIPLE_MASTERS = 1L << 8;
 
     /**
-     * The face contains glyph names, which can be retrieved using {@link FreeTypeFace#FTGetGlyphName}.
+     * The face contains glyph names, which can be retrieved using {@link FreeTypeGlyph#FTGetGlyphName}.
      * Note that some TrueType fonts contain broken glyph name tables. Use the function FT_Has_PS_Glyph_Names when needed.
      */
     public static final long FT_FACE_FLAG_GLYPH_NAMES = 1L << 9;
@@ -166,8 +167,8 @@ public final class FTFace {
     /**
      * The face is CID-keyed. In that case, the face is not accessed by glyph indices but by CID values.
      * For subset CID-keyed fonts this has the consequence that not all index values are a valid argument
-     * to {@link FreeTypeFace#FTLoadGlyph}. Only the CID values for which corresponding glyphs in the subset font
-     * exist make {@link FreeTypeFace#FTLoadGlyph} return successfully; in all other cases you get an
+     * to {@link FreeTypeGlyph#FTLoadGlyph}. Only the CID values for which corresponding glyphs in the subset font
+     * exist make {@link FreeTypeGlyph#FTLoadGlyph} return successfully; in all other cases you get an
      * FT_Err_Invalid_Argument error.<br/>
      * Note that CID-keyed fonts that are in an SFNT wrapper (this is, all OpenType/CFF fonts)
      * don't have this flag set since the glyphs are accessed in the normal way (using contiguous indices);
@@ -308,7 +309,7 @@ public final class FTFace {
     /**
      * A field reserved for client uses. See the {@link FTGeneric} type description.
      */
-    public static final VarHandle GENERIC = null;
+    public static final MethodHandle GENERIC;
 
     /**
      * The font bounding box. Coordinates are expressed in font units (see {@link #UNITS_PER_EM}).
@@ -319,7 +320,7 @@ public final class FTFace {
      * Note that the bounding box does not vary in OpenType variable fonts and should only be used
      * in relation to the default instance.
      */
-    public static final VarHandle BBOX = null;
+    public static final MethodHandle BBOX;
 
     /**
      * The number of font units per EM square for this face. This is typically 2048 for TrueType fonts,
@@ -390,8 +391,8 @@ public final class FTFace {
     public static final VarHandle DRIVER;
     public static final VarHandle MEMORY;
     public static final VarHandle STREAM;
-    public static final VarHandle SIZES_LIST = null;
-    public static final VarHandle AUTOHINT = null;
+    public static final MethodHandle SIZES_LIST;
+    public static final MethodHandle AUTOHINT;
     public static final VarHandle EXTENSIONS;
     public static final VarHandle INTERNAL;
 
@@ -455,7 +456,7 @@ public final class FTFace {
 
     /**
      * A macro that returns true whenever a face object contains some glyph names that can be accessed
-     * through {@link FreeTypeFace#FTGetGlyphName}.
+     * through {@link FreeTypeGlyph#FTGetGlyphName}.
      *
      * @implNote
      * <pre>{@code
@@ -608,32 +609,37 @@ public final class FTFace {
         }, FTGeneric.STRUCT_LAYOUT, FTBBox.STRUCT_LAYOUT, FTList.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        NUM_FACES = builder.varHandle("num_faces");
-        FACE_INDEX = builder.varHandle("face_index");
-        FACE_FLAGS = builder.varHandle("face_flags");
-        STYLE_FLAGS = builder.varHandle("style_flags");
-        NUM_GLYPHS = builder.varHandle("num_glyphs");
-        FAMILY_NAME = builder.varHandle("family_name");
-        STYLE_NAME = builder.varHandle("style_name");
-        NUM_FIXED_SIZES = builder.varHandle("num_fixed_sizes");
-        AVAILABLE_SIZES = builder.varHandle("available_sizes");
-        NUM_CHARMAPS = builder.varHandle("num_charmaps");
-        CHARMAPS = builder.varHandle("charmaps");
-        UNITS_PER_EM = builder.varHandle("units_per_EM");
-        ASCENDER = builder.varHandle("ascender");
-        DESCENDER = builder.varHandle("descender");
-        HEIGHT = builder.varHandle("height");
-        MAX_ADVANCE_WIDTH = builder.varHandle("max_advance_width");
-        MAX_ADVANCE_HEIGHT = builder.varHandle("max_advance_height");
-        UNDERLINE_POSITION = builder.varHandle("underline_position");
-        UNDERLINE_THICKNESS = builder.varHandle("underline_thickness");
-        GLYPH = builder.varHandle("glyph");
-        SIZE = builder.varHandle("size");
-        CHARMAP = builder.varHandle("charmap");
-        DRIVER = builder.varHandle("driver");
-        MEMORY = builder.varHandle("memory");
-        STREAM = builder.varHandle("stream");
-        EXTENSIONS = builder.varHandle("extensions");
-        INTERNAL = builder.varHandle("internal");
+        NUM_FACES = builder.primitiveField("num_faces");
+        FACE_INDEX = builder.primitiveField("face_index");
+        FACE_FLAGS = builder.primitiveField("face_flags");
+        STYLE_FLAGS = builder.primitiveField("style_flags");
+        NUM_GLYPHS = builder.primitiveField("num_glyphs");
+        FAMILY_NAME = builder.primitiveField("family_name");
+        STYLE_NAME = builder.primitiveField("style_name");
+        NUM_FIXED_SIZES = builder.primitiveField("num_fixed_sizes");
+        AVAILABLE_SIZES = builder.primitiveField("available_sizes");
+        NUM_CHARMAPS = builder.primitiveField("num_charmaps");
+        CHARMAPS = builder.primitiveField("charmaps");
+        UNITS_PER_EM = builder.primitiveField("units_per_EM");
+        ASCENDER = builder.primitiveField("ascender");
+        DESCENDER = builder.primitiveField("descender");
+        HEIGHT = builder.primitiveField("height");
+        MAX_ADVANCE_WIDTH = builder.primitiveField("max_advance_width");
+        MAX_ADVANCE_HEIGHT = builder.primitiveField("max_advance_height");
+        UNDERLINE_POSITION = builder.primitiveField("underline_position");
+        UNDERLINE_THICKNESS = builder.primitiveField("underline_thickness");
+        GLYPH = builder.primitiveField("glyph");
+        SIZE = builder.primitiveField("size");
+        CHARMAP = builder.primitiveField("charmap");
+        DRIVER = builder.primitiveField("driver");
+        MEMORY = builder.primitiveField("memory");
+        STREAM = builder.primitiveField("stream");
+        EXTENSIONS = builder.primitiveField("extensions");
+        INTERNAL = builder.primitiveField("internal");
+
+        GENERIC = builder.structField("generic");
+        BBOX = builder.structField("bbox");
+        SIZES_LIST = builder.structField("sizes_list");
+        AUTOHINT = builder.structField("autohint");
     }
 }

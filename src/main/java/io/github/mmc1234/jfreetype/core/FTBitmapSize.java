@@ -64,10 +64,10 @@ public final class FTBitmapSize {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        HEIGHT = builder.varHandle("height");
-        WIDTH = builder.varHandle("width");
-        SIZE = builder.varHandle("size");
-        X_PPEM = builder.varHandle("x_ppem");
-        Y_PPEM = builder.varHandle("y_ppem");
+        HEIGHT = builder.primitiveField("height");
+        WIDTH = builder.primitiveField("width");
+        SIZE = builder.primitiveField("size");
+        X_PPEM = builder.primitiveField("x_ppem");
+        Y_PPEM = builder.primitiveField("y_ppem");
     }
 }

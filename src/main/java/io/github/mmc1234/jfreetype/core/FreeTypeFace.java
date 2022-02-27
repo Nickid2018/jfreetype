@@ -281,7 +281,7 @@ public interface FreeTypeFace {
      * Select a bitmap strike.
      * To be more precise, this function sets the scaling factors of
      * the active {@link FTSize} object in a face so that bitmaps from this particular strike
-     * are taken by {@link #FTLoadGlyph} and friends.
+     * are taken by {@link FreeTypeGlyph#FTLoadGlyph} and friends.
      *
      * @param face         A handle to a target face object.
      * @param strike_index The index of the bitmap strike in the available_sizes field of {@code FT_FaceRec} structure.
@@ -304,7 +304,7 @@ public interface FreeTypeFace {
 
     /**
      * Set the transformation that is applied to glyph images when they
-     * are loaded into a glyph slot through {@link #FTLoadGlyph}.
+     * are loaded into a glyph slot through {@link FreeTypeGlyph#FTLoadGlyph}.
      *
      * @param face   A handle to the source face object.
      * @param matrix A pointer to the transformation's 2x2 matrix. Use NULL for the identity matrix.
@@ -328,7 +328,7 @@ public interface FreeTypeFace {
 
     /**
      * Return the transformation that is applied to glyph images when they are loaded into
-     * a glyph slot through {@link #FTLoadGlyph}.
+     * a glyph slot through {@link FreeTypeGlyph#FTLoadGlyph}.
      * See {@link #FTSetTransform} for more details.
      *
      * @param face   A handle to the source face object.
@@ -338,31 +338,6 @@ public interface FreeTypeFace {
     static void FTGetTransform(@In MemoryAddress face, @Out MemorySegment matrix, @Out MemorySegment delta) {
         try {
             BaseInterface.FT_GET_TRANSFORM.invoke(face, matrix.address(), delta.address());
-        } catch (Throwable e) {
-            throw rethrow(e);
-        }
-    }
-
-    /**
-     * Load a glyph into the glyph slot of a face object.
-     *
-     * @param face        Load a glyph into the glyph slot of a face object.
-     * @param glyph_index The index of the glyph in the font file.
-     *                    For CID-keyed fonts (either in PS or in CFF format) this argument specifies the CID value.
-     * @param load_flags  The index of the glyph in the font file.
-     *                    For CID-keyed fonts (either in PS or in CFF format) this argument specifies the CID value.
-     * @return The index of the glyph in the font file.
-     * For CID-keyed fonts (either in PS or in CFF format) this argument specifies the CID value.
-     * @apiNote The loaded glyph may be transformed. See {@link #FTSetTransform} for the details.<br/>
-     * For subsetted CID-keyed fonts, {@code FT_Err_Invalid_Argument} is returned for
-     * invalid CID values (this is, for CID values that don't have a corresponding glyph in the font).
-     * See the discussion of the {@code FT_FACE_FLAG_CID_KEYED} flag for more details.<br/>
-     * If you receive {@code FT_Err_Glyph_Too_Big}, try getting the glyph outline at EM size,
-     * then scale it manually and fill it as a graphics operation.
-     */
-    static int FTLoadGlyph(@In MemoryAddress face, @In int glyph_index, @In int load_flags) {
-        try {
-            return (int) BaseInterface.FT_LOAD_GLYPH.invoke(face, glyph_index, load_flags);
         } catch (Throwable e) {
             throw rethrow(e);
         }
@@ -468,11 +443,11 @@ public interface FreeTypeFace {
      *                   be used to control the glyph loading process (e.g., whether the outline should be scaled,
      *                   whether to load bitmaps or not, whether to hint the outline, etc).
      * @return FreeType error code. 0 means success.
-     * @apiNote This function simply calls {@link #FTGetCharIndex} and {@link #FTLoadGlyph}.<br/>
+     * @apiNote This function simply calls {@link #FTGetCharIndex} and {@link FreeTypeGlyph#FTLoadGlyph}.<br/>
      * Many fonts contain glyphs that can't be loaded by this function since its glyph indices
      * are not listed in any of the font's charmaps.<br/>
      * If no active cmap is set up (i.e., face->charmap is zero), the call to {@link #FTGetCharIndex}
-     * is omitted, and the function behaves identically to {@link #FTLoadGlyph}.
+     * is omitted, and the function behaves identically to {@link FreeTypeGlyph#FTLoadGlyph}.
      */
     static int FTLoadChar(@In MemoryAddress face, @In long parameters, @In long load_flags) {
         try {
@@ -525,32 +500,6 @@ public interface FreeTypeFace {
     static int FTGetTrackKerning(@In MemoryAddress face, @In long point_size, @In int degree, @Out MemorySegment akerning) {
         try {
             return (int) BaseInterface.FT_GET_TRACK_KERNING.invoke(face, point_size, degree, akerning.address());
-        } catch (Throwable e) {
-            throw rethrow(e);
-        }
-    }
-
-    /**
-     * Retrieve the ASCII name of a given glyph in a face. This only works for those faces where {@code FT_HAS_GLYPH_NAMES}
-     * (face) returns 1.
-     *
-     * @param face        Retrieve the ASCII name of a given glyph in a face. This only works for those faces where FT_HAS_GLYPH_NAMES(face) returns 1.
-     * @param glyph_index The glyph index.
-     * @param buffer_max  The maximum number of bytes available in the buffer.
-     * @param buffer      A pointer to a target buffer where the name is copied to.
-     * @return A pointer to a target buffer where the name is copied to.
-     * @apiNote An error is returned if the face doesn't provide glyph names or if the glyph index is invalid.
-     * In all cases of failure, the first byte of buffer is set to 0 to indicate an empty name.<br/>
-     * The glyph name is truncated to fit within the buffer if it is too long. The returned string is always
-     * zero-terminated.<br/>
-     * Be aware that FreeType reorders glyph indices internally so that glyph index 0 always corresponds
-     * to the ‘missing glyph’ (called ‘.notdef’).<br/>
-     * This function always returns an error if the config macro {@code FT_CONFIG_OPTION_NO_GLYPH_NAMES}
-     * is not defined in ftoption.h.
-     */
-    static int FTGetGlyphName(@In MemoryAddress face, @In int glyph_index, @Out MemorySegment buffer, @In int buffer_max) {
-        try {
-            return (int) BaseInterface.FT_GET_GLYPH_NAME.invoke(face, glyph_index, buffer.address(), buffer_max);
         } catch (Throwable e) {
             throw rethrow(e);
         }

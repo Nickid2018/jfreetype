@@ -3,13 +3,14 @@ package io.github.mmc1234.jfreetype.core;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
 /**
  * A handle to an object that models a face scaled to a given character size.
  *
  * @apiNote An {@link FTFace} has one active {@link FTSize} object that is used
- * by functions like {@link FreeTypeFace#FTLoadGlyph} to determine
+ * by functions like {@link FreeTypeGlyph#FTLoadGlyph} to determine
  * the scaling transformation that in turn is used to load and hint glyphs and metrics.<br/>
  * You can use {@link FreeTypeFace#FTSetCharSize}, {@link FreeTypeFace#FTSetPixelSizes},
  * {@link FreeTypeFace#FTRequestSize} or even {@link FreeTypeFace#FTSelectSize} to change
@@ -43,12 +44,12 @@ public final class FTSize {
      * A typeless pointer, unused by the FreeType library or any of its drivers.
      * It can be used by client applications to link their own data to each size object.
      */
-    public static final VarHandle GENERIC = null;
+    public static final MethodHandle GENERIC;
 
     /**
      * Metrics for this size object. This field is read-only.
      */
-    public static final VarHandle METRICS = null;
+    public static final MethodHandle METRICS;
 
     public static final VarHandle INTERNAL;
 
@@ -58,7 +59,10 @@ public final class FTSize {
         }, FTGeneric.STRUCT_LAYOUT, FTSizeMetrics.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        FACE = builder.varHandle("face");
-        INTERNAL = builder.varHandle("internal");
+        FACE = builder.primitiveField("face");
+        INTERNAL = builder.primitiveField("internal");
+
+        GENERIC = builder.structField("generic");
+        METRICS = builder.structField("metrics");
     }
 }
