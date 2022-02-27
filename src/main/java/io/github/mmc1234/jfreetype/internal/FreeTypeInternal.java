@@ -9,8 +9,8 @@ public class FreeTypeInternal {
         VersionInternal.loadMethodHandles();
         BaseInterface.loadMethodHandles();
         UnicodeVariationSequences.loadMethodHandles();
-        // TODO Glyph Color Management
-        // TODO Glyph Layer Management
+        GlyphColorManagement.loadMethodHandles();
+        GlyphLayerManagement.loadMethodHandles();
         GlyphManagement.loadMethodHandles();
         // TODO Mac Specific Interface
         SizeManagement.loadMethodHandles();
