@@ -7,7 +7,7 @@ import java.lang.invoke.VarHandle;
 
 /**
  * This iterator object is needed for {@link io.github.mmc1234.jfreetype.core.FreeTypeGlyph#FTGetColorGlyphLayer}.
- * @implNote In ftcolor.h
+ * @implNote In freetype/ftcolor.h
  * <pre>{@code
  *   typedef struct FT_LayerIterator_
  *   {
