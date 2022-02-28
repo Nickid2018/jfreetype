@@ -10,7 +10,7 @@ public interface FTErrors {
     int INVALID_ARGUMENT = 0x06;
     int UNIMPLEMENTED_FEATURE = 0x07;
     int INVALID_TABLE = 0x08;
-    int INVALID_OFFSET = 0x00;
+    int INVALID_OFFSET = 0x09;
     int ARRAY_TOO_LARGE = 0x0A;
     int MISSING_MODULE = 0x0B;
     int MISSING_PROPERTY = 0x0C;
@@ -81,8 +81,8 @@ public interface FTErrors {
     int SYNTAX_ERROR = 0xA0;
     int STACK_UNDERFLOW = 0xA1;
     int IGNORE = 0xA2;
-    int NO_UNICODE_GLYPH_NAME = 0xA0;
-    int GLYPH_TOO_BIG = 0xA0;
+    int NO_UNICODE_GLYPH_NAME = 0xA3;
+    int GLYPH_TOO_BIG = 0xA4;
     int MISSING_STARTFONT_FIELD = 0xB0;
     int MISSING_FONT_FIELD = 0xB1;
     int MISSING_SIZE_FIELD = 0xB2;
@@ -94,4 +94,98 @@ public interface FTErrors {
     int BBX_TOO_BIG = 0xB8;
     int CORRUPTED_FONT_HEADER = 0xB9;
     int CORRUPTED_FONT_GLYPHS = 0xBA;
+
+    public static String toString(int error) {
+        return switch (error) {
+            case OK -> "no error";
+            case CANNOT_OPEN_RESOURCE -> "cannot open resource";
+            case UNKNOWN_FILE_FORMAT -> "unknown file format";
+            case INVALID_FILE_FORMAT -> "broken file";
+            case INVALID_VERSION -> "invalid FreeType version";
+            case LOWER_MODULE_VERSION -> "module version is too low";
+            case INVALID_ARGUMENT -> "invalid argument";
+            case UNIMPLEMENTED_FEATURE -> "unimplemented feature";
+            case INVALID_OFFSET -> "broken offset within table";
+            case ARRAY_TOO_LARGE -> "array allocation size too large";
+            case MISSING_MODULE -> "missing module";
+            case MISSING_PROPERTY -> "missing property";
+            case INVALID_GLYPH_INDEX -> "invalid glyph index";
+            case INVALID_CHARACTER_CODE -> "invalid character code";
+            case INVALID_GLYPH_FORMAT -> "unsupported glyph image format";
+            case CANNOT_RENDER_GLYPH -> "cannot render this glyph format";
+            case INVALID_OUTLINE -> "invalid outline";
+            case INVALID_COMPOSITE -> "invalid composite glyph";
+            case TOO_MANY_HINTS -> "too many hints";
+            case INVALID_PIXEL_SIZE -> "invalid pixel size";
+            case INVALID_HANDLE -> "invalid object handle";
+            case INVALID_LIBRARY_HANDLE -> "invalid library handle";
+            case INVALID_DRIVER_HANDLE -> "invalid module handle";
+            case INVALID_FACE_HANDLE -> "invalid face handle";
+            case INVALID_SIZE_HANDLE -> "invalid size handle";
+            case INVALID_SLOT_HANDLE -> "invalid glyph slot handle";
+            case INVALID_CHARMAP_HANDLE -> "invalid charmap handle";
+            case INVALID_CACHE_HANDLE -> "invalid cache manager handle";
+            case INVALID_STREAM_HANDLE -> "invalid stream handle";
+            case RASTER_UNINITIALIZED -> "raster uninitialized";
+            case RASTER_CORRUPTED -> "raster corrupted";
+            case RASTER_OVERFLOW -> "raster overflow";
+            case RASTER_NEGATIVE_HEIGHT -> "negative height while rastering";
+            case TOO_MAY_CACHES -> "too many registered caches";
+            case INVALID_OPCODE -> "invalid opcode";
+            case TOO_FEW_ARGUMENTS -> "too few arguments";
+            case STACK_OVERFLOW -> "stack overflow";
+            case CODE_OVERFLOW -> "code overflow";
+            case BAD_ARGUMENT -> "bad argument";
+            case DIVIDE_BY_ZERO -> "division by zero";
+            case INVALID_REFERENCE -> "invalid reference";
+            case DEBUG_OPCODE -> "found debug opcode";
+            case ENDF_IN_EXEC_STREAM -> "found ENDF opcode in execution stream";
+            case NESTED_DEFS -> "nested DEFS";
+            case INVALID_CODERANCE -> "invalid code range";
+            case EXECUTION_TOO_LONG -> "execution context too long";
+            case TOO_MANY_FUNCTION_DEFS -> "too many function definitions";
+            case TOO_MANY_INSTRUCTION_DEFS -> "too many instruction definitions";
+            case TABLE_MISSING -> "SFNT font table missing";
+            case HORIZ_HEADER_MISSING -> "SFNT font table missing";
+            case LOCATIONS_MISSING -> "locations (loca) table missing";
+            case NAME_TABLE_MISSING -> "name table missing";
+            case CMAP_TABLE_MISSING -> "character map (cmap) table missing";
+            case HMTX_TABLE_MISSING -> "horizontal metrics (hmtx) table missing";
+            case POST_TABLE_MISSING -> "PostScript (post) table missing";
+            case INVALID_HORIZ_METRICS -> "invalid horizontal metrics";
+            case INVALID_CHARMAP_FORMAT -> "invalid character map (cmap) format";
+            case INVALID_PPEM -> "invalid ppem value";
+            case INVALID_VERT_METRICS -> "invalid vertical metrics";
+            case COULD_NOT_FIND_CONTEXT -> "could not find context";
+            case INVALID_POST_TABLE_FORMAT -> "invalid PostScript (post) table format";
+            case INVALID_POST_TABLE -> "invalid PostScript (post) table";
+            case DEF_IN_GLYF_BYTECODE -> "found FDEF or IDEF opcode in glyf bytecode";
+            case MISSING_BITMAP -> "missing bitmap in strike";
+            case SYNTAX_ERROR -> "opcode syntax error";
+            case STACK_UNDERFLOW -> "argument stack underflow";
+            case IGNORE -> "ignore";
+            case NO_UNICODE_GLYPH_NAME -> "no Unicode glyph name found";
+            case GLYPH_TOO_BIG -> "glyph too big for hinting";
+            case MISSING_STARTFONT_FIELD -> "`STARTFONT' field missing";
+            case MISSING_FONT_FIELD -> "`FONT' field missing";
+            case MISSING_SIZE_FIELD -> "`SIZE' field missing";
+            case MISSING_FONTBOUNDINGBOX_FIELD -> "`FONTBOUNDINGBOX' field missing";
+            case MISSING_CHARS_FIELD -> "`FONTBOUNDINGBOX' field missing";
+            case MISSING_STARTCHAR_FIELD -> "`STARTCHAR' field missing";
+            case MISSING_ENCODING_FIELD -> "`ENCODING' field missing";
+            case MISSING_BBX_FIELD -> "`BBX' field missing" ;
+            case BBX_TOO_BIG -> "`BBX' field missing" ;
+            case CORRUPTED_FONT_HEADER -> "Font header corrupted or missing fields";
+            case CORRUPTED_FONT_GLYPHS -> "Font header corrupted or missing fields";
+            default -> throw new IllegalStateException("Unexpected value: " + error);
+        };
+    }
+
+    public static boolean isSuccess(int error) {
+        return error == OK;
+    }
+
+    public static boolean isFail(int error) {
+        return error != OK;
+    }
 }
