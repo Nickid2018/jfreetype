@@ -12,7 +12,7 @@ import static io.github.mmc1234.jfreetype.internal.LibraryUtil.rethrow;
 /**
  * An interface stores face operations.
  */
-public interface FreeTypeFace {
+public interface FreeTypeFace extends FTLoadFlags {
 
     /**
      * Call {@link #FTOpenFace} to open a font by its pathname.

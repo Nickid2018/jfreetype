@@ -22,8 +22,7 @@ import io.github.mmc1234.jfreetype.internal.*;
  * A class indexes to all Core APIs.<br/>
  * Please use sub-interfaces to call functions.
  */
-public class FreeType implements
-        FTLoadFlags, FTErrors, FreeTypeLibrary, FreeTypeFace, FreeTypeSize, FreeTypeGlyph {
+public class FreeType implements FTErrors, FreeTypeLibrary, FreeTypeFace, FreeTypeSize, FreeTypeGlyph {
 
     /**
      * Load Method Handles of FreeType API.
