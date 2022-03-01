@@ -16,10 +16,7 @@
 
 package io.github.mmc1234.jfreetype.example;
 
-import io.github.mmc1234.jfreetype.core.FTFace;
-import io.github.mmc1234.jfreetype.core.FreeType;
-import io.github.mmc1234.jfreetype.core.FreeTypeFace;
-import io.github.mmc1234.jfreetype.core.FreeTypeLibrary;
+import io.github.mmc1234.jfreetype.core.*;
 import io.github.mmc1234.jfreetype.image.FTBBox;
 import io.github.mmc1234.jfreetype.util.VarUtils;
 import jdk.incubator.foreign.*;

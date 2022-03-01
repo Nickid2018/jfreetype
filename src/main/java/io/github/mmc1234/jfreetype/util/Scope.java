@@ -30,6 +30,23 @@ public class Scope implements AutoCloseable {
     }
 
     /**
+     * Create a pointer in the memory using the scope.
+     * @return segment stores a pointer
+     */
+    public MemorySegment newAddress() {
+        return MemorySegment.allocateNative(ADDRESS, scope);
+    }
+
+    /**
+     * Create a pointer in the memory using the scope.
+     * @param len length of array
+     * @return segment stores a pointer
+     */
+    public MemorySegment newAddressArray(int len) {
+        return MemorySegment.allocateNative(ADDRESS.byteSize() * len, scope);
+    }
+
+    /**
      * Create a segment can store an int using the scope.
      * @return a segment
      */
@@ -94,6 +111,78 @@ public class Scope implements AutoCloseable {
     }
 
     /**
+     * Create a segment can store an int array using the scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public MemorySegment newIntArray(int len) {
+        return MemorySegment.allocateNative(JAVA_INT.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a long array using the scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public MemorySegment newLongArray(int len) {
+        return MemorySegment.allocateNative(JAVA_LONG.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a short array using the scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public MemorySegment newShortArray(int len) {
+        return MemorySegment.allocateNative(JAVA_SHORT.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a char array using the scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public MemorySegment newCharArray(int len) {
+        return MemorySegment.allocateNative(JAVA_CHAR.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a byte array using the scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public MemorySegment newByteArray(int len) {
+        return MemorySegment.allocateNative(JAVA_BYTE.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a float array using the scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public  MemorySegment newFloatArray(int len) {
+        return MemorySegment.allocateNative(JAVA_FLOAT.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a double array using the scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public MemorySegment newDoubleArray(int len) {
+        return MemorySegment.allocateNative(JAVA_DOUBLE.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a boolean array using the scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public MemorySegment newBooleanArray(int len) {
+        return MemorySegment.allocateNative(JAVA_BOOLEAN.byteSize() * len, scope);
+    }
+
+    /**
      * Get segment from the field.
      * @param handle handle of the field
      * @param segment segment to operate
@@ -142,12 +231,45 @@ public class Scope implements AutoCloseable {
     }
 
     /**
-     * Create segment using the scope
+     * Create segment using the scope.
      * @param layout layout of segment
      * @return a segment
      */
     public MemorySegment newSegment(MemoryLayout layout) {
         return MemorySegment.allocateNative(layout, scope);
+    }
+
+    /**
+     * Create segment array using the scope.
+     * @param layout layout of segment
+     * @param len length of array
+     * @return a segment
+     */
+    public MemorySegment newSegmentArray(MemoryLayout layout, int len) {
+        return MemorySegment.allocateNative(layout.byteSize() * len, scope);
+    }
+
+    /**
+     * Reference an object using the scope.
+     * @param segment object to be referenced
+     * @return segment contains the address
+     */
+    public MemorySegment amp(MemorySegment segment) {
+        MemorySegment seg = MemorySegment.allocateNative(ADDRESS, scope);
+        seg.set(ADDRESS, 0, segment.address());
+        return seg;
+    }
+
+    /**
+     * Get segment at certain index using the scope.
+     * @param array an segment array
+     * @param layout layout of struct
+     * @param index index of segment
+     * @return an element
+     */
+    public MemorySegment getAtIndex(MemorySegment array, MemoryLayout layout, int index) {
+        return MemorySegment.ofAddress(MemoryAddress.ofLong(
+                array.address().toRawLongValue() + index * layout.byteSize()), layout.byteSize(), scope);
     }
 
     public ResourceScope getResourceScope() {

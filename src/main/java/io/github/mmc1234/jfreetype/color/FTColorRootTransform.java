@@ -1,5 +1,7 @@
 package io.github.mmc1234.jfreetype.color;
 
+import io.github.mmc1234.jfreetype.CEnum;
+
 /**
  * An enumeration to specify whether {@link io.github.mmc1234.jfreetype.core.FreeTypeGlyph#FTGetColorGlyphPaint} is
  * to return a root transform to configure the client's graphics context matrix.
@@ -15,7 +17,7 @@ package io.github.mmc1234.jfreetype.color;
  *   } FT_Color_Root_Transform;
  * }</pre>
  */
-public enum FTColorRootTransform {
+public enum FTColorRootTransform implements CEnum {
 
     /**
      * Do include the root transform as the initial {@link FTCOLRPaint} object.

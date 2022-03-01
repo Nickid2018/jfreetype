@@ -1,5 +1,7 @@
 package io.github.mmc1234.jfreetype.color;
 
+import io.github.mmc1234.jfreetype.CEnum;
+
 /**
  * An enumeration listing the ‘COLR’ v1 composite modes used in FT_PaintComposite.
  * For more details on each paint mode, see ‘https://www.w3.org/TR/compositing-1/#porterduffcompositingoperators’.
@@ -40,7 +42,7 @@ package io.github.mmc1234.jfreetype.color;
  *   } FT_Composite_Mode;
  * }</pre>
  */
-public enum FTCompositeMode {
+public enum FTCompositeMode implements CEnum {
 
     FT_COLR_COMPOSITE_CLEAR,
     FT_COLR_COMPOSITE_SRC,

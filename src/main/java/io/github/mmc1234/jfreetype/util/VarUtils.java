@@ -6,6 +6,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static jdk.incubator.foreign.ValueLayout.*;
@@ -52,6 +53,81 @@ public class VarUtils {
      */
     public static void set(VarHandle handle, MemorySegment segment, int index, Object value) {
         handle.set(segment, index, value);
+    }
+
+    /**
+     * Set value to the variable.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param value value to set
+     */
+    public static void set(VarHandle handle, MemorySegment segment, Object value) {
+        handle.set(segment, 0, value);
+    }
+
+    /**
+     * Map values in the field.
+     * @param handles handle of the field
+     * @param segment segment to operate
+     * @param mapFunction function to map
+     * @param index index of the element
+     * @param <T> type of value
+     */
+    public static <T> void mapTo(MemorySegment segment, Function<T, T> mapFunction, int index, VarHandle... handles) {
+        for (VarHandle handle : handles)
+            mapTo(handle, segment, mapFunction, index);
+    }
+
+    /**
+     * Map values in the field.
+     * @param handles handle of the field
+     * @param segment segment to operate
+     * @param mapFunction function to map
+     * @param <T> type of value
+     */
+    public static <T> void mapTo(MemorySegment segment, Function<T, T> mapFunction, VarHandle... handles) {
+        for (VarHandle handle : handles)
+            mapTo(handle, segment, mapFunction);
+    }
+
+    /**
+     * Map values in the field.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param mapFunction function to map
+     * @param indexes indexes of the element
+     * @param <T> type of value
+     */
+    public static <T> void mapTo(VarHandle handle, MemorySegment segment, Function<T, T> mapFunction, int... indexes) {
+        for (int index : indexes)
+            mapTo(handle, segment, mapFunction, index);
+    }
+
+    /**
+     * Map the value in the field.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param mapFunction function to map
+     * @param index index of the element
+     * @param <T> type of value
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> void mapTo(VarHandle handle, MemorySegment segment, Function<T, T> mapFunction, int index) {
+        T source = (T) handle.get(segment, index);
+        set(handle, segment, index, mapFunction.apply(source));
+    }
+
+    /**
+     * Map the value in the field.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param mapFunction function to map
+     * @param <T> type of value
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> void mapTo(VarHandle handle, MemorySegment segment, Function<T, T> mapFunction) {
+        T source = (T) handle.get(segment, 0);
+        set(handle, segment, mapFunction.apply(source));
     }
 
     /**
@@ -421,12 +497,45 @@ public class VarUtils {
     }
 
     /**
+     * Reference an object.
+     * @param segment object to be referenced
+     * @param scope scope of the segment
+     * @return segment contains the address
+     */
+    public static MemorySegment amp(MemorySegment segment, ResourceScope scope) {
+        MemorySegment seg = MemorySegment.allocateNative(ADDRESS, scope);
+        seg.set(ADDRESS, 0, segment.address());
+        return seg;
+    }
+
+    /**
+     * Reference an object using global scope.
+     * @param segment object to be referenced
+     * @return segment contains the address
+     */
+    public static MemorySegment amp(MemorySegment segment) {
+        MemorySegment seg = MemorySegment.allocateNative(ADDRESS, ResourceScope.globalScope());
+        seg.set(ADDRESS, 0, segment.address());
+        return seg;
+    }
+
+    /**
      * Create a pointer in the memory.
      * @param scope scope of the segment
      * @return segment stores a pointer
      */
     public static MemorySegment newAddress(ResourceScope scope) {
         return MemorySegment.allocateNative(ADDRESS, scope);
+    }
+
+    /**
+     * Create a pointer in the memory.
+     * @param len length of array
+     * @param scope scope of the segment
+     * @return segment stores a pointer
+     */
+    public static MemorySegment newAddressArray(int len, ResourceScope scope) {
+        return MemorySegment.allocateNative(ADDRESS.byteSize() * len, scope);
     }
 
     /**
@@ -468,6 +577,15 @@ public class VarUtils {
      */
     public static MemorySegment newAddress() {
         return MemorySegment.allocateNative(ADDRESS, ResourceScope.globalScope());
+    }
+
+    /**
+     * Create a pointer in the memory using global scope.
+     * @param len length of array
+     * @return segment stores a pointer
+     */
+    public static MemorySegment newAddressArray(int len) {
+        return MemorySegment.allocateNative(ADDRESS.byteSize() * len, ResourceScope.globalScope());
     }
 
     /**
@@ -624,6 +742,158 @@ public class VarUtils {
     }
 
     /**
+     * Create a segment can store an int array.
+     * @param len length of the array
+     * @param scope scope of segment
+     * @return a segment
+     */
+    public static MemorySegment newIntArray(int len, ResourceScope scope) {
+        return MemorySegment.allocateNative(JAVA_INT.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a long array.
+     * @param len length of the array
+     * @param scope scope of segment
+     * @return a segment
+     */
+    public static MemorySegment newLongArray(int len, ResourceScope scope) {
+        return MemorySegment.allocateNative(JAVA_LONG.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a short array.
+     * @param len length of the array
+     * @param scope scope of segment
+     * @return a segment
+     */
+    public static MemorySegment newShortArray(int len, ResourceScope scope) {
+        return MemorySegment.allocateNative(JAVA_SHORT.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a char array.
+     * @param len length of the array
+     * @param scope scope of segment
+     * @return a segment
+     */
+    public static MemorySegment newCharArray(int len, ResourceScope scope) {
+        return MemorySegment.allocateNative(JAVA_CHAR.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a byte array.
+     * @param len length of the array
+     * @param scope scope of segment
+     * @return a segment
+     */
+    public static MemorySegment newByteArray(int len, ResourceScope scope) {
+        return MemorySegment.allocateNative(JAVA_BYTE.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a float array.
+     * @param len length of the array
+     * @param scope scope of segment
+     * @return a segment
+     */
+    public static MemorySegment newFloatArray(int len, ResourceScope scope) {
+        return MemorySegment.allocateNative(JAVA_FLOAT.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a double array.
+     * @param len length of the array
+     * @param scope scope of segment
+     * @return a segment
+     */
+    public static MemorySegment newDoubleArray(int len, ResourceScope scope) {
+        return MemorySegment.allocateNative(JAVA_DOUBLE.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store a boolean array.
+     * @param len length of the array
+     * @param scope scope of segment
+     * @return a segment
+     */
+    public static MemorySegment newBooleanArray(int len, ResourceScope scope) {
+        return MemorySegment.allocateNative(JAVA_BOOLEAN.byteSize() * len, scope);
+    }
+
+    /**
+     * Create a segment can store an int array using global scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public static MemorySegment newIntArray(int len) {
+        return MemorySegment.allocateNative(JAVA_INT.byteSize() * len, ResourceScope.globalScope());
+    }
+
+    /**
+     * Create a segment can store a long array using global scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public static MemorySegment newLongArray(int len) {
+        return MemorySegment.allocateNative(JAVA_LONG.byteSize() * len, ResourceScope.globalScope());
+    }
+
+    /**
+     * Create a segment can store a short array using global scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public static MemorySegment newShortArray(int len) {
+        return MemorySegment.allocateNative(JAVA_SHORT.byteSize() * len, ResourceScope.globalScope());
+    }
+
+    /**
+     * Create a segment can store a char array using global scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public static MemorySegment newCharArray(int len) {
+        return MemorySegment.allocateNative(JAVA_CHAR.byteSize() * len, ResourceScope.globalScope());
+    }
+
+    /**
+     * Create a segment can store a byte array using global scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public static MemorySegment newByteArray(int len) {
+        return MemorySegment.allocateNative(JAVA_BYTE.byteSize() * len, ResourceScope.globalScope());
+    }
+
+    /**
+     * Create a segment can store a float array using global scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public static MemorySegment newFloatArray(int len) {
+        return MemorySegment.allocateNative(JAVA_FLOAT.byteSize() * len, ResourceScope.globalScope());
+    }
+
+    /**
+     * Create a segment can store a double array using global scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public static MemorySegment newDoubleArray(int len) {
+        return MemorySegment.allocateNative(JAVA_DOUBLE.byteSize() * len, ResourceScope.globalScope());
+    }
+
+    /**
+     * Create a segment can store a boolean array using global scope.
+     * @param len length of the array
+     * @return a segment
+     */
+    public static MemorySegment newBooleanArray(int len) {
+        return MemorySegment.allocateNative(JAVA_BOOLEAN.byteSize() * len, ResourceScope.globalScope());
+    }
+
+    /**
      * Get integer from the segment.
      * @param segment segment to operate
      * @param index index of the element
@@ -773,5 +1043,70 @@ public class VarUtils {
      */
     public static boolean getBoolean(MemorySegment segment) {
         return segment.get(JAVA_BOOLEAN, 0);
+    }
+
+    /**
+     * Create segment.
+     * @param layout layout of segment
+     * @param scope scope of segment
+     * @return a segment
+     */
+    public static MemorySegment newSegment(MemoryLayout layout, ResourceScope scope) {
+        return MemorySegment.allocateNative(layout, scope);
+    }
+
+    /**
+     * Create segment using global scope.
+     * @param layout layout of segment
+     * @return a segment
+     */
+    public static MemorySegment newSegment(MemoryLayout layout) {
+        return MemorySegment.allocateNative(layout, ResourceScope.globalScope());
+    }
+
+    /**
+     * Create segment array.
+     * @param layout layout of segment
+     * @param len length of array
+     * @param scope scope of segment
+     * @return a segment
+     */
+    public static MemorySegment newSegmentArray(MemoryLayout layout, int len, ResourceScope scope) {
+        return MemorySegment.allocateNative(layout.byteSize() * len, scope);
+    }
+
+    /**
+     * Create segment array using global scope.
+     * @param layout layout of segment
+     * @param len length of array
+     * @return a segment
+     */
+    public static MemorySegment newSegmentArray(MemoryLayout layout, int len) {
+        return MemorySegment.allocateNative(layout.byteSize() * len, ResourceScope.globalScope());
+    }
+
+    /**
+     * Get segment at certain index.
+     * @param array an segment array
+     * @param layout layout of struct
+     * @param index index of segment
+     * @param scope scope of segment
+     * @return an element
+     */
+    public static MemorySegment getAtIndex(MemorySegment array, MemoryLayout layout, int index, ResourceScope scope) {
+        return MemorySegment.ofAddress(MemoryAddress.ofLong(
+                array.address().toRawLongValue() + index * layout.byteSize()), layout.byteSize(), scope);
+    }
+
+    /**
+     * Get segment at certain index using global scope.
+     * @param array an segment array
+     * @param layout layout of struct
+     * @param index index of segment
+     * @return an element
+     */
+    public static MemorySegment getAtIndex(MemorySegment array, MemoryLayout layout, int index) {
+        return MemorySegment.ofAddress(MemoryAddress.ofLong(
+                array.address().toRawLongValue() + index * layout.byteSize()), layout.byteSize(), ResourceScope.globalScope());
     }
 }
