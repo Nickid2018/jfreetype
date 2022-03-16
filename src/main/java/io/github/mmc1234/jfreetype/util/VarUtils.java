@@ -1109,4 +1109,27 @@ public class VarUtils {
         return MemorySegment.ofAddress(MemoryAddress.ofLong(
                 array.address().toRawLongValue() + index * layout.byteSize()), layout.byteSize(), ResourceScope.globalScope());
     }
+
+    /**
+     * Create segment for the pointer.
+     * @param address pointer to pack
+     * @param scope scope of segment
+     * @return an element
+     */
+    public static MemorySegment asSegment(MemoryAddress address, ResourceScope scope) {
+        MemorySegment segment = MemorySegment.allocateNative(ADDRESS, scope);
+        segment.set(ADDRESS, 0, address);
+        return segment;
+    }
+
+    /**
+     * Create segment for the pointer using global scope.
+     * @param address pointer to pack
+     * @return an element
+     */
+    public static MemorySegment asSegment(MemoryAddress address) {
+        MemorySegment segment = MemorySegment.allocateNative(ADDRESS, ResourceScope.globalScope());
+        segment.set(ADDRESS, 0, address);
+        return segment;
+    }
 }

@@ -7,4 +7,5 @@ module jfreetype {
     exports io.github.mmc1234.jfreetype.system;
     exports io.github.mmc1234.jfreetype.util;
     exports io.github.mmc1234.jfreetype;
+    exports io.github.mmc1234.jfreetype.glyph;
 }

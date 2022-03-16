@@ -272,6 +272,17 @@ public class Scope implements AutoCloseable {
                 array.address().toRawLongValue() + index * layout.byteSize()), layout.byteSize(), scope);
     }
 
+    /**
+     * Create segment for the pointer using the scope.
+     * @param address pointer to pack
+     * @return an element
+     */
+    public MemorySegment asSegment(MemoryAddress address) {
+        MemorySegment segment = MemorySegment.allocateNative(ADDRESS, scope);
+        segment.set(ADDRESS, 0, address);
+        return segment;
+    }
+
     public ResourceScope getResourceScope() {
         return scope;
     }
