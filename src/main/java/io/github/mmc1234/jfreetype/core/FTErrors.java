@@ -95,7 +95,7 @@ public interface FTErrors {
     int CORRUPTED_FONT_HEADER = 0xB9;
     int CORRUPTED_FONT_GLYPHS = 0xBA;
 
-    public static String toString(int error) {
+    static String toString(int error) {
         return switch (error) {
             case OK -> "no error";
             case CANNOT_OPEN_RESOURCE -> "cannot open resource";
@@ -166,26 +166,31 @@ public interface FTErrors {
             case IGNORE -> "ignore";
             case NO_UNICODE_GLYPH_NAME -> "no Unicode glyph name found";
             case GLYPH_TOO_BIG -> "glyph too big for hinting";
-            case MISSING_STARTFONT_FIELD -> "`STARTFONT' field missing";
-            case MISSING_FONT_FIELD -> "`FONT' field missing";
-            case MISSING_SIZE_FIELD -> "`SIZE' field missing";
-            case MISSING_FONTBOUNDINGBOX_FIELD -> "`FONTBOUNDINGBOX' field missing";
-            case MISSING_CHARS_FIELD -> "`FONTBOUNDINGBOX' field missing";
-            case MISSING_STARTCHAR_FIELD -> "`STARTCHAR' field missing";
-            case MISSING_ENCODING_FIELD -> "`ENCODING' field missing";
-            case MISSING_BBX_FIELD -> "`BBX' field missing" ;
-            case BBX_TOO_BIG -> "`BBX' field missing" ;
+            case MISSING_STARTFONT_FIELD -> "'STARTFONT' field missing";
+            case MISSING_FONT_FIELD -> "'FONT' field missing";
+            case MISSING_SIZE_FIELD -> "'SIZE' field missing";
+            case MISSING_FONTBOUNDINGBOX_FIELD -> "'FONTBOUNDINGBOX' field missing";
+            case MISSING_CHARS_FIELD -> "'FONTBOUNDINGBOX' field missing";
+            case MISSING_STARTCHAR_FIELD -> "'STARTCHAR' field missing";
+            case MISSING_ENCODING_FIELD -> "'ENCODING' field missing";
+            case MISSING_BBX_FIELD -> "'BBX' field missing" ;
+            case BBX_TOO_BIG -> "'BBX' field missing" ;
             case CORRUPTED_FONT_HEADER -> "Font header corrupted or missing fields";
             case CORRUPTED_FONT_GLYPHS -> "Font header corrupted or missing fields";
             default -> throw new IllegalStateException("Unexpected value: " + error);
         };
     }
 
-    public static boolean isSuccess(int error) {
+    static boolean isSuccess(int error) {
         return error == OK;
     }
 
-    public static boolean isFail(int error) {
+    static boolean isFail(int error) {
         return error != OK;
+    }
+
+    static void checkCode(int code) {
+        if (isFail(code))
+            throw new RuntimeException(toString(code));
     }
 }
