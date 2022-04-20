@@ -449,7 +449,7 @@ public interface FreeTypeFace extends FTLoadFlags {
      * If no active cmap is set up (i.e., face->charmap is zero), the call to {@link #FTGetCharIndex}
      * is omitted, and the function behaves identically to {@link FreeTypeGlyph#FTLoadGlyph}.
      */
-    static int FTLoadChar(@In MemoryAddress face, @In long parameters, @In long load_flags) {
+    static int FTLoadChar(@In MemoryAddress face, @In long parameters, @In int load_flags) {
         try {
             return (int) BaseInterface.FT_LOAD_CHAR.invoke(face, parameters, load_flags);
         } catch (Throwable e) {

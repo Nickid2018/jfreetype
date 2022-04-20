@@ -221,6 +221,18 @@ public class Scope implements AutoCloseable {
     }
 
     /**
+     * Get segment from the field using the scope.
+     * @param handle handle of the field
+     * @param segment segment to operate
+     * @param layout layout of the struct
+     * @return segment of the field
+     */
+    public MemorySegment getSegment(MethodHandle handle, MemorySegment segment, MemoryLayout layout) {
+        MemoryAddress addr = VarUtils.getAddress(handle, segment);
+        return MemorySegment.ofAddress(addr, layout.byteSize(), scope);
+    }
+
+    /**
      * Get the object that the segment is pointing to using global scope.
      * @param segment segment to operate
      * @param layout layout of the object
@@ -270,6 +282,34 @@ public class Scope implements AutoCloseable {
     public MemorySegment getAtIndex(MemorySegment array, MemoryLayout layout, int index) {
         return MemorySegment.ofAddress(MemoryAddress.ofLong(
                 array.address().toRawLongValue() + index * layout.byteSize()), layout.byteSize(), scope);
+    }
+
+    /**
+     * Create segment for the pointer using the scope.
+     * @param address pointer to pack
+     * @return an element
+     */
+    public MemorySegment asSegment(MemoryAddress address) {
+        MemorySegment segment = MemorySegment.allocateNative(ADDRESS, scope);
+        segment.set(ADDRESS, 0, address);
+        return segment;
+    }
+
+    /**
+     * Create a char array (or a string) in the memory using the scope.
+     * @param length length of the char array
+     * @return segment stores a char array with certain length
+     */
+    public MemorySegment newString(long length) {
+        return MemorySegment.allocateNative(length * JAVA_CHAR.byteSize(), scope);
+    }
+    /**
+     * Create a char array (or string) in the memory and store the string using the scope.
+     * @param str string to store
+     * @return segment stores a char array contains the string
+     */
+    public MemorySegment newString(String str) {
+        return VarUtils.newString(str, scope);
     }
 
     public ResourceScope getResourceScope() {

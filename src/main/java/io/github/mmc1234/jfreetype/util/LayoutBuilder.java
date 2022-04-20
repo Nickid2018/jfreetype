@@ -24,6 +24,8 @@ public class LayoutBuilder {
     public static final ValueLayout ALIGNED_LONG =
             FunctionDescriptorUtils.sizeOfLong() == 4 ? ALIGNED_INT : ALIGNED_LONG_64;
 
+    private static final int PACK_FORMAT = Integer.parseInt(System.getProperty("jfreetype.packformat", "8"));
+
     private final MemoryLayout groupLayout;
     private final MemoryLayout sequenceLayout;
 
@@ -40,10 +42,11 @@ public class LayoutBuilder {
             long alignOffset = 0;
             long maxAlign = 0;
             for (MemoryLayout layout : struct) {
-                long align = alignOffset % layout.byteAlignment();
-                maxAlign = Math.max(layout.byteAlignment(), maxAlign);
+                long baseAlignment = Math.min(PACK_FORMAT, layout.byteAlignment());
+                long align = alignOffset % baseAlignment;
+                maxAlign = Math.max(baseAlignment, maxAlign);
                 if (align != 0) {
-                    long alignSize = layout.byteAlignment() - align;
+                    long alignSize = baseAlignment - align;
                     alignOffset += alignSize;
                     layoutWithPadding.add(MemoryLayout.paddingLayout(alignSize * 8));
                 }

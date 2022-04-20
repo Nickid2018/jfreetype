@@ -22,7 +22,7 @@ import java.lang.invoke.VarHandle;
  *   typedef struct FT_GlyphRec_* FT_Glyph;
  * }</pre>
  */
-public class FTGlyph {
+public final class FTGlyph {
 
     public static final MemoryLayout STRUCT_LAYOUT;
     public static final MemoryLayout SEQUENCE_LAYOUT;
