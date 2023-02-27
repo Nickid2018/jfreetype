@@ -21,8 +21,10 @@ import io.github.mmc1234.jfreetype.core.FreeTypeLibrary;
 import io.github.mmc1234.jfreetype.util.Scope;
 import io.github.mmc1234.jfreetype.util.VarUtils;
 import jdk.incubator.foreign.MemorySegment;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
-public class ExampleVersion {
+public class VersionTest {
 
     private static String getVersionString(MemorySegment libPtr) {
         try (Scope scope = Scope.pushScope()) {
@@ -37,12 +39,13 @@ public class ExampleVersion {
         }
     }
 
-    public static void main(String[] args) {
+    @Test
+    public void main() {
         MemorySegment libPtr = VarUtils.newAddress();
 
         // Init
         var error = FreeTypeLibrary.FTInitFreeType(libPtr);
-        Asserts.assertEquals(FreeType.OK, error);
+        Assert.assertEquals(FreeType.OK, error);
 
         // Print version
         var version = getVersionString(libPtr);

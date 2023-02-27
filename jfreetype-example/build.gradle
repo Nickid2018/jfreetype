@@ -1,0 +1,17 @@
+apply(plugin: "java")
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+
+    testImplementation 'org.testng:testng:7.7.1'
+    testImplementation project(path: ':')
+}
+
+test {
+    useTestNG()
+    jvmArgs += ['--enable-native-access=jfreetype.test,jfreetype']
+}
