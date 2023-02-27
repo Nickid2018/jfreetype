@@ -21,10 +21,9 @@ public class LayoutBuilder {
     public static final ValueLayout ALIGNED_CHAR = ValueLayout.JAVA_CHAR.withBitAlignment(8);
     public static final ValueLayout ALIGNED_FLOAT = ValueLayout.JAVA_FLOAT.withBitAlignment(32);
 
-    public static final ValueLayout ALIGNED_LONG =
-            FunctionDescriptorUtils.sizeOfLong() == 4 ? ALIGNED_INT : ALIGNED_LONG_64;
+    public static final ValueLayout ALIGNED_LONG = ALIGNED_INT;
 
-    private static final int PACK_FORMAT = Integer.parseInt(System.getProperty("jfreetype.packformat", "8"));
+    private static final int PACK_FORMAT = 8;
 
     private final MemoryLayout groupLayout;
     private final MemoryLayout sequenceLayout;

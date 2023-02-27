@@ -27,7 +27,7 @@ public class LibraryUtil {
     }
 
     public static NativeSymbol getNativeSymbol(String name) {
-        return SYMBOL_LOOKUP.lookup(name).orElseThrow(UnsatisfiedLinkError::new);
+        return SYMBOL_LOOKUP.lookup(name).orElseThrow(() -> new UnsatisfiedLinkError("Cannot find symbol " + name));
     }
 
     public static Optional<NativeSymbol> getNativeSymbolSilent(String name) {
@@ -40,9 +40,7 @@ public class LibraryUtil {
 
     public static MethodHandle loadSilent(String name, FunctionDescriptor fd) {
         Optional<NativeSymbol> symbol =  getNativeSymbolSilent(name);
-        if (symbol.isEmpty())
-            return null;
-        return LINKER.downcallHandle(symbol.get(), fd);
+        return symbol.map(nativeSymbol -> LINKER.downcallHandle(nativeSymbol, fd)).orElse(null);
     }
 
     public static RuntimeException rethrow(Throwable e) {

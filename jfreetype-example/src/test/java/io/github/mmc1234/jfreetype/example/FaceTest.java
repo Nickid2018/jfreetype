@@ -20,24 +20,26 @@ import io.github.mmc1234.jfreetype.core.*;
 import io.github.mmc1234.jfreetype.image.FTBBox;
 import io.github.mmc1234.jfreetype.util.VarUtils;
 import jdk.incubator.foreign.*;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
-public class ExampleFace {
+public class FaceTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void main() {
+        FreeType.load();
+        
         String fontName = "C:\\Windows\\Fonts\\Arial.ttf";
         MemorySegment libPtr = VarUtils.newAddress();
         MemorySegment facePtr = VarUtils.newAddress();
         MemorySegment filePath = VarUtils.newString(fontName);
 
         // Init
-        var error = FreeTypeLibrary.FTInitFreeType(libPtr);
-        Asserts.assertEquals(FreeType.OK, error);
-
-        error = FreeTypeFace.FTNewFace(VarUtils.starAddress(libPtr), filePath.address(), 0, facePtr);
-        Asserts.assertEquals(FreeType.OK, error);
-
-        error = FreeTypeFace.FTSetCharSize(VarUtils.starAddress(facePtr), 0, 16 * 64, 300, 300);
-        Asserts.assertEquals(FreeType.OK, error);
+        Assert.assertEquals(FreeType.OK, FreeTypeLibrary.FTInitFreeType(libPtr));
+        Assert.assertEquals(FreeType.OK, FreeTypeFace.FTNewFace(
+                VarUtils.starAddress(libPtr), filePath.address(), 0, facePtr));
+        Assert.assertEquals(FreeType.OK, FreeTypeFace.FTSetCharSize(
+                VarUtils.starAddress(facePtr), 0, 16 * 64, 300, 300));
 
         // Print debug info
         System.out.println(FTFace.STRUCT_LAYOUT.byteSize());

@@ -51,20 +51,4 @@ public class FunctionDescriptorUtils {
             default -> throw new IllegalStateException("Unexpected value: " + name);
         };
     }
-
-    private static final MethodHandle SIZE_OF_LONG;
-
-    public static int sizeOfLong() {
-        try {
-            return SIZE_OF_LONG == null ? 4 : (int) SIZE_OF_LONG.invoke();
-        } catch (Throwable e) {
-            return 4;
-        }
-    }
-
-    static {
-        SIZE_OF_LONG = LibraryUtil.loadSilent("JFT_longSize", of("I"));
-        if (SIZE_OF_LONG == null)
-            System.err.println("Cannot link JFT_longSize function, maybe you aren't using our library.");
-    }
 }

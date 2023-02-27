@@ -1,5 +1,5 @@
 module jfreetype {
-    requires jdk.incubator.foreign;
+    requires transitive jdk.incubator.foreign;
     requires java.desktop;
     exports io.github.mmc1234.jfreetype.color;
     exports io.github.mmc1234.jfreetype.types;

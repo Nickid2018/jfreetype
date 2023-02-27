@@ -1,0 +1,6 @@
+rootProject.name = 'jfreetype'
+
+include(":example")
+def example = project(":example")
+example.projectDir = file("jfreetype-example")
+example.buildFileName = "build.gradle"
