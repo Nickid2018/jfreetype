@@ -5,6 +5,7 @@ import static io.github.mmc1234.jfreetype.internal.LibraryUtil.loadNative;
 public class FreeTypeInternal {
 
     public static boolean loadAll() {
+        if(LibraryUtil.isLoaded()) return true;
         loadNative();
         VersionInternal.loadMethodHandles();
         BaseInterface.loadMethodHandles();

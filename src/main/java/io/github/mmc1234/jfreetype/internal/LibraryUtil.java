@@ -26,6 +26,10 @@ public class LibraryUtil {
         loaded = true;
     }
 
+    protected static boolean isLoaded() {
+        return loaded;
+    }
+
     public static NativeSymbol getNativeSymbol(String name) {
         return SYMBOL_LOOKUP.lookup(name).orElseThrow(() -> new UnsatisfiedLinkError("Cannot find symbol " + name));
     }
