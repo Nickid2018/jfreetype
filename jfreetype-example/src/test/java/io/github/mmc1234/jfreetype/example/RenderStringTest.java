@@ -30,7 +30,7 @@ public class RenderStringTest {
                     graphics.drawImage(EasyFont.charInfoToBitmap(charInfo), x[0], Math.toIntExact(baseline - charInfo.maxY()), null);
                     x[0] += charInfo.width();
                 });
-                ImageIO.write(image, "png", new File("D:\\test.png"));
+                ImageIO.write(image, "png", new File("test.png"));
             }
         }
     }

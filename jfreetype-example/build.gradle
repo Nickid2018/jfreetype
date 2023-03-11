@@ -13,5 +13,6 @@ dependencies {
 
 test {
     useTestNG()
+    workingDir = "run"
     jvmArgs += ['--enable-native-access=jfreetype.test,jfreetype']
 }

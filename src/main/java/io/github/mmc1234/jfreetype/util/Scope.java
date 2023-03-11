@@ -25,7 +25,7 @@ public class Scope implements AutoCloseable {
      * Create a scope. The statement should be used in try-with-resource struct.
      * @return a new scope
      */
-    public static Scope pushScope() {
+    public static Scope newScope() {
         return new Scope();
     }
 

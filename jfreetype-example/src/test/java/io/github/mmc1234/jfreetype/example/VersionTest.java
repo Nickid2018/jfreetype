@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 public class VersionTest {
 
     private static String getVersionString(MemorySegment libPtr) {
-        try (Scope scope = Scope.pushScope()) {
+        try (Scope scope = Scope.newScope()) {
             MemorySegment outV1 = scope.newInt();
             MemorySegment outV2 = scope.newInt();
             MemorySegment outV3 = scope.newInt();
