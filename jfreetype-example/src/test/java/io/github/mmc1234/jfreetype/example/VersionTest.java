@@ -41,6 +41,7 @@ public class VersionTest {
 
     @Test
     public void main() {
+        FreeType.load();
         MemorySegment libPtr = VarUtils.newAddress();
 
         // Init
