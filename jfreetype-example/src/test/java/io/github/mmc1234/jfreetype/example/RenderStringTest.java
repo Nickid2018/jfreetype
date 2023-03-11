@@ -15,6 +15,7 @@ public class RenderStringTest {
 
     @Test
     public void main() throws Exception {
+        System.setProperty("jfreetype.library", "D:\\freetype.dll");
         FreeType.load();
         int[] x = {0};
         try (EasyFontLibrary library = new EasyFontLibrary()) {

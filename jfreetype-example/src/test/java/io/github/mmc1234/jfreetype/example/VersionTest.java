@@ -41,6 +41,8 @@ public class VersionTest {
 
     @Test
     public void main() {
+        System.setProperty("jfreetype.library", "D:\\freetype.dll");
+        FreeType.load();
         MemorySegment libPtr = VarUtils.newAddress();
 
         // Init

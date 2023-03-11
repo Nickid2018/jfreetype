@@ -32,6 +32,7 @@ public class RenderGlyphTest {
 
     @Test
     public void main() throws IOException {
+        System.setProperty("jfreetype.library", "D:\\freetype.dll");
         FreeType.load();
         MemorySegment ptrLibrary = newAddress();
         checkErrorCode(FTInitFreeType(ptrLibrary));
@@ -43,7 +44,7 @@ public class RenderGlyphTest {
         System.out.println(VarUtils.getString(FTFace.FAMILY_NAME, face));
         System.out.println(VarUtils.getString(FTFace.STYLE_NAME, face));
         FTSetTransform(face.address(), MemoryAddress.NULL, MemoryAddress.NULL);
-        int codepoint = '‘';
+        int codepoint = 'F';
         System.out.printf("%x%n", codepoint);
         int charIndex = FTGetCharIndex(face.address(), codepoint);
         checkErrorCode(FTLoadGlyph(face.address(), charIndex, FT_LOAD_NO_BITMAP | FT_LOAD_FORCE_AUTOHINT));
