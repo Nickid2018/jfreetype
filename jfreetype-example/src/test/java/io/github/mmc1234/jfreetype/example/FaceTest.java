@@ -27,7 +27,6 @@ public class FaceTest {
 
     @Test
     public void main() {
-        System.setProperty("jfreetype.library", "D:\\freetype.dll");
         FreeType.load();
         
         String fontName = "C:\\Windows\\Fonts\\Arial.ttf";

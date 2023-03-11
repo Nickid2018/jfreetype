@@ -137,4 +137,15 @@ public class LayoutBuilder {
         long offset = groupLayout.byteOffset(MemoryLayout.PathElement.groupElement(name));
         return MethodHandles.insertArguments(TO_FIELD_ADDRESS, 2, groupLayout.byteSize(), offset);
     }
+
+    public StructField structFieldNew(String name, MemoryLayout layout) {
+        return new StructField(structField(name), layout);
+    }
+
+    public StringField stringField(String name) {
+        return new StringField(primitiveField(name));
+    }
+    public LongField longField(String name) {
+        return new LongField(primitiveField(name));
+    }
 }
