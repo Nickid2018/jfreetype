@@ -1,10 +1,9 @@
 package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.ShortField;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure representing a ColorStop value of the ‘COLR’ v1 extensions,
@@ -27,19 +26,19 @@ public final class FTColorStop {
     /**
      * The stop offset between 0 and 1 along the gradient.
      */
-    public static final VarHandle STOP_OFFSET;
+    public static final ShortField STOP_OFFSET;
 
     /**
      * The color information for this stop, see {@link FTColorIndex}.
      */
-    public static final MethodHandle COLOR;
+    public static final StructField COLOR;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("S0", new String[] { "stop_offset", "color" },
                 FTColorIndex.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        STOP_OFFSET = builder.primitiveField("stop_offset");
-        COLOR = builder.structField("color");
+        STOP_OFFSET = builder.newShort("stop_offset");
+        COLOR = builder.newStruct("color", FTColorIndex.STRUCT_LAYOUT);
     }
 }

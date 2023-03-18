@@ -1,9 +1,9 @@
 package io.github.mmc1234.jfreetype.core;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
+import io.github.mmc1234.jfreetype.util.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * This structure models the metrics of a bitmap strike (i.e., a set of glyphs for a given point size and resolution)
@@ -36,27 +36,27 @@ public final class FTBitmapSize {
     /**
      * The vertical distance, in pixels, between two consecutive baselines. It is always positive.
      */
-    public static final VarHandle HEIGHT;
+    public static final ShortField HEIGHT;
 
     /**
      * The average width, in pixels, of all glyphs in the strike.
      */
-    public static final VarHandle WIDTH;
+    public static final ShortField WIDTH;
 
     /**
      * The nominal size of the strike in 26.6 fractional points. This field is not very useful.
      */
-    public static final VarHandle SIZE;
+    public static final LongField SIZE;
 
     /**
      * The horizontal ppem (nominal width) in 26.6 fractional pixels.
      */
-    public static final VarHandle X_PPEM;
+    public static final LongField X_PPEM;
 
     /**
      * The vertical ppem (nominal height) in 26.6 fractional pixels.
      */
-    public static final VarHandle Y_PPEM;
+    public static final LongField Y_PPEM;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("SSLLL", new String[]{
@@ -64,10 +64,10 @@ public final class FTBitmapSize {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        HEIGHT = builder.primitiveField("height");
-        WIDTH = builder.primitiveField("width");
-        SIZE = builder.primitiveField("size");
-        X_PPEM = builder.primitiveField("x_ppem");
-        Y_PPEM = builder.primitiveField("y_ppem");
+        HEIGHT = builder.newShort("height");
+        WIDTH = builder.newShort("width");
+        SIZE = builder.newLong("size");
+        X_PPEM = builder.newLong("x_ppem");
+        Y_PPEM = builder.newLong("y_ppem");
     }
 }

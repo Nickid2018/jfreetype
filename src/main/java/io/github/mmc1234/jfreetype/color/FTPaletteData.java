@@ -1,9 +1,9 @@
 package io.github.mmc1234.jfreetype.color;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * This structure holds the data of the ‘CPAL’ table.
@@ -42,7 +42,7 @@ public final class FTPaletteData {
     /**
      * The number of palettes.
      */
-    public static final VarHandle NUM_PALETTES;
+    public static final ShortField NUM_PALETTES;
 
     /**
      * An optional read-only array of palette name IDs with num_palettes elements,
@@ -50,7 +50,7 @@ public final class FTPaletteData {
      * An empty name ID in the ‘CPAL’ table gets represented as value 0xFFFF.<br/>
      * NULL if the font's ‘CPAL’ table doesn't contain appropriate data.
      */
-    public static final VarHandle PALETTE_NAME_IDS;
+    public static final AddressField PALETTE_NAME_IDS;
 
     /**
      * An optional read-only array of palette flags with num_palettes elements.
@@ -58,12 +58,12 @@ public final class FTPaletteData {
      * and {@link #FT_PALETTE_FOR_DARK_BACKGROUND}.<br/>
      * NULL if the font's ‘CPAL’ table doesn't contain appropriate data.
      */
-    public static final VarHandle PALETTE_FLAGS;
+    public static final AddressField PALETTE_FLAGS;
 
     /**
      * The number of entries in a single palette. All palettes have the same size.
      */
-    public static final VarHandle NUM_PALETTE_ENTRIES;
+    public static final ShortField NUM_PALETTE_ENTRIES;
 
     /**
      * An optional read-only array of palette entry name IDs with {@link #NUM_PALETTE_ENTRIES}.
@@ -74,7 +74,7 @@ public final class FTPaletteData {
      * An empty entry name ID in the ‘CPAL’ table gets represented as value 0xFFFF.<br/>
      * NULL if the font's ‘CPAL’ table doesn't contain appropriate data.
      */
-    public static final VarHandle PALETTE_ENTRY_NAME_IDS;
+    public static final AddressField PALETTE_ENTRY_NAME_IDS;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("SAASA", new String[] {
@@ -82,10 +82,10 @@ public final class FTPaletteData {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        NUM_PALETTES = builder.primitiveField("num_palettes");
-        PALETTE_NAME_IDS = builder.primitiveField("palette_name_ids");
-        PALETTE_FLAGS = builder.primitiveField("palette_flags");
-        NUM_PALETTE_ENTRIES = builder.primitiveField("num_palette_entries");
-        PALETTE_ENTRY_NAME_IDS = builder.primitiveField("palette_entry_name_ids");
+        NUM_PALETTES = builder.newShort("num_palettes");
+        PALETTE_NAME_IDS = builder.newAddress("palette_name_ids");
+        PALETTE_FLAGS = builder.newAddress("palette_flags");
+        NUM_PALETTE_ENTRIES = builder.newShort("num_palette_entries");
+        PALETTE_ENTRY_NAME_IDS = builder.newAddress("palette_entry_name_ids");
     }
 }

@@ -1,9 +1,10 @@
 package io.github.mmc1234.jfreetype.core;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure to indicate how to open a new font file or stream. A pointer to such a structure
@@ -89,44 +90,44 @@ public final class FTOpenArgs {
     /**
      * A set of bit flags indicating how to use the structure.
      */
-    public static final VarHandle FLAGS;
+    public static final IntField FLAGS;
 
     /**
      * The first byte of the file in memory.
      */
-    public static final VarHandle MEMORY_BASE;
+    public static final AddressField MEMORY_BASE;
 
     /**
      * The size in bytes of the file in memory.
      */
-    public static final VarHandle MEMORY_SIZE;
+    public static final LongField MEMORY_SIZE;
 
     /**
      * A pointer to an 8-bit file pathname, which must be a C string (i.e., no null bytes except at the very end).
      * The pointer is not owned by FreeType.
      */
-    public static final VarHandle PATHNAME;
+    public static final AddressField PATHNAME;
 
     /**
      * A handle to a source stream object.
      */
-    public static final VarHandle STREAM;
+    public static final AddressField STREAM;
 
     /**
      * This field is exclusively used by {@link FreeTypeFace#FTOpenFace}; it simply specifies the font driver to use for opening the face.
      * If set to NULL, FreeType tries to load the face with each one of the drivers in its list.
      */
-    public static final VarHandle DRIVER;
+    public static final AddressField DRIVER;
 
     /**
      * The number of extra parameters.
      */
-    public static final VarHandle NUM_PARAMS;
+    public static final IntField NUM_PARAMS;
 
     /**
      * Extra parameters passed to the font driver when opening a new face.
      */
-    public static final VarHandle PARAMS;
+    public static final AddressField PARAMS;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("IALAAAIA", new String[]{
@@ -134,13 +135,13 @@ public final class FTOpenArgs {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        FLAGS = builder.primitiveField("flags");
-        MEMORY_BASE = builder.primitiveField("memory_base");
-        MEMORY_SIZE = builder.primitiveField("memory_size");
-        PATHNAME = builder.primitiveField("pathname");
-        STREAM = builder.primitiveField("stream");
-        DRIVER = builder.primitiveField("driver");
-        NUM_PARAMS = builder.primitiveField("num_params");
-        PARAMS = builder.primitiveField("params");
+        FLAGS = builder.newInt("flags");
+        MEMORY_BASE = builder.newAddress("memory_base");
+        MEMORY_SIZE = builder.newLong("memory_size");
+        PATHNAME = builder.newAddress("pathname");
+        STREAM = builder.newAddress("stream");
+        DRIVER = builder.newAddress("driver");
+        NUM_PARAMS = builder.newInt("num_params");
+        PARAMS = builder.newAddress("params");
     }
 }

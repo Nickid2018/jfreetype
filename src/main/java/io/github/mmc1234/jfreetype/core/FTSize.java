@@ -1,10 +1,9 @@
 package io.github.mmc1234.jfreetype.core;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A handle to an object that models a face scaled to a given character size.
@@ -38,20 +37,20 @@ public final class FTSize {
     /**
      * Handle to the parent face object.
      */
-    public static final VarHandle FACE;
+    public static final AddressField FACE;
 
     /**
      * A typeless pointer, unused by the FreeType library or any of its drivers.
      * It can be used by client applications to link their own data to each size object.
      */
-    public static final MethodHandle GENERIC;
+    public static final StructField GENERIC;
 
     /**
      * Metrics for this size object. This field is read-only.
      */
-    public static final MethodHandle METRICS;
+    public static final StructField METRICS;
 
-    public static final VarHandle INTERNAL;
+    public static final AddressField INTERNAL;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("A01A", new String[]{
@@ -59,10 +58,9 @@ public final class FTSize {
         }, FTGeneric.STRUCT_LAYOUT, FTSizeMetrics.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        FACE = builder.primitiveField("face");
-        INTERNAL = builder.primitiveField("internal");
-
-        GENERIC = builder.structField("generic");
-        METRICS = builder.structField("metrics");
+        FACE = builder.newAddress("face");
+        GENERIC = builder.newStruct("generic", FTGeneric.STRUCT_LAYOUT);
+        METRICS = builder.newStruct("metrics", FTSizeMetrics.STRUCT_LAYOUT);
+        INTERNAL = builder.newAddress("internal");
     }
 }

@@ -1,9 +1,8 @@
 package io.github.mmc1234.jfreetype.core;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure to model the metrics of a single glyph. The values are expressed in 26.6 fractional pixel format;
@@ -42,42 +41,42 @@ public final class FTGlyphMetrics {
     /**
      * The glyph's width.
      */
-    public static final VarHandle WIDTH;
+    public static final LongField WIDTH;
 
     /**
      * The glyph's height.
      */
-    public static final VarHandle HEIGHT;
+    public static final LongField HEIGHT;
 
     /**
      * Left side bearing for horizontal layout.
      */
-    public static final VarHandle HORI_BEARING_X;
+    public static final LongField HORI_BEARING_X;
 
     /**
      * Top side bearing for horizontal layout.
      */
-    public static final VarHandle HORI_BEARING_Y;
+    public static final LongField HORI_BEARING_Y;
 
     /**
      * Advance width for horizontal layout.
      */
-    public static final VarHandle HORI_ADVANCE;
+    public static final LongField HORI_ADVANCE;
 
     /**
      * Left side bearing for vertical layout.
      */
-    public static final VarHandle VERT_BEARING_X;
+    public static final LongField VERT_BEARING_X;
 
     /**
      * Top side bearing for vertical layout. Larger positive values mean further below the vertical glyph origin.
      */
-    public static final VarHandle VERT_BEARING_Y;
+    public static final LongField VERT_BEARING_Y;
 
     /**
      * Advance height for vertical layout. Positive values mean the glyph has a positive advance downward.
      */
-    public static final VarHandle VERT_ADVANCE;
+    public static final LongField VERT_ADVANCE;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("LLLLLLLL", new String[]{
@@ -85,13 +84,13 @@ public final class FTGlyphMetrics {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        WIDTH = builder.primitiveField("width");
-        HEIGHT = builder.primitiveField("height");
-        HORI_BEARING_X = builder.primitiveField("horiBearingX");
-        HORI_BEARING_Y = builder.primitiveField("horiBearingY");
-        HORI_ADVANCE = builder.primitiveField("horiAdvance");
-        VERT_BEARING_X = builder.primitiveField("vertBearingX");
-        VERT_BEARING_Y = builder.primitiveField("vertBearingY");
-        VERT_ADVANCE = builder.primitiveField("vertAdvance");
+        WIDTH = builder.newLong("width");
+        HEIGHT = builder.newLong("height");
+        HORI_BEARING_X = builder.newLong("horiBearingX");
+        HORI_BEARING_Y = builder.newLong("horiBearingY");
+        HORI_ADVANCE = builder.newLong("horiAdvance");
+        VERT_BEARING_X = builder.newLong("vertBearingX");
+        VERT_BEARING_Y = builder.newLong("vertBearingY");
+        VERT_ADVANCE = builder.newLong("vertAdvance");
     }
 }

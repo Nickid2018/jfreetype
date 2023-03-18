@@ -1,9 +1,8 @@
 package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure representing a ColorIndex value of the ‘COLR’ v1 extensions,
@@ -26,18 +25,18 @@ public final class FTColorIndex {
     /**
      * The palette index into a ‘CPAL’ palette.
      */
-    public static final VarHandle PALETTE_INDEX;
+    public static final ShortField PALETTE_INDEX;
 
     /**
      * Alpha transparency value multiplied with the value from ‘CPAL’.
      */
-    public static final VarHandle ALPHA;
+    public static final ShortField ALPHA;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("SS", new String[] { "palette_index", "alpha" });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        PALETTE_INDEX = builder.primitiveField("palette_index");
-        ALPHA = builder.primitiveField("alpha");
+        PALETTE_INDEX = builder.newShort("palette_index");
+        ALPHA = builder.newShort("alpha");
     }
 }

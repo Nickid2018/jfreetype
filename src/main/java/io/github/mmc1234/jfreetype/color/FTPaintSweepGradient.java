@@ -2,10 +2,9 @@ package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.image.FTVector;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure representing a PaintSweepGradient value of the ‘COLR’ v1 extensions,
@@ -32,26 +31,26 @@ public final class FTPaintSweepGradient {
     /**
      * The {@link FTColorLine} information for this paint, i.e., the list of color stops along the gradient.
      */
-    public static final MethodHandle COLORLINE;
+    public static final StructField COLORLINE;
 
     /**
      * The center of the sweep gradient in font units represented as a vector of 16.16 fixed-point values.
      */
-    public static final MethodHandle CENTER;
+    public static final StructField CENTER;
 
     /**
      * The start angle of the sweep gradient in 16.16 fixed-point format specifying degrees divided by 180.0
      * (as in the spec). Multiply by 180.0f to receive degrees value. Values are given counter-clockwise,
      * starting from the (positive) y axis.
      */
-    public static final VarHandle START_ANGLE;
+    public static final LongField START_ANGLE;
 
     /**
      * The end angle of the sweep gradient in 16.16 fixed-point format specifying degrees divided by 180.0
      * (as in the spec). Multiply by 180.0f to receive degrees value. Values are given counter-clockwise,
      * starting from the (positive) y axis.
      */
-    public static final VarHandle END_ANGLE;
+    public static final LongField END_ANGLE;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("01LL", new String[] {
@@ -59,9 +58,9 @@ public final class FTPaintSweepGradient {
         }, FTColorLine.STRUCT_LAYOUT, FTVector.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        COLORLINE = builder.structField("colorline");
-        CENTER = builder.structField("center");
-        START_ANGLE = builder.primitiveField("start_angle");
-        END_ANGLE = builder.primitiveField("end_angle");
+        COLORLINE = builder.newStruct("colorline", FTColorLine.STRUCT_LAYOUT);
+        CENTER = builder.newStruct("center", FTVector.STRUCT_LAYOUT);
+        START_ANGLE = builder.newLong("start_angle");
+        END_ANGLE = builder.newLong("end_angle");
     }
 }

@@ -1,13 +1,15 @@
 package io.github.mmc1234.jfreetype.core;
 
 import io.github.mmc1234.jfreetype.image.FTBitmap;
+import io.github.mmc1234.jfreetype.image.FTGlyphFormat;
 import io.github.mmc1234.jfreetype.image.FTOutline;
 import io.github.mmc1234.jfreetype.image.FTVector;
+import io.github.mmc1234.jfreetype.util.AddressField;
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A handle to a given ‘glyph slot’
@@ -122,29 +124,29 @@ public final class FTGlyphSlot {
     /**
      * A handle to the FreeType library instance this slot belongs to.
      */
-    public static final VarHandle LIBRARY;
+    public static final AddressField LIBRARY;
 
     /**
      * A handle to the parent face object.
      */
-    public static final VarHandle FACE;
+    public static final AddressField FACE;
 
     /**
      * In some cases (like some font tools), several glyph slots per face object can be a good thing.
      * As this is rare, the glyph slots are listed through a direct, single-linked list using its {@link #NEXT}.
      */
-    public static final VarHandle NEXT;
+    public static final AddressField NEXT;
 
     /**
      * [Since 2.10] The glyph index passed as an argument to {@link FreeTypeGlyph#FTLoadGlyph} while initializing the glyph slot.
      */
-    public static final VarHandle GLYPH_INDEX;
+    public static final IntField GLYPH_INDEX;
 
     /**
      * A typeless pointer unused by the FreeType library or any of its drivers.
      * It can be used by client applications to link their own data to each glyph slot object.
      */
-    public static final MethodHandle GENERIC;
+    public static final StructField GENERIC;
 
     /**
      * The metrics of the last loaded glyph in the slot. The returned values depend on the last load flags
@@ -152,57 +154,57 @@ public final class FTGlyphSlot {
      * in 26.6 fractional pixels or font units.<br/>
      * Note that even when the glyph image is transformed, the metrics are not.
      */
-    public static final MethodHandle METRICS;
+    public static final StructField METRICS;
 
     /**
      * The advance width of the unhinted glyph. Its value is expressed in 16.16 fractional pixels,
      * unless {@link FTLoadFlags#FT_LOAD_LINEAR_DESIGN} is set when loading the glyph. This field can be important
      * to perform correct WYSIWYG layout. Only relevant for outline glyphs.
      */
-    public static final VarHandle LINEAR_HORI_ADVANCE;
+    public static final LongField LINEAR_HORI_ADVANCE;
 
     /**
      * The advance height of the unhinted glyph. Its value is expressed in 16.16 fractional pixels,
      * unless {@link FTLoadFlags#FT_LOAD_LINEAR_DESIGN} is set when loading the glyph. This field can be important
      * to perform correct WYSIWYG layout. Only relevant for outline glyphs.
      */
-    public static final VarHandle LINEAR_VERT_ADVANCE;
+    public static final LongField LINEAR_VERT_ADVANCE;
 
     /**
      * This shorthand is, depending on {@link FTLoadFlags#FT_LOAD_IGNORE_TRANSFORM}, the transformed (hinted) advance width
      * for the glyph, in 26.6 fractional pixel format. As specified with {@link FTLoadFlags#FT_LOAD_VERTICAL_LAYOUT},
      * it uses either the horiAdvance or the vertAdvance value of metrics field.
      */
-    public static final MethodHandle ADVANCE;
+    public static final StructField ADVANCE;
 
     /**
      * This field indicates the format of the image contained in the glyph slot.
-     * Typically {@link io.github.mmc1234.jfreetype.image.FTGlyphFormat#FT_GLYPH_FORMAT_BITMAP},
-     * {@link io.github.mmc1234.jfreetype.image.FTGlyphFormat#FT_GLYPH_FORMAT_OUTLINE},
-     * or {@link io.github.mmc1234.jfreetype.image.FTGlyphFormat#FT_GLYPH_FORMAT_COMPOSITE}, but other values are possible.
+     * Typically {@link FTGlyphFormat#FT_GLYPH_FORMAT_BITMAP},
+     * {@link FTGlyphFormat#FT_GLYPH_FORMAT_OUTLINE},
+     * or {@link FTGlyphFormat#FT_GLYPH_FORMAT_COMPOSITE}, but other values are possible.
      */
-    public static final VarHandle FORMAT;
+    public static final IntField FORMAT;
 
     /**
      * This field is used as a bitmap descriptor. Note that the newAddress and content of the bitmap buffer
      * can change between calls of {@link FreeTypeGlyph#FTLoadGlyph} and a few other functions.
      */
-    public static final MethodHandle BITMAP;
+    public static final StructField BITMAP;
 
     /**
      * The bitmap's left bearing expressed in integer pixels.
      */
-    public static final VarHandle BITMAP_LEFT;
+    public static final IntField BITMAP_LEFT;
 
     /**
      * The bitmap's top bearing expressed in integer pixels. This is the distance from the baseline to
      * the top-most glyph scanline, upwards y coordinates being <b>positive</b>.
      */
-    public static final VarHandle BITMAP_TOP;
+    public static final IntField BITMAP_TOP;
 
     /**
      * The outline descriptor for the current glyph image if its format is
-     * {@link io.github.mmc1234.jfreetype.image.FTGlyphFormat#FT_GLYPH_FORMAT_OUTLINE}.
+     * {@link FTGlyphFormat#FT_GLYPH_FORMAT_OUTLINE}.
      * Once a glyph is loaded, outline can be transformed, distorted, emboldened, etc.
      * However, it must not be freed.<br/>
      * [Since 2.10.1] If {@link FTLoadFlags#FT_LOAD_NO_SCALE} is set, outline coordinates of OpenType variation fonts
@@ -210,47 +212,47 @@ public final class FTGlyphSlot {
      * as expected. To get unrounded font units, don't use FT_LOAD_NO_SCALE but load the glyph
      * with {@link FTLoadFlags#FT_LOAD_NO_HINTING} and scale it, using the font's units_per_EM value as the ppem.
      */
-    public static final MethodHandle OUTLINE;
+    public static final StructField OUTLINE;
 
     /**
      * The number of subglyphs in a composite glyph.
      * This field is only valid for the composite glyph format that should normally only be loaded
      * with the {@link FTLoadFlags#FT_LOAD_NO_RECURSE} flag.
      */
-    public static final VarHandle NUM_SUBGLYPHS;
+    public static final IntField NUM_SUBGLYPHS;
 
     /**
      * An array of subglyph descriptors for composite glyphs.
      * There are {@link #NUM_SUBGLYPHS} elements in there. Currently, internal to FreeType.
      */
-    public static final VarHandle SUBGLYPHS;
+    public static final AddressField SUBGLYPHS;
 
     /**
      * Certain font drivers can also return the control data for a given glyph image (e.g. TrueType bytecode, Type 1 charstrings, etc.).
      * This field is a pointer to such data; it is currently internal to FreeType.
      */
-    public static final VarHandle CONTROL_DATA;
+    public static final AddressField CONTROL_DATA;
 
     /**
      * This is the length in bytes of the control data. Currently, internal to FreeType.
      */
-    public static final VarHandle CONTROL_LEN;
+    public static final LongField CONTROL_LEN;
 
     /**
      * The difference between hinted and unhinted left side bearing while auto-hinting is active. Zero otherwise.
      */
-    public static final VarHandle LSB_DELTA;
+    public static final LongField LSB_DELTA;
 
     /**
      * The difference between hinted and unhinted right side bearing while auto-hinting is active. Zero otherwise.
      */
-    public static final VarHandle RSB_DELTA;
+    public static final LongField RSB_DELTA;
 
     /**
      * Reserved.
      */
-    public static final VarHandle OTHER;
-    public static final VarHandle INTERNAL;
+    public static final AddressField OTHER;
+    public static final AddressField INTERNAL;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("AAAI01LL2I3II4IAALLLAA", new String[] {
@@ -262,28 +264,29 @@ public final class FTGlyphSlot {
                 FTBitmap.STRUCT_LAYOUT, FTOutline.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        LIBRARY = builder.primitiveField("library");
-        FACE = builder.primitiveField("face");
-        NEXT = builder.primitiveField("next");
-        GLYPH_INDEX = builder.primitiveField("glyph_index");
-        LINEAR_HORI_ADVANCE = builder.primitiveField("linearHoriAdvance");
-        LINEAR_VERT_ADVANCE = builder.primitiveField("linearVertAdvance");
-        FORMAT = builder.primitiveField("format");
-        BITMAP_LEFT = builder.primitiveField("bitmap_left");
-        BITMAP_TOP = builder.primitiveField("bitmap_top");
-        NUM_SUBGLYPHS = builder.primitiveField("num_subglyphs");
-        SUBGLYPHS = builder.primitiveField("subglyphs");
-        CONTROL_DATA = builder.primitiveField("control_data");
-        CONTROL_LEN = builder.primitiveField("control_len");
-        LSB_DELTA = builder.primitiveField("lsb_delta");
-        RSB_DELTA = builder.primitiveField("rsb_delta");
-        OTHER = builder.primitiveField("other");
-        INTERNAL = builder.primitiveField("internal");
 
-        GENERIC = builder.structField("generic");
-        METRICS = builder.structField("metrics");
-        ADVANCE = builder.structField("advance");
-        BITMAP = builder.structField("bitmap");
-        OUTLINE = builder.structField("outline");
+        // Fields
+        LIBRARY = builder.newAddress("library");
+        FACE = builder.newAddress("face");
+        NEXT = builder.newAddress("next");
+        GLYPH_INDEX = builder.newInt("glyph_index");
+        GENERIC = builder.newStruct("generic", FTGeneric.STRUCT_LAYOUT);
+        METRICS = builder.newStruct("metrics", FTGlyphMetrics.STRUCT_LAYOUT);
+        LINEAR_HORI_ADVANCE = builder.newLong("linearHoriAdvance");
+        LINEAR_VERT_ADVANCE = builder.newLong("linearVertAdvance");
+        ADVANCE = builder.newStruct("advance", FTVector.STRUCT_LAYOUT);
+        FORMAT = builder.newInt("format");
+        BITMAP = builder.newStruct("bitmap", FTBitmap.STRUCT_LAYOUT);
+        BITMAP_LEFT = builder.newInt("bitmap_left");
+        BITMAP_TOP = builder.newInt("bitmap_top");
+        OUTLINE = builder.newStruct("outline", FTOutline.STRUCT_LAYOUT);
+        NUM_SUBGLYPHS = builder.newInt("num_subglyphs");
+        SUBGLYPHS = builder.newAddress("subglyphs"); // Hidden struct = void*
+        CONTROL_DATA = builder.newAddress("control_data");
+        CONTROL_LEN = builder.newLong("control_len");
+        LSB_DELTA = builder.newLong("lsb_delta");
+        RSB_DELTA = builder.newLong("rsb_delta");
+        OTHER = builder.newAddress("other");
+        INTERNAL = builder.newAddress("internal");
     }
 }

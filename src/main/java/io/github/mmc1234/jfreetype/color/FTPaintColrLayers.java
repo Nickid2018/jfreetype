@@ -1,6 +1,7 @@
 package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.MethodHandle;
@@ -30,13 +31,13 @@ public final class FTPaintColrLayers {
     /**
      * The layer iterator that describes the layers of this paint.
      */
-    public static final MethodHandle LAYER_ITERATOR;
+    public static final StructField LAYER_ITERATOR;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("0", new String[] { "layer_iterator" },
                 FTLayerIterator.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        LAYER_ITERATOR = builder.structField("layer_iterator");
+        LAYER_ITERATOR = builder.newStruct("layer_iterator", FTLayerIterator.STRUCT_LAYOUT);
     }
 }

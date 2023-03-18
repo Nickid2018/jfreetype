@@ -1,9 +1,8 @@
 package io.github.mmc1234.jfreetype.core;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * Client applications often need to associate their own data to a variety of FreeType core objects.
@@ -31,7 +30,7 @@ public final class FTGeneric {
      * A typeless pointer to any client-specified data. This field is completely ignored by the FreeType library.
      * finalizer
      */
-    public static final VarHandle DATA;
+    public static final AddressField DATA;
 
     /**
      * A pointer to a ‘generic finalizer’ function, which will be called when the object is destroyed.
@@ -45,13 +44,13 @@ public final class FTGeneric {
      * Input: The newAddress of the FreeType object that is under finalization.
      * Its client data is accessed through its generic field.
      */
-    public static final VarHandle FINALIZER;
+    public static final AddressField FINALIZER;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("AA", new String[]{"data", "finalizer"});
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        DATA = builder.primitiveField("data");
-        FINALIZER = builder.primitiveField("finalizer");
+        DATA = builder.newAddress("data");
+        FINALIZER = builder.newAddress("finalizer");
     }
 }

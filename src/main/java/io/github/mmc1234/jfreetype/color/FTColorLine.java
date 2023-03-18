@@ -1,10 +1,9 @@
 package io.github.mmc1234.jfreetype.color;
 
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure representing a ColorLine value of the ‘COLR’ v1 extensions,
@@ -27,19 +26,19 @@ public final class FTColorLine {
     /**
      * The extend mode at the outer boundaries, see {@link FTPaintExtend}.
      */
-    public static final VarHandle EXTEND;
+    public static final IntField EXTEND;
 
     /**
      * The {@link FTColorStopIterator} used to enumerate and retrieve the actual {@link FTColorStop}'s.
      */
-    public static final MethodHandle COLOR_STOP_ITERATOR;
+    public static final StructField COLOR_STOP_ITERATOR;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("I0", new String[] { "extend", "color_stop_iterator" },
                 FTColorStopIterator.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        EXTEND = builder.primitiveField("extend");
-        COLOR_STOP_ITERATOR = builder.structField("color_stop_iterator");
+        EXTEND = builder.newInt("extend");
+        COLOR_STOP_ITERATOR = builder.newStruct("color_stop_iterator", FTColorStopIterator.STRUCT_LAYOUT);
     }
 }

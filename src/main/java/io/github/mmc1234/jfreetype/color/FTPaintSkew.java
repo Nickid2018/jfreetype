@@ -1,10 +1,9 @@
 package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure representing a ‘COLR’ v1 PaintSkew paint table.
@@ -32,29 +31,29 @@ public final class FTPaintSkew {
     /**
      * An {@link FTOpaquePaint} object referencing the paint that is to be skewed.
      */
-    public static final MethodHandle PAINT;
+    public static final StructField PAINT;
 
     /**
      * The skewing angle in x direction in degrees divided by 180.0 (as in the spec)
      * represented as a 16.16 fixed-point value. Multiply by 180.0f to receive degrees.
      */
-    public static final VarHandle X_SKEW_ANGLE;
+    public static final LongField X_SKEW_ANGLE;
 
     /**
      * The skewing angle in y direction in degrees divided by 180.0 (as in the spec)
      * represented as a 16.16 fixed-point value. Multiply by 180.0f to receive degrees.
      */
-    public static final VarHandle Y_SKEW_ANGLE;
+    public static final LongField Y_SKEW_ANGLE;
 
     /**
      * The x coordinate of the pivot point of the skew in font units represented as a 16.16 fixed-point value.
      */
-    public static final VarHandle CENTER_X;
+    public static final LongField CENTER_X;
 
     /**
      * The y coordinate of the pivot point of the skew in font units represented as a 16.16 fixed-point value.
      */
-    public static final VarHandle CENTER_Y;
+    public static final LongField CENTER_Y;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("0LLLL", new String[] {
@@ -62,10 +61,10 @@ public final class FTPaintSkew {
         }, FTOpaquePaint.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        PAINT = builder.structField("paint");
-        X_SKEW_ANGLE = builder.primitiveField("x_skew_angle");
-        Y_SKEW_ANGLE = builder.primitiveField("y_skew_angle");
-        CENTER_X = builder.primitiveField("center_x");
-        CENTER_Y = builder.primitiveField("center_y");
+        PAINT = builder.newStruct("paint", FTOpaquePaint.STRUCT_LAYOUT);
+        X_SKEW_ANGLE = builder.newLong("x_skew_angle");
+        Y_SKEW_ANGLE = builder.newLong("y_skew_angle");
+        CENTER_X = builder.newLong("center_x");
+        CENTER_Y = builder.newLong("center_y");
     }
 }

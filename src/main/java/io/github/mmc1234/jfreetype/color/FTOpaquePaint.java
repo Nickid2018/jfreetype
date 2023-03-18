@@ -1,9 +1,9 @@
 package io.github.mmc1234.jfreetype.color;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
+import io.github.mmc1234.jfreetype.util.BooleanField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure representing an offset to a Paint value stored in any of the paint tables of a ‘COLR’ v1 font.
@@ -30,18 +30,18 @@ public final class FTOpaquePaint {
      * An internal offset to a Paint table, needs to be set to NULL before passing this struct
      * as an argument to FT_Get_Paint.
      */
-    public static final VarHandle P;
+    public static final AddressField P;
 
     /**
      * An internal boolean to track whether an initial root transform is to be provided. Do not set this value.
      */
-    public static final VarHandle INSERT_ROOT_TRANSFORM;
+    public static final BooleanField INSERT_ROOT_TRANSFORM;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("AZ", new String[] { "p", "insert_root_transform" });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        P = builder.primitiveField("p");
-        INSERT_ROOT_TRANSFORM = builder.primitiveField("insert_root_transform");
+        P = builder.newAddress("p");
+        INSERT_ROOT_TRANSFORM = builder.newBoolean("insert_root_transform");
     }
 }

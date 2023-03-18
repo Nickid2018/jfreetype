@@ -1,9 +1,8 @@
 package io.github.mmc1234.jfreetype.color;
 
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure representing a ‘COLR’ v1 PaintColorGlyph paint table.
@@ -24,12 +23,12 @@ public final class FTPaintColrGlyph {
     /**
      * The glyph ID from the BaseGlyphV1List table that is drawn for this paint.
      */
-    public static final VarHandle GLYPH_ID;
+    public static final IntField GLYPH_ID;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("I", new String[] { "glyphID" });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        GLYPH_ID = builder.primitiveField("glyphID");
+        GLYPH_ID = builder.newInt("glyphID");
     }
 }

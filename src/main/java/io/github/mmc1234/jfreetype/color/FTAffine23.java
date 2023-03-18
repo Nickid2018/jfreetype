@@ -1,9 +1,8 @@
 package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure used to store a 2x3 matrix.
@@ -29,32 +28,32 @@ public final class FTAffine23 {
     /**
      * Matrix coefficient.
      */
-    public static final VarHandle XX;
+    public static final LongField XX;
 
     /**
      * Matrix coefficient.
      */
-    public static final VarHandle XY;
+    public static final LongField XY;
 
     /**
      * x translation.
      */
-    public static final VarHandle DX;
+    public static final LongField DX;
 
     /**
      * Matrix coefficient.
      */
-    public static final VarHandle YX;
+    public static final LongField YX;
 
     /**
      * Matrix coefficient.
      */
-    public static final VarHandle YY;
+    public static final LongField YY;
 
     /**
      * y translation.
      */
-    public static final VarHandle DY;
+    public static final LongField DY;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("LLLLLL", new String[] {
@@ -62,11 +61,11 @@ public final class FTAffine23 {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        XX = builder.primitiveField("xx");
-        XY = builder.primitiveField("xy");
-        DX = builder.primitiveField("dx");
-        YX = builder.primitiveField("yx");
-        YY = builder.primitiveField("yy");
-        DY = builder.primitiveField("dy");
+        XX = builder.newLong("xx");
+        XY = builder.newLong("xy");
+        DX = builder.newLong("dx");
+        YX = builder.newLong("yx");
+        YY = builder.newLong("yy");
+        DY = builder.newLong("dy");
     }
 }

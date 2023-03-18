@@ -1,6 +1,7 @@
 package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.MethodHandle;
@@ -25,12 +26,12 @@ public final class FTPaintSolid {
     /**
      * The color information for this solid paint, see {@link FTColorIndex}.
      */
-    public static final MethodHandle COLOR;
+    public static final StructField COLOR;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("0", new String[] { "color" }, FTColorIndex.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        COLOR = builder.structField("color");
+        COLOR = builder.newStruct("color", FTColorIndex.STRUCT_LAYOUT);
     }
 }

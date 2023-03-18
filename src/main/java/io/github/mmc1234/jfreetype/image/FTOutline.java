@@ -1,9 +1,10 @@
 package io.github.mmc1234.jfreetype.image;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * This structure is used to describe an outline to the scan-line converter.
@@ -106,17 +107,17 @@ public final class FTOutline {
     /**
      * The number of contours in the outline.
      */
-    public static final VarHandle N_CONTOURS;
+    public static final ShortField N_CONTOURS;
 
     /**
      * The number of points in the outline.
      */
-    public static final VarHandle N_POINTS;
+    public static final ShortField N_POINTS;
 
     /**
      * A pointer to an array of n_points {@link FTVector} elements, giving the outline's point coordinates.
      */
-    public static final VarHandle POINTS;
+    public static final AddressField POINTS;
 
     /**
      * A pointer to an array of n_points chars, giving each outline point's type.<br/>
@@ -127,20 +128,20 @@ public final class FTOutline {
      * the value is the same as the argument to the ‘SCANMODE’ instruction).<br/>
      * Bits 3 and 4 are reserved for internal purposes.
      */
-    public static final VarHandle TAGS;
+    public static final AddressField TAGS;
 
     /**
      * An array of n_contours shorts, giving the end point of each contour within the outline. For example,
      * the first contour is defined by the points ‘0’ to contours[0], the second one is defined
      * by the points contours[0]+1 to contours[1], etc.
      */
-    public static final VarHandle CONTOURS;
+    public static final AddressField CONTOURS;
 
     /**
      * A set of bit flags used to characterize the outline and give hints to the scan-converter and hinter
      * on how to convert/grid-fit it. See FT_OUTLINE_XXX.
      */
-    public static final VarHandle FLAGS;
+    public static final IntField FLAGS;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("SSAAAI", new String[]{
@@ -148,11 +149,11 @@ public final class FTOutline {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        N_CONTOURS = builder.primitiveField("n_contours");
-        N_POINTS = builder.primitiveField("n_points");
-        POINTS = builder.primitiveField("points");
-        TAGS = builder.primitiveField("tags");
-        CONTOURS = builder.primitiveField("contours");
-        FLAGS = builder.primitiveField("flags");
+        N_CONTOURS = builder.newShort("n_contours");
+        N_POINTS = builder.newShort("n_points");
+        POINTS = builder.newAddress("points");
+        TAGS = builder.newAddress("tags");
+        CONTOURS = builder.newAddress("contours");
+        FLAGS = builder.newInt("flags");
     }
 }

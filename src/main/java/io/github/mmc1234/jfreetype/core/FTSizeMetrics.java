@@ -1,9 +1,9 @@
 package io.github.mmc1234.jfreetype.core;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
+import io.github.mmc1234.jfreetype.util.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * The size metrics structure gives the metrics of a size object.
@@ -76,45 +76,45 @@ public final class FTSizeMetrics {
      * The width of the scaled EM square in pixels, hence the term ‘ppem’ (pixels per EM).
      * It is also referred to as ‘nominal width’.
      */
-    public static final VarHandle X_PPEM;
+    public static final ShortField X_PPEM;
 
     /**
      * The height of the scaled EM square in pixels, hence the term ‘ppem’ (pixels per EM).
      * It is also referred to as ‘nominal height’.
      */
-    public static final VarHandle Y_PPEM;
+    public static final ShortField Y_PPEM;
 
     /**
      * A 16.16 fractional scaling value to convert horizontal metrics from font units to 26.6 fractional pixels.
      * Only relevant for scalable font formats.
      */
-    public static final VarHandle X_SCALE;
+    public static final LongField X_SCALE;
 
     /**
      * A 16.16 fractional scaling value to convert vertical metrics from font units to 26.6 fractional pixels.
      * Only relevant for scalable font formats.
      */
-    public static final VarHandle Y_SCALE;
+    public static final LongField Y_SCALE;
 
     /**
      * The ascender in 26.6 fractional pixels, rounded up to an integer value. See {@link FTFace} for the details.
      */
-    public static final VarHandle ASCENDER;
+    public static final LongField ASCENDER;
 
     /**
      * The descender in 26.6 fractional pixels, rounded down to an integer value. See {@link FTFace} for the details.
      */
-    public static final VarHandle DESCENDER;
+    public static final LongField DESCENDER;
 
     /**
      * The height in 26.6 fractional pixels, rounded to an integer value. See {@link FTFace} for the details.
      */
-    public static final VarHandle HEIGHT;
+    public static final LongField HEIGHT;
 
     /**
      * The maximum advance width in 26.6 fractional pixels, rounded to an integer value. See {@link FTFace} for the details.
      */
-    public static final VarHandle MAX_ADVANCE;
+    public static final LongField MAX_ADVANCE;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("SSLLLLLL", new String[]{
@@ -122,13 +122,13 @@ public final class FTSizeMetrics {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        X_PPEM = builder.primitiveField("x_ppem");
-        Y_PPEM = builder.primitiveField("y_ppem");
-        X_SCALE = builder.primitiveField("x_scale");
-        Y_SCALE = builder.primitiveField("y_scale");
-        ASCENDER = builder.primitiveField("ascender");
-        DESCENDER = builder.primitiveField("descender");
-        HEIGHT = builder.primitiveField("height");
-        MAX_ADVANCE = builder.primitiveField("max_advance");
+        X_PPEM = builder.newShort("x_ppem");
+        Y_PPEM = builder.newShort("y_ppem");
+        X_SCALE = builder.newLong("x_scale");
+        Y_SCALE = builder.newLong("y_scale");
+        ASCENDER = builder.newLong("ascender");
+        DESCENDER = builder.newLong("descender");
+        HEIGHT = builder.newLong("height");
+        MAX_ADVANCE = builder.newLong("max_advance");
     }
 }

@@ -1,10 +1,9 @@
 package io.github.mmc1234.jfreetype.color;
 
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A union object representing format and details of a paint table of a ‘COLR’ v1 font,
@@ -44,7 +43,7 @@ public final class FTCOLRPaint {
     /**
      * The gradient format for this Paint structure.
      */
-    public static final VarHandle FORMAT;
+    public static final IntField FORMAT;
 
     /**
      * Union of all paint table types:
@@ -52,14 +51,14 @@ public final class FTCOLRPaint {
      * {@link FTPaintRadialGradient}, {@link FTPaintSweepGradient}, {@link FTPaintTransform}, {@link FTPaintTranslate},
      * {@link FTPaintRotate}, {@link FTPaintSkew}, {@link FTPaintComposite}, {@link FTPaintColrGlyph}
      */
-    public static final MethodHandle U;
+    public static final StructField U;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("I0", new String[] { "format", "u" },
                 FTCOLRPaintUnion.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        FORMAT = builder.primitiveField("format");
-        U = builder.structField("u");
+        FORMAT = builder.newInt("format");
+        U = builder.newStruct("u", FTCOLRPaintUnion.STRUCT_LAYOUT);
     }
 }

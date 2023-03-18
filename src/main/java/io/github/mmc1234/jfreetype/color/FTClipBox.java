@@ -2,6 +2,7 @@ package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.image.FTVector;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.MethodHandle;
@@ -30,22 +31,22 @@ public final class FTClipBox {
     /**
      * The bottom left corner of the clip box as an {@link FTVector} with fixed-point coordinates in 26.6 format.
      */
-    public static final MethodHandle BOTTOM_LEFT;
+    public static final StructField BOTTOM_LEFT;
 
     /**
      * The top left corner of the clip box as an {@link FTVector} with fixed-point coordinates in 26.6 format.
      */
-    public static final MethodHandle TOP_LEFT;
+    public static final StructField TOP_LEFT;
 
     /**
      * The top right corner of the clip box as an {@link FTVector} with fixed-point coordinates in 26.6 format.
      */
-    public static final MethodHandle TOP_RIGHT;
+    public static final StructField TOP_RIGHT;
 
     /**
      * The bottom right corner of the clip box as an {@link FTVector} with fixed-point coordinates in 26.6 format.
      */
-    public static final MethodHandle BOTTOM_RIGHT;
+    public static final StructField BOTTOM_RIGHT;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("0000", new String[] {
@@ -53,9 +54,9 @@ public final class FTClipBox {
         }, FTVector.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        BOTTOM_LEFT = builder.structField("bottom_left");
-        TOP_LEFT = builder.structField("top_left");
-        TOP_RIGHT = builder.structField("top_right");
-        BOTTOM_RIGHT = builder.structField("bottom_right");
+        BOTTOM_LEFT = builder.newStruct("bottom_left", FTVector.STRUCT_LAYOUT);
+        TOP_LEFT = builder.newStruct("top_left", FTVector.STRUCT_LAYOUT);
+        TOP_RIGHT = builder.newStruct("top_right", FTVector.STRUCT_LAYOUT);
+        BOTTOM_RIGHT = builder.newStruct("bottom_right", FTVector.STRUCT_LAYOUT);
     }
 }

@@ -1,10 +1,9 @@
 package io.github.mmc1234.jfreetype.color;
 
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure representing a ‘COLR’ v1 PaintGlyph paint table.
@@ -26,19 +25,19 @@ public final class FTPaintGlyph {
     /**
      * An opaque paint object pointing to a Paint table that serves as the fill for the glyph ID.
      */
-    public static final MethodHandle PAINT;
+    public static final StructField PAINT;
 
     /**
      * The glyph ID from the ‘glyf’ table, which serves as the contour information that is filled with paint.
      */
-    public static final VarHandle GLYPH_ID;
+    public static final IntField GLYPH_ID;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("0I", new String[] { "paint", "glyphID" },
                 FTOpaquePaint.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        PAINT = builder.structField("paint");
-        GLYPH_ID = builder.primitiveField("glyphID");
+        PAINT = builder.newStruct("paint", FTOpaquePaint.STRUCT_LAYOUT);
+        GLYPH_ID = builder.newInt("glyphID");
     }
 }

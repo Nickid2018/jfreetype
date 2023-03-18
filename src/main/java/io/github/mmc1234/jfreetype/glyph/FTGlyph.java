@@ -1,11 +1,11 @@
 package io.github.mmc1234.jfreetype.glyph;
 
 import io.github.mmc1234.jfreetype.image.FTVector;
+import io.github.mmc1234.jfreetype.util.AddressField;
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * The root glyph structure contains a given glyph image plus its advance width in 16.16 fixed-point format.
@@ -30,22 +30,22 @@ public final class FTGlyph {
     /**
      * A handle to the FreeType library object.
      */
-    public static final VarHandle LIBRARY;
+    public static final AddressField LIBRARY;
 
     /**
      * A pointer to the glyph's class. Private.
      */
-    public static final VarHandle CLAZZ;
+    public static final AddressField CLAZZ;
 
     /**
      * The format of the glyph's image.
      */
-    public static final VarHandle FORMAT;
+    public static final IntField FORMAT;
 
     /**
      * A 16.16 vector that gives the glyph's advance width.
      */
-    public static final MethodHandle ADVANCE;
+    public static final StructField ADVANCE;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("AAI0", new String[] {
@@ -53,9 +53,9 @@ public final class FTGlyph {
         }, FTVector.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        LIBRARY = builder.primitiveField("library");
-        CLAZZ = builder.primitiveField("clazz");
-        FORMAT = builder.primitiveField("format");
-        ADVANCE = builder.structField("advance");
+        LIBRARY = builder.newAddress("library");
+        CLAZZ = builder.newAddress("clazz");
+        FORMAT = builder.newInt("format");
+        ADVANCE = builder.newStruct("advance", FTVector.STRUCT_LAYOUT);
     }
 }

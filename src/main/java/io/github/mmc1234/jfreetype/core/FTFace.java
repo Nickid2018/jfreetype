@@ -2,13 +2,11 @@ package io.github.mmc1234.jfreetype.core;
 
 import io.github.mmc1234.jfreetype.image.FTBBox;
 import io.github.mmc1234.jfreetype.types.FTList;
-import io.github.mmc1234.jfreetype.util.LayoutBuilder;
-import io.github.mmc1234.jfreetype.util.VarUtils;
+import io.github.mmc1234.jfreetype.util.*;
+import io.github.mmc1234.jfreetype.util.LongField;
+import io.github.mmc1234.jfreetype.util.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A handle to a typographic face object.
@@ -225,7 +223,7 @@ public final class FTFace {
     /**
      * The number of faces in the font file. Some font formats can have multiple faces in a single font file.
      */
-    public static final VarHandle NUM_FACES;
+    public static final LongField NUM_FACES;
 
     /**
      * This field holds two different values. Bits 0-15 are the index of the face in the font file (starting with value 0).
@@ -239,12 +237,12 @@ public final class FTFace {
      * FT_Set_Var_Blend_Coordinates does not influence the named instance index value
      * (only FT_Set_Named_Instance does that).
      */
-    public static final VarHandle FACE_INDEX;
+    public static final LongField FACE_INDEX;
 
     /**
      * A set of bit flags that give important information about the face; see FT_FACE_FLAG_XXX for the details.
      */
-    public static final VarHandle FACE_FLAGS;
+    public static final LongField FACE_FLAGS;
 
     /**
      * The lower 16 bits contain a set of bit flags indicating the style of the face;
@@ -254,14 +252,14 @@ public final class FTFace {
      * (this is, style_flags is always a positive value).
      * Note that a variation font has always at least one named instance, namely the default instance.
      */
-    public static final VarHandle STYLE_FLAGS;
+    public static final LongField STYLE_FLAGS;
 
     /**
      * The number of glyphs in the face. If the face is scalable and has sbits (see {@link #NUM_FIXED_SIZES}),
      * it is set to the number of outline glyphs.<br/>
      * For CID-keyed fonts (not in an SFNT wrapper) this value gives the highest CID used in the font.
      */
-    public static final VarHandle NUM_GLYPHS;
+    public static final LongField NUM_GLYPHS;
 
     /**
      * The face's family name. This is an ASCII string, usually in English, that describes the typeface's family
@@ -272,7 +270,7 @@ public final class FTFace {
      * In case the font doesn't provide a specific family name entry, FreeType tries to synthesize one,
      * deriving it from other name entries.
      */
-    public static final VarHandle FAMILY_NAME;
+    public static final AddressField FAMILY_NAME;
 
     /**
      * The face's style name. This is an ASCII string, usually in English, that describes the typeface's style
@@ -280,13 +278,13 @@ public final class FTFace {
      * and can be set to NULL. As for {@link #FAMILY_NAME}, some formats provide localized and Unicode versions of this string.
      * Applications should use the format-specific interface to access them.
      */
-    public static final VarHandle STYLE_NAME;
+    public static final AddressField STYLE_NAME;
 
     /**
      * The number of bitmap strikes in the face. Even if the face is scalable,
      * there might still be bitmap strikes, which are called ‘sbits’ in that case.
      */
-    public static final VarHandle NUM_FIXED_SIZES;
+    public static final IntField NUM_FIXED_SIZES;
 
     /**
      * An array of {@link FTBitmapSize} for all bitmap strikes in the face.
@@ -294,22 +292,22 @@ public final class FTFace {
      * Note that FreeType tries to sanitize the strike data since they are sometimes sloppy or incorrect,
      * but this can easily fail.
      */
-    public static final VarHandle AVAILABLE_SIZES;
+    public static final AddressField AVAILABLE_SIZES;
 
     /**
      * The number of charmaps in the face.
      */
-    public static final VarHandle NUM_CHARMAPS;
+    public static final IntField NUM_CHARMAPS;
 
     /**
      * An array of the charmaps of the face.
      */
-    public static final VarHandle CHARMAPS;
+    public static final AddressField CHARMAPS;
 
     /**
      * A field reserved for client uses. See the {@link FTGeneric} type description.
      */
-    public static final MethodHandle GENERIC;
+    public static final StructField GENERIC;
 
     /**
      * The font bounding box. Coordinates are expressed in font units (see {@link #UNITS_PER_EM}).
@@ -320,81 +318,81 @@ public final class FTFace {
      * Note that the bounding box does not vary in OpenType variable fonts and should only be used
      * in relation to the default instance.
      */
-    public static final MethodHandle BBOX;
+    public static final StructField BBOX;
 
     /**
      * The number of font units per EM square for this face. This is typically 2048 for TrueType fonts,
      * and 1000 for Type 1 fonts. Only relevant for scalable formats.
      */
-    public static final VarHandle UNITS_PER_EM;
+    public static final ShortField UNITS_PER_EM;
 
     /**
      * The typographic ascender of the face, expressed in font units.
      * For font formats not having this information, it is set to {@link FTBBox#Y_MAX}. Only relevant for scalable formats.
      */
-    public static final VarHandle ASCENDER;
+    public static final ShortField ASCENDER;
 
     /**
      * The typographic descender of the face, expressed in font units. For font formats not having this information,
      * it is set to {@link FTBBox#Y_MIN}. Note that this field is negative for values below the baseline.
      * Only relevant for scalable formats.
      */
-    public static final VarHandle DESCENDER;
+    public static final ShortField DESCENDER;
 
     /**
      * This value is the vertical distance between two consecutive baselines, expressed in font units.
      * It is always positive. Only relevant for scalable formats.<br/>
      * If you want the global glyph height, use ascender - descender.
      */
-    public static final VarHandle HEIGHT;
+    public static final ShortField HEIGHT;
 
     /**
      * The maximum advance width, in font units, for all glyphs in this face.
      * This can be used to make word wrapping computations faster. Only relevant for scalable formats.
      */
-    public static final VarHandle MAX_ADVANCE_WIDTH;
+    public static final ShortField MAX_ADVANCE_WIDTH;
 
     /**
      * The maximum advance height, in font units, for all glyphs in this face. This is only relevant for vertical layouts,
      * and is set to height for fonts that do not provide vertical metrics. Only relevant for scalable formats.
      */
-    public static final VarHandle MAX_ADVANCE_HEIGHT;
+    public static final ShortField MAX_ADVANCE_HEIGHT;
 
     /**
      * The position, in font units, of the underline line for this face.
      * It is the center of the underlining stem. Only relevant for scalable formats.
      */
-    public static final VarHandle UNDERLINE_POSITION;
+    public static final ShortField UNDERLINE_POSITION;
 
     /**
      * The thickness, in font units, of the underline for this face. Only relevant for scalable formats.
      */
-    public static final VarHandle UNDERLINE_THICKNESS;
+    public static final ShortField UNDERLINE_THICKNESS;
 
     /**
      * The face's associated glyph slot(s).
      */
-    public static final VarHandle GLYPH;
+    public static final AddressField GLYPH;
 
     /**
      * The current active size for this face.
      */
-    public static final VarHandle SIZE;
+    public static final AddressField SIZE;
 
     /**
      * The current active charmap for this face.
      */
-    public static final VarHandle CHARMAP;
+    public static final AddressField CHARMAP;
 
     // --- Private Start
 
-    public static final VarHandle DRIVER;
-    public static final VarHandle MEMORY;
-    public static final VarHandle STREAM;
-    public static final MethodHandle SIZES_LIST;
-    public static final MethodHandle AUTOHINT;
-    public static final VarHandle EXTENSIONS;
-    public static final VarHandle INTERNAL;
+    public static final AddressField DRIVER;
+    public static final AddressField MEMORY;
+    public static final AddressField STREAM;
+    public static final StructField SIZES_LIST;
+    public static final StructField AUTOHINT;
+    public static final AddressField EXTENSIONS;
+    public static final AddressField INTERNAL;
 
     // --- Private End
 
@@ -411,7 +409,8 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTHasHorizontal(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_HORIZONTAL) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_HORIZONTAL) != 0;
+        //return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_HORIZONTAL) != 0;
     }
 
     /**
@@ -424,7 +423,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTHasVertical(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_VERTICAL) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_VERTICAL) != 0;
     }
 
     /**
@@ -438,7 +437,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTHasKerning(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_KERNING) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_KERNING) != 0;
     }
 
     /**
@@ -451,7 +450,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTHasFixedSizes(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_FIXED_SIZES) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_FIXED_SIZES) != 0;
     }
 
     /**
@@ -465,7 +464,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTHasGlyphNames(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_GLYPH_NAMES) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_GLYPH_NAMES) != 0;
     }
 
     /**
@@ -478,7 +477,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTHasColor(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_COLOR) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_COLOR) != 0;
     }
 
     /**
@@ -492,7 +491,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTHasMultipleMasters(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_MULTIPLE_MASTERS) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_MULTIPLE_MASTERS) != 0;
     }
 
     /**
@@ -507,7 +506,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTIsSFNT(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_SFNT) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_SFNT) != 0;
     }
 
     /**
@@ -521,7 +520,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTIsScalable(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_SCALABLE) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_SCALABLE) != 0;
     }
 
     /**
@@ -535,7 +534,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTIsFixedWidth(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_FIXED_WIDTH) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_FIXED_WIDTH) != 0;
     }
 
     /**
@@ -550,7 +549,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTIsCIDKeyed(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_CID_KEYED) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_CID_KEYED) != 0;
     }
 
     /**
@@ -564,7 +563,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTIsTricky(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_TRICKY) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_TRICKY) != 0;
     }
 
     /**
@@ -582,7 +581,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTIsNamedInstance(MemorySegment face) {
-        return (VarUtils.getInt(FACE_INDEX, face) & 0x7FFF0000) != 0;
+        return (FACE_INDEX.get(face) & 0x7FFF0000) != 0;
     }
 
     /**
@@ -596,7 +595,7 @@ public final class FTFace {
      * }</pre>
      */
     public static boolean FTIsVariation(MemorySegment face) {
-        return (VarUtils.getInt(FACE_FLAGS, face) & FT_FACE_FLAG_VARIATION) != 0;
+        return (FACE_FLAGS.get(face) & FT_FACE_FLAG_VARIATION) != 0;
     }
 
     static {
@@ -609,37 +608,36 @@ public final class FTFace {
         }, FTGeneric.STRUCT_LAYOUT, FTBBox.STRUCT_LAYOUT, FTList.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        NUM_FACES = builder.primitiveField("num_faces");
-        FACE_INDEX = builder.primitiveField("face_index");
-        FACE_FLAGS = builder.primitiveField("face_flags");
-        STYLE_FLAGS = builder.primitiveField("style_flags");
-        NUM_GLYPHS = builder.primitiveField("num_glyphs");
-        FAMILY_NAME = builder.primitiveField("family_name");
-        STYLE_NAME = builder.primitiveField("style_name");
-        NUM_FIXED_SIZES = builder.primitiveField("num_fixed_sizes");
-        AVAILABLE_SIZES = builder.primitiveField("available_sizes");
-        NUM_CHARMAPS = builder.primitiveField("num_charmaps");
-        CHARMAPS = builder.primitiveField("charmaps");
-        UNITS_PER_EM = builder.primitiveField("units_per_EM");
-        ASCENDER = builder.primitiveField("ascender");
-        DESCENDER = builder.primitiveField("descender");
-        HEIGHT = builder.primitiveField("height");
-        MAX_ADVANCE_WIDTH = builder.primitiveField("max_advance_width");
-        MAX_ADVANCE_HEIGHT = builder.primitiveField("max_advance_height");
-        UNDERLINE_POSITION = builder.primitiveField("underline_position");
-        UNDERLINE_THICKNESS = builder.primitiveField("underline_thickness");
-        GLYPH = builder.primitiveField("glyph");
-        SIZE = builder.primitiveField("size");
-        CHARMAP = builder.primitiveField("charmap");
-        DRIVER = builder.primitiveField("driver");
-        MEMORY = builder.primitiveField("memory");
-        STREAM = builder.primitiveField("stream");
-        EXTENSIONS = builder.primitiveField("extensions");
-        INTERNAL = builder.primitiveField("internal");
-
-        GENERIC = builder.structField("generic");
-        BBOX = builder.structField("bbox");
-        SIZES_LIST = builder.structField("sizes_list");
-        AUTOHINT = builder.structField("autohint");
+        NUM_FACES = builder.newLong("num_faces");
+        FACE_INDEX = builder.newLong("face_index");
+        FACE_FLAGS = builder.newLong("face_flags");
+        STYLE_FLAGS = builder.newLong("style_flags");
+        NUM_GLYPHS = builder.newLong("num_glyphs");//5Long
+        FAMILY_NAME = builder.newAddress("family_name");
+        STYLE_NAME = builder.newAddress("style_name");//2Address
+        NUM_FIXED_SIZES = builder.newInt("num_fixed_sizes");//1Int
+        AVAILABLE_SIZES = builder.newAddress("available_sizes");//1Address
+        NUM_CHARMAPS = builder.newInt("num_charmaps");//1Int
+        CHARMAPS = builder.newAddress("charmaps");//1Address
+        GENERIC = builder.newStruct("generic", FTGeneric.STRUCT_LAYOUT); //10
+        BBOX = builder.newStruct("bbox", FTBBox.STRUCT_LAYOUT);//11
+        UNITS_PER_EM = builder.newShort("units_per_EM");
+        ASCENDER = builder.newShort("ascender");
+        DESCENDER = builder.newShort("descender");
+        HEIGHT = builder.newShort("height");
+        MAX_ADVANCE_WIDTH = builder.newShort("max_advance_width");
+        MAX_ADVANCE_HEIGHT = builder.newShort("max_advance_height");
+        UNDERLINE_POSITION = builder.newShort("underline_position");
+        UNDERLINE_THICKNESS = builder.newShort("underline_thickness"); //8Short
+        GLYPH = builder.newAddress("glyph");
+        SIZE = builder.newAddress("size");
+        CHARMAP = builder.newAddress("charmap");
+        DRIVER = builder.newAddress("driver");
+        MEMORY = builder.newAddress("memory");
+        STREAM = builder.newAddress("stream");//6Address
+        SIZES_LIST = builder.newStruct("sizes_list", FTList.STRUCT_LAYOUT);//12
+        AUTOHINT = builder.newStruct("autohint", FTGeneric.STRUCT_LAYOUT);//10
+        EXTENSIONS = builder.newAddress("extensions");
+        INTERNAL = builder.newAddress("internal");//2Address
     }
 }

@@ -1,9 +1,9 @@
 package io.github.mmc1234.jfreetype.core;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A simple structure to pass more or less generic parameters to {@link FreeTypeFace#FTOpenFace}
@@ -28,18 +28,18 @@ public final class FTParameter {
     /**
      * A four-byte identification tag.
      */
-    public static final VarHandle TAG;
+    public static final LongField TAG;
 
     /**
      * A pointer to the parameter data.
      */
-    public static final VarHandle DATA;
+    public static final AddressField DATA;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("LA", new String[]{"tag", "data"});
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        TAG = builder.primitiveField("tag");
-        DATA = builder.primitiveField("data");
+        TAG = builder.newLong("tag");
+        DATA = builder.newAddress("data");
     }
 }

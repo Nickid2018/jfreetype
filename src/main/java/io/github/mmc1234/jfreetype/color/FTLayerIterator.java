@@ -1,9 +1,10 @@
 package io.github.mmc1234.jfreetype.color;
 
+import io.github.mmc1234.jfreetype.core.FreeTypeGlyph;
+import io.github.mmc1234.jfreetype.util.AddressField;
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * This iterator object is needed for {@link io.github.mmc1234.jfreetype.core.FreeTypeGlyph#FTGetColorGlyphLayer}.
@@ -24,27 +25,27 @@ public final class FTLayerIterator {
 
     /**
      * The number of glyph layers for the requested glyph index. Will be set
-     * by {@link io.github.mmc1234.jfreetype.core.FreeTypeGlyph#FTGetColorGlyphLayer}.
+     * by {@link FreeTypeGlyph#FTGetColorGlyphLayer}.
      */
-    public static final VarHandle NUM_LAYERS;
+    public static final IntField NUM_LAYERS;
 
     /**
-     * The current layer. Will be set by {@link io.github.mmc1234.jfreetype.core.FreeTypeGlyph#FTGetColorGlyphLayer}.
+     * The current layer. Will be set by {@link FreeTypeGlyph#FTGetColorGlyphLayer}.
      */
-    public static final VarHandle LAYER;
+    public static final IntField LAYER;
 
     /**
      * An opaque pointer into ‘COLR’ table data. The caller must set this to NULL before the first call of
-     * {@link io.github.mmc1234.jfreetype.core.FreeTypeGlyph#FTGetColorGlyphLayer}.
+     * {@link FreeTypeGlyph#FTGetColorGlyphLayer}.
      */
-    public static final VarHandle P;
+    public static final AddressField P;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("IIA", new String[] { "num_layers", "layer", "p" });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        NUM_LAYERS = builder.primitiveField("num_layers");
-        LAYER = builder.primitiveField("layer");
-        P = builder.primitiveField("p");
+        NUM_LAYERS = builder.newInt("num_layers");
+        LAYER = builder.newInt("layer");
+        P = builder.newAddress("p");
     }
 }

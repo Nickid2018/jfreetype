@@ -1,10 +1,9 @@
 package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure representing all of the ‘COLR’ v1 ‘PaintScale*’ paint tables. Used for scaling downstream
@@ -35,27 +34,27 @@ public final class FTPaintScale {
     /**
      * An {@link FTOpaquePaint} object referencing the paint that is to be scaled.
      */
-    public static final MethodHandle PAINT;
+    public static final StructField PAINT;
 
     /**
      * Scale factor in x direction represented as a 16.16 fixed-point value.
      */
-    public static final VarHandle SCALE_X;
+    public static final LongField SCALE_X;
 
     /**
      * Scale factor in y direction represented as a 16.16 fixed-point value.
      */
-    public static final VarHandle SCALE_Y;
+    public static final LongField SCALE_Y;
 
     /**
      * x coordinate of center point to scale from represented as a 16.16 fixed-point value.
      */
-    public static final VarHandle CENTER_X;
+    public static final LongField CENTER_X;
 
     /**
      * y coordinate of center point to scale from represented as a 16.16 fixed-point value.
      */
-    public static final VarHandle CENTER_Y;
+    public static final LongField CENTER_Y;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("0LLLL", new String[] {
@@ -63,10 +62,10 @@ public final class FTPaintScale {
         }, FTOpaquePaint.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        PAINT = builder.structField("paint");
-        SCALE_X = builder.primitiveField("scale_x");
-        SCALE_Y = builder.primitiveField("scale_y");
-        CENTER_X = builder.primitiveField("center_x");
-        CENTER_Y = builder.primitiveField("center_y");
+        PAINT = builder.newStruct("paint", FTOpaquePaint.STRUCT_LAYOUT);
+        SCALE_X = builder.newLong("scale_x");
+        SCALE_Y = builder.newLong("scale_y");
+        CENTER_X = builder.newLong("center_x");
+        CENTER_Y = builder.newLong("center_y");
     }
 }

@@ -1,10 +1,9 @@
 package io.github.mmc1234.jfreetype.color;
 
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure representing a ‘COLR'v1 PaintComposite paint table.
@@ -28,17 +27,17 @@ public final class FTPaintComposite {
     /**
      * An {@link FTOpaquePaint} object referencing the source that is to be composited.
      */
-    public static final MethodHandle SOURCE_PAINT;
+    public static final StructField SOURCE_PAINT;
 
     /**
      * An {@link FTCompositeMode} enum value determining the composition operation.
      */
-    public static final VarHandle COMPOSITE_MODE;
+    public static final IntField COMPOSITE_MODE;
 
     /**
      * An {@link FTOpaquePaint} object referencing the backdrop paint that source_paint is composited onto.
      */
-    public static final MethodHandle BACKDROP_PAINT;
+    public static final StructField BACKDROP_PAINT;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("0I0", new String[] {
@@ -46,8 +45,8 @@ public final class FTPaintComposite {
         }, FTOpaquePaint.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        SOURCE_PAINT = builder.structField("source_paint");
-        COMPOSITE_MODE = builder.primitiveField("composite_mode");
-        BACKDROP_PAINT = builder.structField("backdrop_paint");
+        SOURCE_PAINT = builder.newStruct("source_paint", FTOpaquePaint.STRUCT_LAYOUT);
+        COMPOSITE_MODE = builder.newInt("composite_mode");
+        BACKDROP_PAINT = builder.newStruct("backdrop_paint", FTOpaquePaint.STRUCT_LAYOUT);
     }
 }

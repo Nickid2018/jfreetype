@@ -1,9 +1,8 @@
 package io.github.mmc1234.jfreetype.color;
 
+import io.github.mmc1234.jfreetype.util.ByteField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * This structure models a BGRA color value of a ‘CPAL’ palette entry.<br/>
@@ -28,22 +27,22 @@ public final class FTColor {
     /**
      * Blue value.
      */
-    public static final VarHandle BLUE;
+    public static final ByteField BLUE;
 
     /**
      * Green value.
      */
-    public static final VarHandle GREEN;
+    public static final ByteField GREEN;
 
     /**
      * Red value.
      */
-    public static final VarHandle RED;
+    public static final ByteField RED;
 
     /**
      * Alpha value, giving the red, green, and blue color's opacity.
      */
-    public static final VarHandle ALPHA;
+    public static final ByteField ALPHA;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("BBBB", new String[] {
@@ -51,9 +50,9 @@ public final class FTColor {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        BLUE = builder.primitiveField("blue");
-        GREEN = builder.primitiveField("green");
-        RED = builder.primitiveField("red");
-        ALPHA = builder.primitiveField("alpha");
+        BLUE = builder.newByte("blue");
+        GREEN = builder.newByte("green");
+        RED = builder.newByte("red");
+        ALPHA = builder.newByte("alpha");
     }
 }

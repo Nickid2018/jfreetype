@@ -1,9 +1,10 @@
 package io.github.mmc1234.jfreetype.core;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A handle to a character map (usually abbreviated to ‘charmap’).
@@ -40,23 +41,23 @@ public final class FTCharMap {
     /**
      * A handle to the parent face object.
      */
-    public static final VarHandle FACE;
+    public static final AddressField FACE;
 
     /**
      * An {@link FTEncoding} tag identifying the charmap. Use this with {@link FreeTypeFace#FTSelectCharmap}.
      */
-    public static final VarHandle ENCODING;
+    public static final IntField ENCODING;
 
     /**
      * An ID number describing the platform for the following encoding ID.
      * This comes directly from the TrueType specification and gets emulated for other formats.
      */
-    public static final VarHandle PLATFORM_ID;
+    public static final ShortField PLATFORM_ID;
 
     /**
      * A platform-specific encoding number. This also comes from the TrueType specification and gets emulated similarly.
      */
-    public static final VarHandle ENCODING_ID;
+    public static final ShortField ENCODING_ID;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("AISS", new String[]{
@@ -64,9 +65,9 @@ public final class FTCharMap {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        FACE = builder.primitiveField("face");
-        ENCODING = builder.primitiveField("encoding");
-        PLATFORM_ID = builder.primitiveField("platform_id");
-        ENCODING_ID = builder.primitiveField("encoding_id");
+        FACE = builder.newAddress("face");
+        ENCODING = builder.newInt("encoding");
+        PLATFORM_ID = builder.newShort("platform_id");
+        ENCODING_ID = builder.newShort("encoding_id");
     }
 }
