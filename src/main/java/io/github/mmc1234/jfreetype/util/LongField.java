@@ -1,7 +1,5 @@
 package io.github.mmc1234.jfreetype.util;
 
-import io.github.mmc1234.jfreetype.image.FTBBox;
-import io.github.mmc1234.jfreetype.util.VarUtils;
 import jdk.incubator.foreign.MemorySegment;
 
 import java.lang.invoke.VarHandle;

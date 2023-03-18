@@ -138,14 +138,41 @@ public class LayoutBuilder {
         return MethodHandles.insertArguments(TO_FIELD_ADDRESS, 2, groupLayout.byteSize(), offset);
     }
 
-    public StructField structFieldNew(String name, MemoryLayout layout) {
+    public StructField newStruct(String name, MemoryLayout layout) {
         return new StructField(structField(name), layout);
     }
 
-    public StringField stringField(String name) {
+    @Deprecated
+    public StringField newString(String name) {
         return new StringField(primitiveField(name));
     }
-    public LongField longField(String name) {
+
+    public CharField newChar(String name) {
+        return new CharField(primitiveField(name));
+    }
+
+    public ByteField newByte(String name) {
+        return new ByteField(primitiveField(name));
+    }
+
+    public BooleanField newBoolean(String name) {
+        return new BooleanField(primitiveField(name));
+    }
+
+    public ShortField newShort(String name) {
+        return new ShortField(primitiveField(name));
+    }
+
+    public IntField newInt(String name) {
+        return new IntField(primitiveField(name));
+    }
+
+    public LongField newLong(String name) {
         return new LongField(primitiveField(name));
     }
+
+    public AddressField newAddress(String name) {
+        return new AddressField(primitiveField(name));
+    }
+
 }

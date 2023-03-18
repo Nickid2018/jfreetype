@@ -1,8 +1,10 @@
 package io.github.mmc1234.jfreetype.util;
 
 import io.github.mmc1234.jfreetype.util.VarUtils;
+import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 import java.lang.invoke.MethodHandle;
 
