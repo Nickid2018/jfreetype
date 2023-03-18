@@ -5,7 +5,9 @@ import jdk.incubator.foreign.FunctionDescriptor;
 import jdk.incubator.foreign.NativeSymbol;
 import jdk.incubator.foreign.SymbolLookup;
 
+import java.io.File;
 import java.lang.invoke.MethodHandle;
+import java.util.Objects;
 import java.util.Optional;
 
 public class LibraryUtil {
@@ -19,10 +21,7 @@ public class LibraryUtil {
         if (loaded)
             return;
         String lib = System.getProperty("jfreetype.library");
-        if (lib == null)
-            System.loadLibrary("freetype");
-        else
-            System.load(lib);
+        System.load(Objects.requireNonNullElse(lib, new File("freetype.dll").getAbsolutePath()));
         loaded = true;
     }
 
