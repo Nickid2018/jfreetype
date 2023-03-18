@@ -44,15 +44,14 @@ public class FaceTest {
         // Print debug info
         System.out.println(FTFace.STRUCT_LAYOUT.byteSize());
         MemorySegment face = VarUtils.star(facePtr, FTFace.STRUCT_LAYOUT);
-        MemorySegment bbox = VarUtils.getSegment(FTFace.BBOX, face, FTBBox.STRUCT_LAYOUT);
-        System.out.println(VarUtils.getLong(FTBBox.X_MAX, bbox));
+        MemorySegment bbox = VarUtils.getSegment(FTFace.BBOX.handle(), face, FTBBox.STRUCT_LAYOUT);
+        System.out.println(FTBBox.X_MAX.get(bbox));
         System.out.println(VarUtils.getLong(VarUtils.createAccess(FTFace.SEQUENCE_LAYOUT, "bbox.xMax"), face));
-        System.out.println(VarUtils.getString(FTFace.FAMILY_NAME, face));
-        System.out.println(VarUtils.getString(FTFace.STYLE_NAME, face));
-        System.out.println(VarUtils.getInt(FTFace.ASCENDER, face));
-        System.out.println(VarUtils.getInt(FTFace.DESCENDER, face));
-        System.out.println(VarUtils.getInt(FTFace.HEIGHT, face));
-        System.out.println(VarUtils.getInt(FTFace.UNITS_PER_EM, face));
+        System.out.println(VarUtils.getString(FTFace.STYLE_NAME.handle(), face));
+        System.out.println(FTFace.ASCENDER.get(face));
+        System.out.println(FTFace.DESCENDER.get(face));
+        System.out.println(FTFace.HEIGHT.get(face));
+        System.out.println(FTFace.UNITS_PER_EM.get(face));
 
         // Done
         FreeTypeFace.FTDoneFace(VarUtils.starAddress(facePtr));
