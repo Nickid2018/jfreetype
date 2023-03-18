@@ -1,9 +1,8 @@
 package io.github.mmc1234.jfreetype.system;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure used to describe a given memory manager to FreeType 2.
@@ -28,7 +27,7 @@ public final class FTMemory {
     /**
      * A generic typeless pointer for user data.
      */
-    public static final VarHandle USER;
+    public static final AddressField USER;
 
     /**
      * A pointer type to an allocation function.
@@ -41,7 +40,7 @@ public final class FTMemory {
      * </ul>
      * Return: Address of new memory block. 0 in case of failure.
      */
-    public static final VarHandle ALLOC;
+    public static final AddressField ALLOC;
 
     /**
      * A pointer type to a memory freeing function.
@@ -53,7 +52,7 @@ public final class FTMemory {
      *     <li>block - The newAddress of the target memory block.</li>
      * </ul>
      */
-    public static final VarHandle FREE;
+    public static final AddressField FREE;
 
     /**
      * A pointer type to a reallocation function.
@@ -69,7 +68,7 @@ public final class FTMemory {
      * Return: New block newAddress. 0 in case of memory shortage.<br/>
      * Note: In case of error, the old block must still be available.
      */
-    public static final VarHandle REALLOC;
+    public static final AddressField REALLOC;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("AAAA", new String[]{
@@ -77,9 +76,9 @@ public final class FTMemory {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        USER = builder.primitiveField("user");
-        ALLOC = builder.primitiveField("alloc");
-        FREE = builder.primitiveField("free");
-        REALLOC = builder.primitiveField("realloc");
+        USER = builder.newAddress("user");
+        ALLOC = builder.newAddress("alloc");
+        FREE = builder.newAddress("free");
+        REALLOC = builder.newAddress("realloc"); // 4Address
     }
 }

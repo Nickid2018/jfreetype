@@ -1,9 +1,9 @@
 package io.github.mmc1234.jfreetype.system;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A union type used to store either a long or a pointer.
@@ -23,8 +23,8 @@ public final class FTStreamDesc {
     public static final MemoryLayout UNION_LAYOUT;
     public static final MemoryLayout SEQUENCE_LAYOUT;
 
-    public static final VarHandle VALUE;
-    public static final VarHandle POINTER;
+    public static final LongField VALUE;
+    public static final AddressField POINTER;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("LA", new String[] {
@@ -32,7 +32,7 @@ public final class FTStreamDesc {
         }, true);
         UNION_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        VALUE = builder.primitiveField("value");
-        POINTER = builder.primitiveField("pointer");
+        VALUE = builder.newLong("value");
+        POINTER = builder.newAddress("pointer");
     }
 }

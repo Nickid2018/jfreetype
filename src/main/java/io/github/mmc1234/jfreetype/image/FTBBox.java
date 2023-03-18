@@ -1,9 +1,8 @@
 package io.github.mmc1234.jfreetype.image;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure used to hold an outline's bounding box, i.e.,
@@ -32,22 +31,22 @@ public final class FTBBox {
     /**
      * The horizontal minimum (left-most).
      */
-    public static final VarHandle X_MIN;
+    public static final LongField X_MIN;
 
     /**
      * The vertical minimum (bottom-most).
      */
-    public static final VarHandle Y_MIN;
+    public static final LongField Y_MIN;
 
     /**
      * The horizontal maximum (right-most).
      */
-    public static final VarHandle X_MAX;
+    public static final LongField X_MAX;
 
     /**
      * The vertical maximum (top-most).
      */
-    public static final VarHandle Y_MAX;
+    public static final LongField Y_MAX;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("LLLL", new String[]{
@@ -55,9 +54,9 @@ public final class FTBBox {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        X_MIN = builder.primitiveField("xMin");
-        Y_MIN = builder.primitiveField("yMin");
-        X_MAX = builder.primitiveField("xMax");
-        Y_MAX = builder.primitiveField("yMax");
+        X_MIN = builder.newLong("xMin");
+        Y_MIN = builder.newLong("yMin");
+        X_MAX = builder.newLong("xMax");
+        Y_MAX = builder.newLong("yMax");
     }
 }

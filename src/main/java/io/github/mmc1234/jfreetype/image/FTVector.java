@@ -1,9 +1,8 @@
 package io.github.mmc1234.jfreetype.image;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A simple structure used to store a 2D vector; coordinates are of the FT_Pos(long) type.
@@ -25,18 +24,18 @@ public final class FTVector {
     /**
      * The horizontal coordinate.
      */
-    public static final VarHandle X;
+    public static final LongField X;
 
     /**
      * The vertical coordinate.
      */
-    public static final VarHandle Y;
+    public static final LongField Y;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("LL", new String[]{"x", "y"});
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        X = builder.primitiveField("x");
-        Y = builder.primitiveField("y");
+        X = builder.newLong("x");
+        Y = builder.newLong("y");
     }
 }

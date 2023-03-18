@@ -1,11 +1,10 @@
 package io.github.mmc1234.jfreetype.glyph;
 
 import io.github.mmc1234.jfreetype.image.FTBitmap;
+import io.github.mmc1234.jfreetype.util.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure used for bitmap glyph images. This really is a ‘sub-class’ of {@link FTGlyph}.
@@ -34,23 +33,23 @@ public final class FTBitmapGlyph {
     /**
      * The root {@link FTGlyph} fields.
      */
-    public static final MethodHandle ROOT;
+    public static final StructField ROOT;
 
     /**
      * The left-side bearing, i.e., the horizontal distance from the current pen position to the left border of the glyph bitmap.
      */
-    public static final VarHandle LEFT;
+    public static final IntField LEFT;
 
     /**
      * The top-side bearing, i.e., the vertical distance from the current pen position to the top border of the glyph bitmap.
      * This distance is positive for upwards y!
      */
-    public static final VarHandle TOP;
+    public static final IntField TOP;
 
     /**
      * A descriptor for the bitmap.
      */
-    public static final MethodHandle BITMAP;
+    public static final StructField BITMAP;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("0II1", new String[] {
@@ -58,9 +57,9 @@ public final class FTBitmapGlyph {
         }, FTGlyph.STRUCT_LAYOUT, FTBitmap.STRUCT_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        ROOT = builder.structField("root");
-        LEFT = builder.primitiveField("left");
-        TOP = builder.primitiveField("top");
-        BITMAP = builder.structField("bitmap");
+        ROOT = builder.newStruct("root", FTGlyph.STRUCT_LAYOUT);
+        LEFT = builder.newInt("left");
+        TOP = builder.newInt("top");
+        BITMAP = builder.newStruct("bitmap", FTBitmap.STRUCT_LAYOUT);
     }
 }

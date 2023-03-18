@@ -1,9 +1,8 @@
 package io.github.mmc1234.jfreetype.types;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure used to hold a simple doubly-linked list. These are used in many parts of FreeType.
@@ -26,18 +25,18 @@ public final class FTList {
     /**
      * The head (first element) of doubly-linked list.
      */
-    public static final VarHandle HEAD;
+    public static final AddressField HEAD;
 
     /**
      * The tail (last element) of doubly-linked list.
      */
-    public static final VarHandle TAIL;
+    public static final AddressField TAIL;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("AA", new String[] { "head", "tail" });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        HEAD = builder.primitiveField("head");
-        TAIL = builder.primitiveField("tail");
+        HEAD = builder.newAddress("head");
+        TAIL = builder.newAddress("tail");
     }
 }

@@ -1,6 +1,8 @@
 package io.github.mmc1234.jfreetype.system;
 
+import io.github.mmc1234.jfreetype.util.AddressField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.LongField;
 import jdk.incubator.foreign.MemoryLayout;
 
 import java.lang.invoke.VarHandle;
@@ -36,7 +38,7 @@ public final class FTStream {
      * For memory-based streams, this is the newAddress of the first stream byte in memory.
      * This field should always be set to NULL for disk-based streams.
      */
-    public static final VarHandle BASE;
+    public static final AddressField BASE;
 
     /**
      * The stream size in bytes.<br/>
@@ -44,12 +46,12 @@ public final class FTStream {
      * the value is set to 0x7FFFFFFF. (Note that this size value can occur for normal streams also;
      * it is thus just a hint.)
      */
-    public static final VarHandle SIZE;
+    public static final LongField SIZE;
 
     /**
      * The current position within the stream.
      */
-    public static final VarHandle POS;
+    public static final LongField POS;
 
     /**
      * This field is a union that can hold an integer or a pointer.
@@ -78,7 +80,7 @@ public final class FTStream {
      * Note: This function might be called to perform a seek or skip operation with a count of 0.
      * A non-zero return value then indicates an error.
      */
-    public static final VarHandle READ;
+    public static final AddressField READ;
 
     /**
      * The stream's close function.
@@ -89,24 +91,24 @@ public final class FTStream {
      *     <li>stream - A handle to the target stream.</li>
      * </ul>
      */
-    public static final VarHandle CLOSE;
+    public static final AddressField CLOSE;
 
     /**
      * The memory manager to use to preload frames. This is set internally by FreeType and shouldn't be touched
      * by stream implementations.
      */
-    public static final VarHandle MEMORY;
+    public static final AddressField MEMORY;
 
     /**
      * This field is set and used internally by FreeType when parsing frames.
      * In particular, the FT_GET_XXX macros use this instead of the pos field.
      */
-    public static final VarHandle CURSOR;
+    public static final AddressField CURSOR;
 
     /**
      * This field is set and used internally by FreeType when parsing frames.
      */
-    public static final VarHandle LIMIT;
+    public static final AddressField LIMIT;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("ALL00AAAAA", new String[]{
@@ -114,13 +116,14 @@ public final class FTStream {
         }, FTStreamDesc.UNION_LAYOUT);
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        BASE = builder.primitiveField("base");
-        SIZE = builder.primitiveField("size");
-        POS = builder.primitiveField("pos");
-        READ = builder.primitiveField("read");
-        CLOSE = builder.primitiveField("close");
-        MEMORY = builder.primitiveField("memory");
-        CURSOR = builder.primitiveField("cursor");
-        LIMIT = builder.primitiveField("limit");
+        BASE = builder.newAddress("base");//1 Address
+        SIZE = builder.newLong("size");
+        POS = builder.newLong("pos");//2 Long
+        // 2 Struct
+        READ = builder.newAddress("read");
+        CLOSE = builder.newAddress("close");
+        MEMORY = builder.newAddress("memory");
+        CURSOR = builder.newAddress("cursor");
+        LIMIT = builder.newAddress("limit");//5 Address
     }
 }

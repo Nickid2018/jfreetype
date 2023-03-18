@@ -1,9 +1,8 @@
 package io.github.mmc1234.jfreetype.image;
 
-import io.github.mmc1234.jfreetype.util.LayoutBuilder;
+import io.github.mmc1234.jfreetype.util.*;
+import io.github.mmc1234.jfreetype.util.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure used to describe a bitmap or pixmap to the raster.
@@ -32,12 +31,12 @@ public final class FTBitmap {
     /**
      * The number of bitmap rows.
      */
-    public static final VarHandle ROWS;
+    public static final IntField ROWS;
 
     /**
      * The number of pixels in bitmap row.
      */
-    public static final VarHandle WIDTH;
+    public static final IntField WIDTH;
 
     /**
      * The pitch's absolute value is the number of bytes taken by one bitmap row, including padding.
@@ -50,32 +49,32 @@ public final class FTBitmap {
      * Alternatively, you might use callback functions to directly render to the application's surface;
      * see the file example2.cpp in the tutorial for a demonstration.
      */
-    public static final VarHandle PITCH;
+    public static final IntField PITCH;
 
     /**
      * A typeless pointer to the bitmap buffer. This value should be aligned on 32-bit boundaries in most cases.
      */
-    public static final VarHandle BUFFER;
+    public static final AddressField BUFFER;
 
     /**
      * This field is only used with {@link FTPixelMode#FT_PIXEL_MODE_GRAY}; it gives the number of gray levels used in the bitmap.
      */
-    public static final VarHandle NUM_GRAYS;
+    public static final ShortField NUM_GRAYS;
 
     /**
      * The pixel mode, i.e., how pixel bits are stored. See FT_Pixel_Mode for possible values.
      */
-    public static final VarHandle PIXEL_MODE;
+    public static final CharField PIXEL_MODE;
 
     /**
      * This field is intended for paletted pixel modes; it indicates how the palette is stored. Not used currently.
      */
-    public static final VarHandle PALETTE_MODE;
+    public static final CharField PALETTE_MODE;
 
     /**
      * A typeless pointer to the bitmap palette; this field is intended for paletted pixel modes. Not used currently.
      */
-    public static final VarHandle PALETTE;
+    public static final AddressField PALETTE;
 
     static {
         LayoutBuilder builder = new LayoutBuilder("IIIASCCA", new String[] {
@@ -83,13 +82,13 @@ public final class FTBitmap {
         });
         STRUCT_LAYOUT = builder.getGroupLayout();
         SEQUENCE_LAYOUT = builder.getSequenceLayout();
-        ROWS = builder.primitiveField("rows");
-        WIDTH = builder.primitiveField("rows");
-        PITCH = builder.primitiveField("pitch");
-        BUFFER = builder.primitiveField("buffer");
-        NUM_GRAYS = builder.primitiveField("num_grays");
-        PIXEL_MODE = builder.primitiveField("pixel_mode");
-        PALETTE_MODE = builder.primitiveField("palette_mode");
-        PALETTE = builder.primitiveField("palette");
+        ROWS = builder.newInt("rows");
+        WIDTH = builder.newInt("rows");
+        PITCH = builder.newInt("pitch");
+        BUFFER = builder.newAddress("buffer");
+        NUM_GRAYS = builder.newShort("num_grays");
+        PIXEL_MODE = builder.newChar("pixel_mode");
+        PALETTE_MODE = builder.newChar("palette_mode");
+        PALETTE = builder.newAddress("palette");
     }
 }
