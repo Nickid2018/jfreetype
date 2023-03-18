@@ -21,7 +21,7 @@ public class EasyFontLibrary implements AutoCloseable {
      * Create a library.
      */
     public EasyFontLibrary() {
-        resourceScope = Scope.pushScope();
+        resourceScope = Scope.newScope();
         MemorySegment ptrLibrary = resourceScope.newAddress();
         FTErrors.checkCode(FreeTypeLibrary.FTInitFreeType(ptrLibrary));
         library = VarUtils.starAddress(ptrLibrary);
