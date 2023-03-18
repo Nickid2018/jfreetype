@@ -1,11 +1,8 @@
 package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
-import io.github.mmc1234.jfreetype.util.StructField;
+import io.github.mmc1234.jfreetype.struct.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
 
 /**
  * A structure representing a PaintColrLayers table of a ‘COLR’ v1 font.

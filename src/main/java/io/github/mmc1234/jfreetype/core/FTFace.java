@@ -1,10 +1,9 @@
 package io.github.mmc1234.jfreetype.core;
 
 import io.github.mmc1234.jfreetype.image.FTBBox;
+import io.github.mmc1234.jfreetype.struct.*;
 import io.github.mmc1234.jfreetype.types.FTList;
 import io.github.mmc1234.jfreetype.util.*;
-import io.github.mmc1234.jfreetype.util.LongField;
-import io.github.mmc1234.jfreetype.util.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;
 

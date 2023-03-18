@@ -4,11 +4,11 @@ import io.github.mmc1234.jfreetype.image.FTBitmap;
 import io.github.mmc1234.jfreetype.image.FTGlyphFormat;
 import io.github.mmc1234.jfreetype.image.FTOutline;
 import io.github.mmc1234.jfreetype.image.FTVector;
-import io.github.mmc1234.jfreetype.util.AddressField;
-import io.github.mmc1234.jfreetype.util.IntField;
+import io.github.mmc1234.jfreetype.struct.AddressField;
+import io.github.mmc1234.jfreetype.struct.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
-import io.github.mmc1234.jfreetype.util.LongField;
-import io.github.mmc1234.jfreetype.util.StructField;
+import io.github.mmc1234.jfreetype.struct.LongField;
+import io.github.mmc1234.jfreetype.struct.StructField;
 import jdk.incubator.foreign.MemoryLayout;
 
 /**

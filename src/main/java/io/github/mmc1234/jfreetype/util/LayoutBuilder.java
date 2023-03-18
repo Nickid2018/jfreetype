@@ -1,5 +1,6 @@
 package io.github.mmc1234.jfreetype.util;
 
+import io.github.mmc1234.jfreetype.struct.*;
 import jdk.incubator.foreign.*;
 
 import java.lang.invoke.MethodHandle;

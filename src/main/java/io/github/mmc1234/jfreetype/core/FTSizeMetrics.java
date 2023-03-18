@@ -1,8 +1,8 @@
 package io.github.mmc1234.jfreetype.core;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
-import io.github.mmc1234.jfreetype.util.LongField;
-import io.github.mmc1234.jfreetype.util.ShortField;
+import io.github.mmc1234.jfreetype.struct.LongField;
+import io.github.mmc1234.jfreetype.struct.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
 
 /**

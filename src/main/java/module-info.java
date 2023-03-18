@@ -10,4 +10,5 @@ module jfreetype {
     exports io.github.mmc1234.jfreetype;
     exports io.github.mmc1234.jfreetype.glyph;
     exports io.github.mmc1234.jfreetype.easyfont;
+    exports io.github.mmc1234.jfreetype.struct;
 }

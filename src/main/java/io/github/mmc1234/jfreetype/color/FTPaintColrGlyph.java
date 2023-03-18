@@ -1,6 +1,6 @@
 package io.github.mmc1234.jfreetype.color;
 
-import io.github.mmc1234.jfreetype.util.IntField;
+import io.github.mmc1234.jfreetype.struct.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 

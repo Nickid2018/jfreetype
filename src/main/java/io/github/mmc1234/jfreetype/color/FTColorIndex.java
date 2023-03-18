@@ -1,7 +1,7 @@
 package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
-import io.github.mmc1234.jfreetype.util.ShortField;
+import io.github.mmc1234.jfreetype.struct.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
 
 /**

@@ -1,5 +1,6 @@
-package io.github.mmc1234.jfreetype.util;
+package io.github.mmc1234.jfreetype.struct;
 
+import io.github.mmc1234.jfreetype.util.VarUtils;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.MemorySegment;

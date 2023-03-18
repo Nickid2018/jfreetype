@@ -1,9 +1,9 @@
 package io.github.mmc1234.jfreetype.glyph;
 
 import io.github.mmc1234.jfreetype.image.FTBitmap;
-import io.github.mmc1234.jfreetype.util.IntField;
+import io.github.mmc1234.jfreetype.struct.IntField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
-import io.github.mmc1234.jfreetype.util.StructField;
+import io.github.mmc1234.jfreetype.struct.StructField;
 import jdk.incubator.foreign.MemoryLayout;
 
 /**

@@ -1,7 +1,7 @@
 package io.github.mmc1234.jfreetype.color;
 
-import io.github.mmc1234.jfreetype.util.AddressField;
-import io.github.mmc1234.jfreetype.util.BooleanField;
+import io.github.mmc1234.jfreetype.struct.AddressField;
+import io.github.mmc1234.jfreetype.struct.BooleanField;
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
 import jdk.incubator.foreign.MemoryLayout;
 

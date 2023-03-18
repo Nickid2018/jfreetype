@@ -1,7 +1,10 @@
 package io.github.mmc1234.jfreetype.image;
 
+import io.github.mmc1234.jfreetype.struct.AddressField;
+import io.github.mmc1234.jfreetype.struct.CharField;
+import io.github.mmc1234.jfreetype.struct.IntField;
 import io.github.mmc1234.jfreetype.util.*;
-import io.github.mmc1234.jfreetype.util.ShortField;
+import io.github.mmc1234.jfreetype.struct.ShortField;
 import jdk.incubator.foreign.MemoryLayout;
 
 /**

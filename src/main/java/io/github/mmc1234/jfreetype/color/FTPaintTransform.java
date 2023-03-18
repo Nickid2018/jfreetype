@@ -1,10 +1,8 @@
 package io.github.mmc1234.jfreetype.color;
 
 import io.github.mmc1234.jfreetype.util.LayoutBuilder;
-import io.github.mmc1234.jfreetype.util.StructField;
+import io.github.mmc1234.jfreetype.struct.StructField;
 import jdk.incubator.foreign.MemoryLayout;
-
-import java.lang.invoke.MethodHandle;
 
 /**
  * A structure representing a ‘COLR’ v1 PaintTransform paint table.
