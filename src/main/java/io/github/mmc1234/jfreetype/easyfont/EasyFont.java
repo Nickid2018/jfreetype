@@ -53,7 +53,8 @@ public class EasyFont implements AutoCloseable {
 
     private MemorySegment loadChar(int index) {
         checkCode(FTLoadGlyph(face.address(), index, FT_LOAD_NO_BITMAP | FT_LOAD_FORCE_AUTOHINT));
-        MemorySegment slot = scope.getSegment(FTFace.GLYPH, face, FTGlyphSlot.STRUCT_LAYOUT);
+        FTFace.GLYPH.get(face);
+        MemorySegment slot = scope.getSegment(FTFace.GLYPH.handle(), face, FTGlyphSlot.STRUCT_LAYOUT);
         MemorySegment ptrGlyph = scope.newAddress();
         checkCode(FTGetGlyph(slot.address(), ptrGlyph));
         return ptrGlyph;
@@ -64,7 +65,7 @@ public class EasyFont implements AutoCloseable {
      * @return the ascender
      */
     public short getAscender() {
-        return getShort(FTFace.ASCENDER, face);
+        return FTFace.ASCENDER.get(face);
     }
 
     /**
@@ -72,7 +73,7 @@ public class EasyFont implements AutoCloseable {
      * @return the descender
      */
     public short getDescender() {
-        return getShort(FTFace.DESCENDER, face);
+        return FTFace.DESCENDER.get(face);
     }
 
     /**
@@ -99,10 +100,10 @@ public class EasyFont implements AutoCloseable {
 
         MemorySegment bbox = scope.newSegment(FTBBox.STRUCT_LAYOUT);
         FTGlyphGetCBox(starAddress(ptrGlyph), FT_GLYPH_BBOX_TRUNCATE.value(), bbox);
-        long minX = getLong(FTBBox.X_MIN, bbox);
-        long minY = getLong(FTBBox.Y_MIN, bbox);
-        long maxX = getLong(FTBBox.X_MAX, bbox);
-        long maxY = getLong(FTBBox.Y_MAX, bbox);
+        long minX = FTBBox.X_MIN.get(bbox);
+        long minY = FTBBox.Y_MIN.get(bbox);
+        long maxX = FTBBox.X_MAX.get(bbox);
+        long maxY = FTBBox.Y_MAX.get(bbox);
         int width = Math.toIntExact(maxX - minX);
         int height = Math.toIntExact(maxY - minY);
 
@@ -124,26 +125,26 @@ public class EasyFont implements AutoCloseable {
         int charIndex = getCharIndex(codepoint);
         MemorySegment ptrGlyph = loadChar(charIndex);
 
-        MemorySegment slot = scope.getSegment(FTFace.GLYPH, face, FTGlyphSlot.STRUCT_LAYOUT);
+        MemorySegment slot = scope.getSegment(FTFace.GLYPH.handle(), face, FTGlyphSlot.STRUCT_LAYOUT);
         checkCode(FTRenderGlyph(slot.address(), FTRenderMode.FT_RENDER_MODE_NORMAL));
         checkCode(FTGlyphToBitmap(ptrGlyph, FTRenderMode.FT_RENDER_MODE_NORMAL, MemoryAddress.NULL, true));
 
         MemorySegment bbox = scope.newSegment(FTBBox.STRUCT_LAYOUT);
         FTGlyphGetCBox(starAddress(ptrGlyph), FT_GLYPH_BBOX_TRUNCATE.value(), bbox);
-        long maxX = getLong(FTBBox.X_MAX, bbox);
-        long maxY = getLong(FTBBox.Y_MAX, bbox);
-        long minX = getLong(FTBBox.X_MIN, bbox);
-        long minY = getLong(FTBBox.Y_MIN, bbox);
+        long minX = FTBBox.X_MIN.get(bbox);
+        long minY = FTBBox.Y_MIN.get(bbox);
+        long maxX = FTBBox.X_MAX.get(bbox);
+        long maxY = FTBBox.Y_MAX.get(bbox);
         int width = Math.toIntExact(maxX - minX);
         int height = Math.toIntExact(maxY - minY);
 
-        MemorySegment bitmap = scope.getSegment(FTBitmapGlyph.BITMAP,
+        MemorySegment bitmap = scope.getSegment(FTBitmapGlyph.BITMAP.handle(),
                 star(ptrGlyph, FTBitmapGlyph.STRUCT_LAYOUT), FTBitmap.STRUCT_LAYOUT);
-        if(getInt(FTBitmap.PIXEL_MODE, bitmap) != FTPixelMode.FT_PIXEL_MODE_GRAY.value())
+        if(FTBitmap.PIXEL_MODE.get(bitmap) != FTPixelMode.FT_PIXEL_MODE_GRAY.value())
             throw new RuntimeException("Invalid pixel mode");
 
-        MemoryAddress buffer = getAddress(FTBitmap.BUFFER, bitmap);
-        int pitch = getInt(FTBitmap.PITCH, bitmap);
+        MemoryAddress buffer = FTBitmap.BUFFER.get(bitmap);
+        int pitch = FTBitmap.PITCH.get(bitmap);
 
         byte[][] luminanceArray = new byte[height][width];
         for (int i = 0; i < height; i++)
